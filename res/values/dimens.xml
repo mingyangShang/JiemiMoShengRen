@@ -1,0 +1,12 @@
+<!-- 常用的尺寸值 -->
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="tabs_height">40dp</dimen>
+    <dimen name="chats_list_divider_height">2dp</dimen>
+
+    <dimen name="contact_img_size">40dp</dimen>
+    <dimen name="chat_img_size">56dp</dimen>
+</resources>

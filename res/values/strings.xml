@@ -1,0 +1,10 @@
+<!-- 项目用到的字符串都写这里 -->
+<resources>
+    <string name="app_name">JieMiMoShengRen</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--activity name-->
+    <string name="activity_index">主界面</string>
+</resources>

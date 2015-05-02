@@ -11,7 +11,7 @@ import android.os.Vibrator;
 
 import com.levelup.jiemimoshengren.R;
 
-public class BaseShakeActivity extends Activity implements SensorEventListener{
+public abstract class BaseShakeActivity extends Activity implements SensorEventListener{
 
     protected SensorManager sensorManager;
     protected Vibrator vibrator;

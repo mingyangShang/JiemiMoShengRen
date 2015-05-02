@@ -1,12 +1,35 @@
 <!-- 常用的尺寸值 -->
 <resources>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- 常用字体大小 -->
+    <dimen name="micro_text_size">12sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="small_middle_text_size">16sp</dimen>
+    <dimen name="medium_text_size">18sp</dimen>
+    <dimen name="large_text_size">22sp</dimen>
+    <dimen name="very_large_size">24sp</dimen>
     <dimen name="tabs_height">40dp</dimen>
     <dimen name="chats_list_divider_height">2dp</dimen>
 
+    <!-- 图片大小 -->
     <dimen name="contact_img_size">40dp</dimen>
-    <dimen name="chat_img_size">56dp</dimen>
+    <dimen name="msg_img_size">50dp</dimen>
+    <dimen name="height_top_bar">46dp</dimen>
+    <dimen name="padding_search_bar">5dp</dimen>
+    <dimen name="height_row_weixin">59dp</dimen>
+    <dimen name="size_avatar">50dp</dimen>
+    <dimen name="margin_chat_activity">5dp</dimen>
+    <dimen name="field_textsize">14sp</dimen>
+    <dimen name="field_margin_right">5dp</dimen>
+    <dimen name="call_button_padding_vertical">10dp</dimen>
+    <dimen name="call_button_padding_left">25dp</dimen>
+    <dimen name="call_button_padding_right">25dp</dimen>
+    <dimen name="sidebar_text_size">10dp</dimen>
+    <dimen name="image_thumbnail_size">100dp</dimen>
+    <dimen name="image_thumbnail_spacing">1dp</dimen>
+
 </resources>

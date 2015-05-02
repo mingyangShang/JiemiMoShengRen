@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 
+import com.eashmod.chat.SmyHXSDKHelper;
+
 public abstract class BaseActivity extends FragmentActivity {
 
     @Override
@@ -19,6 +21,8 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState,int resId){
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE); //设置无标题栏
+      /*  getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);*/ //设置全屏
         setContentView(resId);
         init();
     }
@@ -30,14 +34,23 @@ public abstract class BaseActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
+        //当界面可见时加入可见界面列表中
+        ((SmyHXSDKHelper)SmyHXSDKHelper.getInstance()).pushActivity(this);
+        
     }
 
     @Override
     protected void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
+    }
+    
+    @Override
+    protected void onStop(){
+    	super.onStop();
+    	//将当前界面从可见界面列表中删除
+    	((SmyHXSDKHelper)SmyHXSDKHelper.getInstance()).popActivity(this);
     }
 
     @Override

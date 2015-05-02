@@ -112,9 +112,9 @@
         <item name="android:background">#bfbfbf</item>
     </style>
 
-    <style name="horizontal_slide" parent="android:Theme.NoTitleBar">
+  <!--   <style name="horizontal_slide" parent="android:Theme.NoTitleBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
-    </style>
+    </style> -->
 
     <!--
     <style name="chat_text_date_style">

@@ -31,5 +31,8 @@
     <dimen name="sidebar_text_size">10dp</dimen>
     <dimen name="image_thumbnail_size">100dp</dimen>
     <dimen name="image_thumbnail_spacing">1dp</dimen>
+    
+    <!-- 布局高度 -->
+    <dimen name="net_error_height">50dp</dimen> <!-- 网络错误布局高度 -->
 
 </resources>

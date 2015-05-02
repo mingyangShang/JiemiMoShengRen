@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/net_error_height"
+    android:background="@drawable/chat_error_item_bg"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/iv_neterror"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="9dp"
+        android:src="@drawable/login_error_icon" />
+
+    <TextView
+        android:id="@+id/tv_connect_errormsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@id/iv_neterror"
+        android:text="@string/net_error"
+        android:textColor="#000" />
+
+    <!--
+         <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查看详情"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_preference_single_normal"
+        android:textColor="#000"
+        />
+    -->
+
+</RelativeLayout>

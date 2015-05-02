@@ -78,7 +78,7 @@ public class SmyApplication extends Application {
 		hxSdkHelper.onInit(appContext);
 	}
 
-	public static Application getSingleton() {
+	public static SmyApplication getSingleton() {
 		return singleton;
 	}
 

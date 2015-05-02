@@ -20,6 +20,34 @@ public class User extends EMContact {
 	private String header;
 	private String avatar;
 	
+	public String name;
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public String getSign() {
+		return sign;
+	}
+
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
+
+	public String imgUrl;
+    public String sign;
+	
 	public User(){}
 	
 	public User(String username){

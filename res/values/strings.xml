@@ -8,6 +8,7 @@
     <string name="activity_index">主界面</string>
     
     
+    <string name="net_error">网络断开，不能连接到服务器</string>
     <string name="text_ack_msg">read</string>
     <string name="text_delivered_msg">delivered</string>
     <string name="back">back</string>

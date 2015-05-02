@@ -1,121 +1,250 @@
+/**
+ * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.levelup.jiemimoshengren.adapter;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.easemob.util.EMLog;
 import com.levelup.jiemimoshengren.R;
-import com.levelup.jiemimoshengren.model.MyContact;
-import com.levelup.jiemimoshengren.utils.PingYinUtil;
+import com.levelup.jiemimoshengren.config.Constant;
+import com.levelup.jiemimoshengren.model.User;
+import com.levelup.jiemimoshengren.utils.UserUtils;
 
 /**
- * Created by smy on 2015/3/4.
+ * 简单的好友Adapter实现
+ *
  */
-public class ContactAdapter extends BaseAdapter implements SectionIndexer{
-    private Context mContext;
-    private List<MyContact> contacts;
+public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexer{
+    private static final String TAG = "ContactAdapter";
+	List<String> list;
+	List<User> userList;
+	List<User> copyUserList;
+	private LayoutInflater layoutInflater;
+	private SparseIntArray positionOfSection;
+	private SparseIntArray sectionOfPosition;
+	private int res;
+	private MyFilter myFilter;
+    private boolean notiyfyByFilter;
 
-    private static final Comparator pinyinComparator= new PinyinComparator();
-
-    private static final String mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    @SuppressWarnings("unchecked")
-    public ContactAdapter(Context mContext,List<MyContact> contacts){
-        this.mContext = mContext;
-        this.contacts = contacts;
-        //鎺掑簭(瀹炵幇浜嗕腑鑻辨枃娣锋帓)
-        Arrays.sort(contacts.toArray(), new PinyinComparator());
+	public ContactAdapter(Context context, int resource, List<User> objects) {
+		super(context, resource, objects);
+		this.res = resource;
+		this.userList = objects;
+		copyUserList = new ArrayList<User>();
+		copyUserList.addAll(objects);
+		layoutInflater = LayoutInflater.from(context);
+	}
+	
+	private static class ViewHolder {
+	    ImageView avatar;
+	    TextView unreadMsgView;
+	    TextView nameTextview;
+	    TextView tvHeader;
     }
-    
-    public int getCount() {
-        return contacts.size();
-    }
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+	    ViewHolder holder;
+ 		if(convertView == null){
+ 		    holder = new ViewHolder();
+			convertView = layoutInflater.inflate(res, null);
+			holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
+			holder.unreadMsgView = (TextView) convertView.findViewById(R.id.unread_msg_number);
+			holder.nameTextview = (TextView) convertView.findViewById(R.id.name);
+			holder.tvHeader = (TextView) convertView.findViewById(R.id.header);
+			convertView.setTag(holder);
+		}else{
+		    holder = (ViewHolder) convertView.getTag();
+		}
+		
+		User user = getItem(position);
+		if(user == null)
+			Log.d("ContactAdapter", position + "");
+		//设置nick，demo里不涉及到完整user，用username代替nick显示
+		String username = user.getUsername();
+		String header = user.getHeader();
+		if (position == 0 || header != null && !header.equals(getItem(position - 1).getHeader())) {
+			if ("".equals(header)) {
+			    holder.tvHeader.setVisibility(View.GONE);
+			} else {
+			    holder.tvHeader.setVisibility(View.VISIBLE);
+			    holder.tvHeader.setText(header);
+			}
+		} else {
+		    holder.tvHeader.setVisibility(View.GONE);
+		}
+		//显示申请与通知item
+		if(username.equals(Constant.NEW_FRIENDS_USERNAME)){
+		    holder.nameTextview.setText(user.getNick());
+		    holder.avatar.setImageResource(R.drawable.new_friends_icon);
+			if(user.getUnreadMsgCount() > 0){
+			    holder.unreadMsgView.setVisibility(View.VISIBLE);
+			    holder.unreadMsgView.setText(user.getUnreadMsgCount()+"");
+			}else{
+			    holder.unreadMsgView.setVisibility(View.INVISIBLE);
+			}
+		}else if(username.equals(Constant.GROUP_USERNAME)){
+			//群聊item
+		    holder.nameTextview.setText(user.getNick());
+		    holder.avatar.setImageResource(R.drawable.groups_icon);
+		}else{
+		    holder.nameTextview.setText(username);
+		    //设置用户头像
+			UserUtils.setUserAvatar(getContext(), username, holder.avatar);
+			if(holder.unreadMsgView != null)
+			    holder.unreadMsgView.setVisibility(View.INVISIBLE);
+		}
+		
+		return convertView;
+	}
+	
+	@Override
+	public User getItem(int position) {
+		return super.getItem(position);
+	}
+	
+	@Override
+	public int getCount() {
+		return super.getCount();
+	}
 
-    public Object getItem(int position) {
-        return contacts.get(position);
-    }
+	public int getPositionForSection(int section) {
+		return positionOfSection.get(section);
+	}
 
-    public long getItemId(int position) {
-        return position;
-    }
+	public int getSectionForPosition(int position) {
+		return sectionOfPosition.get(position);
+	}
+	
+	public Object[] getSections() {
+		positionOfSection = new SparseIntArray();
+		sectionOfPosition = new SparseIntArray();
+		int count = getCount();
+		list = new ArrayList<String>();
+		list.add(getContext().getString(R.string.search_header));
+		positionOfSection.put(0, 0);
+		sectionOfPosition.put(0, 0);
+		for (int i = 1; i < count; i++) {
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final MyContact contact = contacts.get(position);
-        ViewHolder viewHolder = null;
-        if(convertView == null){
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.adapter_contact, null);
-            viewHolder = new ViewHolder();
-            viewHolder.tvCatalog = (TextView)convertView.findViewById(R.id.tv_contact_index);
-            viewHolder.ivAvatar = (ImageView)convertView.findViewById(R.id.img_head);
-            viewHolder.tvNick = (TextView)convertView.findViewById(R.id.tv_name);
-            convertView.setTag(viewHolder);
-        }else{
-            viewHolder = (ViewHolder)convertView.getTag();
-        }
-        String catalog = PingYinUtil.converterToFirstSpell(contact.name).substring(0, 1);
-        if(position == 0){
-            viewHolder.tvCatalog.setVisibility(View.VISIBLE);
-            viewHolder.tvCatalog.setText(catalog);
-        }else{
-            final MyContact lastContact = contacts.get(position - 1);
-            String lastCatalog = PingYinUtil.converterToFirstSpell(lastContact.name.substring(0, 1));
-            if(catalog.equals(lastCatalog)){
-                viewHolder.tvCatalog.setVisibility(View.GONE);
-            }else{
-                viewHolder.tvCatalog.setVisibility(View.VISIBLE);
-                viewHolder.tvCatalog.setText(catalog);
-            }
-        }
+			String letter = getItem(i).getHeader();
+			System.err.println("contactadapter getsection getHeader:" + letter + " name:" + getItem(i).getUsername());
+			int section = list.size() - 1;
+			if (list.get(section) != null && !list.get(section).equals(letter)) {
+				list.add(letter);
+				section++;
+				positionOfSection.put(section, i);
+			}
+			sectionOfPosition.put(i, section);
+		}
+		return list.toArray(new String[list.size()]);
+	}
+	
+	@Override
+	public Filter getFilter() {
+		if(myFilter==null){
+			myFilter = new MyFilter(userList);
+		}
+		return myFilter;
+	}
+	
+	private class  MyFilter extends Filter{
+        List<User> mOriginalList = null;
+		
+		public MyFilter(List<User> myList) {
+			this.mOriginalList = myList;
+		}
 
-        viewHolder.ivAvatar.setImageResource(R.drawable.icon);
-        viewHolder.tvNick.setText(contact.name);
-        return convertView;
-    }
+		@Override
+		protected synchronized FilterResults performFiltering(CharSequence prefix) {
+			FilterResults results = new FilterResults();
+			if(mOriginalList==null){
+			    mOriginalList = new ArrayList<User>();
+			}
+			EMLog.d(TAG, "contacts original size: " + mOriginalList.size());
+			EMLog.d(TAG, "contacts copy size: " + copyUserList.size());
+			
+			if(prefix==null || prefix.length()==0){
+				results.values = copyUserList;
+				results.count = copyUserList.size();
+			}else{
+				String prefixString = prefix.toString();
+				final int count = mOriginalList.size();
+				final ArrayList<User> newValues = new ArrayList<User>();
+				for(int i=0;i<count;i++){
+					final User user = mOriginalList.get(i);
+					String username = user.getUsername();
+					
+					if(username.startsWith(prefixString)){
+						newValues.add(user);
+					}
+					else{
+						 final String[] words = username.split(" ");
+	                     final int wordCount = words.length;
+	
+	                     // Start at index 0, in case valueText starts with space(s)
+	                     for (int k = 0; k < wordCount; k++) {
+	                         if (words[k].startsWith(prefixString)) {
+	                             newValues.add(user);
+	                             break;
+	                         }
+	                     }
+					}
+				}
+				results.values=newValues;
+				results.count=newValues.size();
+			}
+			EMLog.d(TAG, "contacts filter results size: " + results.count);
+			return results;
+		}
 
-    static class ViewHolder{
-        TextView tvCatalog;//鐩綍
-        ImageView ivAvatar;//澶村儚
-        TextView tvNick;//鏄电О
-    }
+		@Override
+		protected synchronized void publishResults(CharSequence constraint,
+				FilterResults results) {
+			userList.clear();
+			userList.addAll((List<User>)results.values);
+			EMLog.d(TAG, "publish contacts filter results size: " + results.count);
+			if (results.count > 0) {
+			    notiyfyByFilter = true;
+				notifyDataSetChanged();
+				notiyfyByFilter = false;
+			} else {
+				notifyDataSetInvalidated();
+			}
+		}
+	}
+	
+	
+	@Override
+	public void notifyDataSetChanged() {
+	    super.notifyDataSetChanged();
+	    if(!notiyfyByFilter){
+	        copyUserList.clear();
+	        copyUserList.addAll(userList);
+	    }
+	}
+	
 
-    public int getPositionForSection(int section) {
-        for (int i = 0,size=contacts.size(); i < size; i++) {
-            String l = PingYinUtil.converterToFirstSpell(contacts.get(i).name).substring(0, 1);
-            char firstChar = l.toUpperCase().charAt(0);
-            if (firstChar == mSections.charAt(section)) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    public Object[] getSections() {
-        String[] sections = new String[mSections.length()];
-        for (int i = 0; i < mSections.length(); i++)
-            sections[i] = String.valueOf(mSections.charAt(i));
-        return sections;
-    }
-
-    public int getSectionForPosition(int position) {
-        return 0;
-    }
-
-    public static class PinyinComparator implements Comparator{
-        public int compare(Object o1, Object o2) {
-            final MyContact contact1 = (MyContact)o1;
-            final MyContact contact2 = (MyContact)o2;
-            String str1 = PingYinUtil.getPingYin(contact1.name);
-            String str2 = PingYinUtil.getPingYin(contact2.name);
-            return str1.compareTo(str2);
-        }
-    }
 }

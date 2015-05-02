@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-   <ListView
-       android:id="@+id/list_chats"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       style="@style/BaseListViewStyle"
-       android:divider="#19000000"
-       android:dividerHeight="@dimen/chats_list_divider_height"/>
+    <!-- 显示网络错误布局 -->
+    <include
+        android:id="@+id/rl_error_item"
+        layout="@layout/msg_neterror_item"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/list_chats"
+        style="@style/BaseListViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#19000000"
+        android:dividerHeight="@dimen/chats_list_divider_height" />
 
 </LinearLayout>

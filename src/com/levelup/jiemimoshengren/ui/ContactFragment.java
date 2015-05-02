@@ -32,7 +32,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.easemob.chat.EMContactManager;
-import com.easemob.exceptions.EaseMobException;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.adapter.ContactAdapter;
 import com.levelup.jiemimoshengren.base.SmyApplication;
@@ -42,25 +41,9 @@ import com.levelup.jiemimoshengren.model.User;
 import com.levelup.jiemimoshengren.widget.Sidebar;
 /**
  * Created by smy on 2015/3/4.
- */
-/**
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
  * 联系人列表页
- * 
- */
+*/
+
 public class ContactFragment extends Fragment {
 	private ContactAdapter adapter;
 	private List<User> contactList;
@@ -140,6 +123,7 @@ public class ContactFragment extends Fragment {
 		});
 		listView.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
+				v.performClick();
 				// 隐藏软键盘
 				if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
 					if (getActivity().getCurrentFocus() != null)
@@ -239,7 +223,7 @@ public class ContactFragment extends Fragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(getActivity(), st2 + e.getMessage(), 1).show();
+							Toast.makeText(getActivity(), st2 + e.getMessage(), Toast.LENGTH_SHORT).show();
 						}
 					});
 
@@ -252,8 +236,9 @@ public class ContactFragment extends Fragment {
 
 	/**
 	 * 把user移入到黑名单
+	 * TODO 暂时不使用黑名单功能
 	 */
-	private void moveToBlacklist(final String username){
+	/*private void moveToBlacklist(final String username){
 		final ProgressDialog pd = new ProgressDialog(getActivity());
 		String st1 = getResources().getString(R.string.Is_moved_into_blacklist);
 		final String st2 = getResources().getString(R.string.Move_into_blacklist_success);
@@ -285,7 +270,7 @@ public class ContactFragment extends Fragment {
 			}
 		}).start();
 		
-	}
+	}*/
 	
 	// 刷新ui
 	public void refreshUI() {

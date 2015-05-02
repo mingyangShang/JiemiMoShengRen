@@ -45,8 +45,21 @@
         <!-- 主页面 -->
         <activity
             android:name="com.levelup.jiemimoshengren.ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <!-- 注册 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.RegisterActivity"
+            android:label="@string/activity_register"
+            android:screenOrientation="portrait" />
+
+        <!-- 登录 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.LoginActivity"
+            android:label="@string/activity_login"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

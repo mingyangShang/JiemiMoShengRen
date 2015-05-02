@@ -30,7 +30,15 @@ public class SmyApplication extends Application {
 
 	// 当前用户昵称，为了苹果推送不是userid而是昵称
 	// TODO 最后要改
-	public final String currUserNick = "";
+	private String currUserNick = "";
+
+	public void setCurrUserNick(String currUserNick) {
+		this.currUserNick = currUserNick;
+	}
+
+	public String getCurrUserNick() {
+		return currUserNick;
+	}
 
 	public static SmyHXSDKHelper hxSdkHelper = new SmyHXSDKHelper();
 

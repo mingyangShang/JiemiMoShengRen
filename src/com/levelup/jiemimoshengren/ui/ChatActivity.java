@@ -1225,11 +1225,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 					// 文字输入框可见时，才可输入表情
 					// 按住说话可见，不让输入表情
 					if (buttonSetModeKeyboard.getVisibility() != View.VISIBLE) {
-
 						if (filename != "delete_expression") { // 不是删除键，显示表情
 							// 这里用的反射，所以混淆的时候不要混淆SmileUtils这个类
-							Class clz = Class
-									.forName("com.easemob.chatuidemo.utils.SmileUtils");
+							Class clz = Class.forName("com.easemob.chatuidemo.utils.SmileUtils");
 							Field field = clz.getField(filename);
 							mEditTextContent.append(SmileUtils.getSmiledText(
 									ChatActivity.this, (String) field.get(null)));
@@ -1547,12 +1545,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 		public void onGroupDestroy(final String groupId, String groupName) {
 			// 群组解散正好在此页面，提示群组被解散，并finish此页面
 			runOnUiThread(new Runnable() {
-				String st14 = getResources().getString(
-						R.string.the_current_group);
-
 				public void run() {
 					if (toChatUsername.equals(groupId)) {
-						Toast.makeText(ChatActivity.this, st14, 1).show();
+						showMsg(getResources().getString(R.string.the_current_group));
 						finish();
 					}
 				}

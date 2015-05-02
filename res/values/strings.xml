@@ -1,11 +1,20 @@
 <!-- 项目用到的字符串都写这里 -->
 <resources>
-    <string name="app_name">解密陌生人</string>
 
+    <string name="app_name">解密陌生人</string>
     <string name="action_settings">Settings</string>
 
-    <!--activity name-->
+    <!-- activity name -->
     <string name="activity_index">主界面</string>
+    <string name="activity_register">注册</string>
+    <string name="activity_login">登录</string>
+    <string name="activity_char">聊天</string>
+    <string name="activity_new_friends">新朋友</string>
+    <string name="activity_splash">欢迎</string>
+    <string name="activity_first">引导</string>
+    <string name="activity_info">个人信息</string>
+    
+    
     
     
     <string name="net_error">网络断开，不能连接到服务器</string>
@@ -124,7 +133,6 @@
     <string name="is_down_please_wait">downloading video, please try again later</string>
     <string name="Exit_the_group_chat">exit the group</string>
     <string name="Please_enter_a_username">Please enter a username</string>
-    
     <string name="not_add_myself">"Can't add myself"</string>
     <string name="This_user_is_already_your_friend">This user is already your friend</string>
     <string name="Add_a_friend">Add a friend?</string>
@@ -254,11 +262,10 @@
     <string name="Is_download_voice_click_later">Is download voice, click later</string>
     <string name="send_the_following_pictures">Send the following pictures?</string>
     <string name="search_new">search</string>
-    
     <string name="Delete_the_contact">Delete the contact</string>
     <string name="Move_into_the_blacklist_new">Move into the blacklist</string>
     <string name="Change_the_group_name">Change the group name</string>
     <string name="The_dissolution_of_chatting_new">The dissolution of chatting</string>
-    
     <string name="gorup_not_found">Can not find this group</string>
+
 </resources>

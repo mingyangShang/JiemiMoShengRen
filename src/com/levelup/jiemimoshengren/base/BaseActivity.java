@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.eashmod.chat.SmyHXSDKHelper;
 
@@ -80,6 +81,14 @@ public abstract class BaseActivity extends FragmentActivity {
     }
     protected Bundle getBundleFromUp(){
         return getIntent().getExtras();
+    }
+    
+    /**弹出Toast，Toast的样式今后可以自定义，暂时使用默认*/
+    protected void showMsg(String msg) {
+    	Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();	
+	}
+    protected void showMsg(String msg,int duration){
+    	Toast.makeText(this, msg, duration).show();
     }
 
 }

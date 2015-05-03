@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,7 +43,6 @@ import com.levelup.jiemimoshengren.db.InviteMessgeDao;
 public class MsgFragment extends Fragment implements
 		AdapterView.OnItemClickListener {
 
-	private InputMethodManager inputMethodManager;
 	private ListView listView;
 	private ChatAllHistoryAdapter adapter;
 	public RelativeLayout errorItem;
@@ -51,98 +51,88 @@ public class MsgFragment extends Fragment implements
 	private List<EMConversation> conversationList = new ArrayList<EMConversation>();
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_msg, container, false);
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		if (savedInstanceState != null
-				&& savedInstanceState.getBoolean("isConflict", false))
-			return;
-		inputMethodManager = (InputMethodManager) getActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		errorItem = (RelativeLayout) getView().findViewById(R.id.rl_error_item);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+		View chatView = inflater.inflate(R.layout.fragment_msg, container,false);
+		initView(chatView);
+		return chatView;
+	}
+
+	// 初始化View
+	private void initView(View rootView) {
+		errorItem = (RelativeLayout) rootView.findViewById(R.id.rl_error_item);
 		errorText = (TextView) errorItem.findViewById(R.id.tv_connect_errormsg);
 
 		conversationList.addAll(loadConversationsWithRecentChat());
-		listView = (ListView) getView().findViewById(R.id.list);
+		listView = (ListView) rootView.findViewById(R.id.list_chats);
 		adapter = new ChatAllHistoryAdapter(getActivity(), 1, conversationList);
 		// 设置adapter
 		listView.setAdapter(adapter);
 
-		
 		listView.setOnItemClickListener(this);
 		// 注册上下文菜单
 		registerForContextMenu(listView);
 	}
 
-	/*@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		// if(((AdapterContextMenuInfo)menuInfo).position > 0){ m,
-		getActivity().getMenuInflater().inflate(R.menu.delete_message, menu);
-		// }
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 	}
 
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		boolean handled = false;
-		boolean deleteMessage = false;
-		if (item.getItemId() == R.id.delete_message) {
-			deleteMessage = true;
-			handled = true;
-		} else if (item.getItemId() == R.id.delete_conversation) {
-			deleteMessage = false;
-			handled = true;
-		}
-		EMConversation tobeDeleteCons = adapter
-				.getItem(((AdapterContextMenuInfo) item.getMenuInfo()).position);
-		// 删除此会话
-		EMChatManager.getInstance().deleteConversation(
-				tobeDeleteCons.getUserName(), tobeDeleteCons.isGroup(),
-				deleteMessage);
-		InviteMessgeDao inviteMessgeDao = new InviteMessgeDao(getActivity());
-		inviteMessgeDao.deleteMessage(tobeDeleteCons.getUserName());
-		adapter.remove(tobeDeleteCons);
-		adapter.notifyDataSetChanged();
+	/*
+	 * @Override public void onCreateContextMenu(ContextMenu menu, View v,
+	 * ContextMenuInfo menuInfo) { super.onCreateContextMenu(menu, v, menuInfo);
+	 * // if(((AdapterContextMenuInfo)menuInfo).position > 0){ m,
+	 * getActivity().getMenuInflater().inflate(R.menu.delete_message, menu); //
+	 * } }
+	 * 
+	 * @Override public boolean onContextItemSelected(MenuItem item) { boolean
+	 * handled = false; boolean deleteMessage = false; if (item.getItemId() ==
+	 * R.id.delete_message) { deleteMessage = true; handled = true; } else if
+	 * (item.getItemId() == R.id.delete_conversation) { deleteMessage = false;
+	 * handled = true; } EMConversation tobeDeleteCons = adapter
+	 * .getItem(((AdapterContextMenuInfo) item.getMenuInfo()).position); //
+	 * 删除此会话 EMChatManager.getInstance().deleteConversation(
+	 * tobeDeleteCons.getUserName(), tobeDeleteCons.isGroup(), deleteMessage);
+	 * InviteMessgeDao inviteMessgeDao = new InviteMessgeDao(getActivity());
+	 * inviteMessgeDao.deleteMessage(tobeDeleteCons.getUserName());
+	 * adapter.remove(tobeDeleteCons); adapter.notifyDataSetChanged();
+	 * 
+	 * // 更新消息未读数 ((MainActivity) getActivity()).updateUnreadMsgLabel();
+	 * 
+	 * return handled ? true : super.onContextItemSelected(item); }
+	 */
 
-		// 更新消息未读数
-		((MainActivity) getActivity()).updateUnreadMsgLabel();
-
-		return handled ? true : super.onContextItemSelected(item);
-	}*/
-
-	/**刷新页面*/
+	/** 刷新页面 */
 	public void refreshUI() {
 		conversationList.clear();
 		conversationList.addAll(loadConversationsWithRecentChat());
 		if (adapter != null)
 			adapter.notifyDataSetChanged();
 	}
-	
-	/**刷新错误提示布局的显示状态*/
-	public void refreshErrorItem(int visibility){
-		if(errorItem.getVisibility() != visibility){
-			errorItem.setVisibility(visibility);
+
+	/** 刷新错误提示布局的显示状态 */
+	public void refreshErrorItem(int visibility) {
+		System.err.println("refreshErrorItem");
+		if (errorItem == null) {
+			System.err.println("erroritem is null");
+		} else {
+			if (errorItem.getVisibility() != visibility) {
+				errorItem.setVisibility(visibility);
+			}
 		}
 	}
-	
-	/**为刷新错误提示布局设置错误提示文字*/
-	public void setErrorItemText(String errText){
+
+	/** 为刷新错误提示布局设置错误提示文字 */
+	public void setErrorItemText(String errText) {
 		this.errorText.setText(errText);
 	}
-	
 
-	/**
-	 * 获取所有会话
-	 * 
-	 * @param context
-	 * @return +
-	 */
+	/** 获取所有会话 */
 	private List<EMConversation> loadConversationsWithRecentChat() {
 		// 获取所有会话，包括陌生人
 		Hashtable<String, EMConversation> conversations = EMChatManager
@@ -174,18 +164,13 @@ public class MsgFragment extends Fragment implements
 		return list;
 	}
 
-	/**
-	 * 根据最后一条消息的时间排序
-	 * 
-	 * @param usernames
-	 */
+	/** 根据最后一条消息的时间排序 */
 	private void sortConversationByLastChatTime(
 			List<Pair<Long, EMConversation>> conversationList) {
 		Collections.sort(conversationList,
 				new Comparator<Pair<Long, EMConversation>>() {
 					public int compare(final Pair<Long, EMConversation> con1,
 							final Pair<Long, EMConversation> con2) {
-
 						if (con1.first == con2.first) {
 							return 0;
 						} else if (con2.first > con1.first) {
@@ -194,7 +179,6 @@ public class MsgFragment extends Fragment implements
 							return -1;
 						}
 					}
-
 				});
 	}
 
@@ -218,21 +202,21 @@ public class MsgFragment extends Fragment implements
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		//TODO 存储账号被移除和多地登录状态，现在不考虑
+		// TODO 存储账号被移除和多地登录状态，现在不考虑
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		EMConversation conversation = adapter.getItem(position);
 		String username = conversation.getUserName();
-		if (username.equals(SmyApplication.getSingleton().getUserName())){
-			final String hintMsg = getResources().getString(R.string.Cant_chat_with_yourself);
-			Toast.makeText(getActivity(),hintMsg ,Toast.LENGTH_SHORT).show();
-		}else {
+		if (username.equals(SmyApplication.getSingleton().getUserName())) {
+			final String hintMsg = getResources().getString(
+					R.string.Cant_chat_with_yourself);
+			Toast.makeText(getActivity(), hintMsg, Toast.LENGTH_SHORT).show();
+		} else {
 			// 进入聊天页面
 			Intent intent = new Intent(getActivity(), ChatActivity.class);
-			if (!conversation.isGroup()) {
-				//单人会话
+			if (!conversation.isGroup()) { //单人会话
 				intent.putExtra("userId", username);
 			}
 			startActivity(intent);

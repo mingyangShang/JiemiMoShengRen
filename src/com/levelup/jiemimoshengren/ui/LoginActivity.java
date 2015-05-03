@@ -38,7 +38,7 @@ import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
 import com.easemob.util.HanziToPinyin;
-import com.eashmod.chat.SmyHXSDKHelper;
+import com.easemod.chat.SmyHXSDKHelper;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.BaseActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
@@ -107,21 +107,18 @@ public class LoginActivity extends BaseActivity {
 	 */
 	public void login(View view) {
 		if (!CommonUtils.isNetWorkConnected(this)) {
-			Toast.makeText(this, R.string.network_isnot_available,
-					Toast.LENGTH_SHORT).show();
+			showMsgFromRes(R.string.network_isnot_available);
 			return;
 		}
 		currentUsername = usernameEditText.getText().toString().trim();
 		currentPassword = passwordEditText.getText().toString().trim();
 
 		if (TextUtils.isEmpty(currentUsername)) {
-			Toast.makeText(this, R.string.User_name_cannot_be_empty,
-					Toast.LENGTH_SHORT).show();
+			showMsgFromRes(R.string.User_name_cannot_be_empty);
 			return;
 		}
 		if (TextUtils.isEmpty(currentPassword)) {
-			Toast.makeText(this, R.string.Password_cannot_be_empty,
-					Toast.LENGTH_SHORT).show();
+			showMsgFromRes(R.string.Password_cannot_be_empty);
 			return;
 		}
 		doLogin();
@@ -140,7 +137,6 @@ public class LoginActivity extends BaseActivity {
 		pd.setMessage(getString(R.string.Is_landing));
 		pd.show();
 
-		final long start = System.currentTimeMillis();
 		// 调用sdk登陆方法登陆聊天服务器
 		EMChatManager.getInstance().login(currentUsername, currentPassword,
 				new EMCallBack() {
@@ -170,14 +166,13 @@ public class LoginActivity extends BaseActivity {
 							processContactsAndGroups();
 						} catch (Exception e) {
 							e.printStackTrace();
+							System.err.println("failed");
 							// 取好友或者群聊失败，不让进入主页面
 							runOnUiThread(new Runnable() {
 								public void run() {
 									pd.dismiss();
 									SmyApplication.getSingleton().logout(null);
-									Toast.makeText(getApplicationContext(),
-											R.string.login_failure_failed, 1)
-											.show();
+									showMsg(getString(R.string.login_failure_failed));
 								}
 							});
 							return;
@@ -195,7 +190,7 @@ public class LoginActivity extends BaseActivity {
 							pd.dismiss();
 						// 进入主页面
 						startActivity(new Intent(LoginActivity.this,
-								MainActivity.class));
+								MainActivityBackup.class));
 						finish();
 					}
 
@@ -209,11 +204,8 @@ public class LoginActivity extends BaseActivity {
 						runOnUiThread(new Runnable() {
 							public void run() {
 								pd.dismiss();
-								Toast.makeText(
-										getApplicationContext(),
-										getString(R.string.Login_failed)
-												+ message, Toast.LENGTH_SHORT)
-										.show();
+								System.err.println("error");
+								showMsg(getString(R.string.Login_failed));
 							}
 						});
 					}

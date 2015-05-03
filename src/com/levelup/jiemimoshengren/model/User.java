@@ -14,14 +14,37 @@
 package com.levelup.jiemimoshengren.model;
 
 import com.easemob.chat.EMContact;
-
+/**用户模型类*/
 public class User extends EMContact {
 	private int unreadMsgCount;
 	private String header;
 	private String avatar;
-	
-	public String name;
-    public String getName() {
+
+	private String id;
+	private String name;
+	private String sign;
+	private boolean isFemale;
+	private String imgUrl;
+
+	public User() {}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public boolean isFemale() {
+		return isFemale;
+	}
+
+	public void setFemale(boolean isFemale) {
+		this.isFemale = isFemale;
+	}
+
+	public String getName() {
 		return name;
 	}
 
@@ -45,13 +68,8 @@ public class User extends EMContact {
 		this.sign = sign;
 	}
 
-	public String imgUrl;
-    public String sign;
-	
-	public User(){}
-	
-	public User(String username){
-	    this.username = username;
+	public User(String username) {
+		this.username = username;
 	}
 
 	public String getHeader() {
@@ -69,18 +87,16 @@ public class User extends EMContact {
 	public void setUnreadMsgCount(int unreadMsgCount) {
 		this.unreadMsgCount = unreadMsgCount;
 	}
-	
-	
 
 	public String getAvatar() {
-        return avatar;
-    }
+		return avatar;
+	}
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
 
-    @Override
+	@Override
 	public int hashCode() {
 		return 17 * getUsername().hashCode();
 	}

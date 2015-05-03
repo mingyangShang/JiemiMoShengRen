@@ -17,7 +17,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.eashmod.chat.HXSDKHelper;
+import com.easemod.chat.HXSDKHelper;
 
 public class DbOpenHelper extends SQLiteOpenHelper{
 

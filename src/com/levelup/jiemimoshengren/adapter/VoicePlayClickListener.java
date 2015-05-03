@@ -30,7 +30,7 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.VoiceMessageBody;
-import com.eashmod.chat.HXSDKHelper;
+import com.easemod.chat.HXSDKHelper;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.ui.ChatActivity;
 

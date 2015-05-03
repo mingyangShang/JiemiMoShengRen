@@ -66,8 +66,8 @@ import com.easemob.util.EMLog;
 import com.easemob.util.FileUtils;
 import com.easemob.util.LatLng;
 import com.easemob.util.TextFormater;
-import com.eashmod.chat.LoadImageTask;
-import com.eashmod.chat.LoadVideoImageTask;
+import com.easemod.chat.LoadImageTask;
+import com.easemod.chat.LoadVideoImageTask;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.BaiduMapActivity;
 import com.levelup.jiemimoshengren.config.Constant;
@@ -121,7 +121,7 @@ public class MessageAdapter extends BaseAdapter{
 
 	private Map<String, Timer> timers = new Hashtable<String, Timer>();
 
-	public MessageAdapter(Context context, String username, int chatType) {
+	public MessageAdapter(Context context, String username) {
 		this.username = username;
 		this.context = context;
 		inflater = LayoutInflater.from(context);

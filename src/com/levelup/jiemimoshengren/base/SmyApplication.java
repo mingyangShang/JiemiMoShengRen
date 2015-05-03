@@ -7,7 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.easemob.EMCallBack;
-import com.eashmod.chat.SmyHXSDKHelper;
+import com.easemod.chat.SmyHXSDKHelper;
 import com.levelup.jiemimoshengren.model.User;
 import com.levelup.jiemimoshengren.utils.SystemInfoUtil;
 import com.levelup.jiemimoshengren.utils.SystemInfoUtil.SizeUnit;
@@ -23,7 +23,6 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
  */
 public class SmyApplication extends Application {
 	private static SmyApplication singleton; // Application单例
-	private static Context appContext;
 
 	// 登录的用户名
 	private final String PREF_USERNAME = "username";
@@ -40,7 +39,7 @@ public class SmyApplication extends Application {
 		return currUserNick;
 	}
 
-	public static SmyHXSDKHelper hxSdkHelper = new SmyHXSDKHelper();
+	public static final SmyHXSDKHelper hxSdkHelper = new SmyHXSDKHelper();
 
 	@Override
 	public void onCreate() {
@@ -83,7 +82,7 @@ public class SmyApplication extends Application {
 
 	// 配置环信SDK
 	private void initHuanXinSdk() {
-		hxSdkHelper.onInit(appContext);
+		hxSdkHelper.onInit(singleton);
 	}
 
 	public static SmyApplication getSingleton() {

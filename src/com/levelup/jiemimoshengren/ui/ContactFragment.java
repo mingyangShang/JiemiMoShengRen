@@ -44,7 +44,7 @@ import com.levelup.jiemimoshengren.widget.Sidebar;
  * 联系人列表页
 */
 
-public class ContactFragment extends Fragment {
+public class ContactFragment extends Fragment implements OnClickListener{
 	private ContactAdapter adapter;
 	private List<User> contactList;
 	private ListView listView;
@@ -75,6 +75,9 @@ public class ContactFragment extends Fragment {
 		contactList = new ArrayList<User>();
 		// 获取设置contactlist
 		getContactList();
+		
+		//添加按钮
+		getView().findViewById(R.id.iv_new_contact).setOnClickListener(this);
 		
 		//搜索框
 		query = (EditText) getView().findViewById(R.id.query);
@@ -131,16 +134,6 @@ public class ContactFragment extends Fragment {
 								InputMethodManager.HIDE_NOT_ALWAYS);
 				}
 				return false;
-			}
-		});
-
-		ImageView addContactView = (ImageView) getView().findViewById(R.id.iv_new_contact);
-		// 进入添加好友页
-		addContactView.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				//TODO 跳转到添加联系人界面
-//				startActivity(new Intent(getActivity(), AddContactActivity.class));
 			}
 		});
 		registerForContextMenu(listView);
@@ -334,6 +327,16 @@ public class ContactFragment extends Fragment {
 	    	outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
 	    }*/
 	    
+	}
+
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.iv_new_contact:
+			startActivity(new Intent(getActivity(),AddContactActivity.class));
+			break;
+		default:
+			break;
+		}
 	}
 }
 

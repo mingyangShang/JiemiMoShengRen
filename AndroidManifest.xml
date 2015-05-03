@@ -42,24 +42,44 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
 
-        <!-- 主页面 -->
+        <!-- 主页面备份，之后在此界面上扩展 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.MainActivityBackup"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- 主界面，现在用于测试 -->
         <activity
             android:name="com.levelup.jiemimoshengren.ui.MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
+
+        <!-- 欢迎 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.SplashActivity"
+            android:label="@string/activity_splash"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
 
         <!-- 注册 -->
         <activity
             android:name="com.levelup.jiemimoshengren.ui.RegisterActivity"
             android:label="@string/activity_register"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
 
         <!-- 登录 -->
         <activity
             android:name="com.levelup.jiemimoshengren.ui.LoginActivity"
             android:label="@string/activity_login"
-            android:screenOrientation="portrait" >
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,6 +90,24 @@
         <!-- 聊天页面 -->
         <activity
             android:name="com.levelup.jiemimoshengren.ui.ChatActivity"
+            android:label="@string/activity_chat"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        
+        <!-- 添加联系人 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.AddContactActivity"
+            android:label="@string/activity_add_contact"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <!-- 新朋友 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.NewFriendsMsgActivity"
+            android:label="@string/activity_new_friends"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
@@ -88,7 +126,7 @@
         <meta-data
             android:name="EASEMOB_APPKEY"
             android:value="smy#jiemimoshengren" />
-        <!-- 声明sdk所需的service -->
+        <!-- 环信sdk所需的service -->
         <service android:name="com.easemob.chat.EMChatService" />
 
         <!-- 百度地图sdk配置 -->

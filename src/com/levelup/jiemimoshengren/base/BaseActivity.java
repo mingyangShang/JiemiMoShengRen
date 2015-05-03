@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.eashmod.chat.SmyHXSDKHelper;
+import com.easemod.chat.SmyHXSDKHelper;
 
 public abstract class BaseActivity extends FragmentActivity {
 
@@ -90,5 +90,10 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void showMsg(String msg,int duration){
     	Toast.makeText(this, msg, duration).show();
     }
-
+    protected void showMsgFromRes(int resId){
+    	showMsg(getString(resId));
+    }
+    public void back(View v){
+    	this.finish();
+    }
 }

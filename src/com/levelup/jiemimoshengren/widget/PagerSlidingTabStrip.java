@@ -61,7 +61,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private final PageListener pageListener = new PageListener();
 	public OnPageChangeListener delegatePageListener;
 
-	private LinearLayout tabsContainer;
+	protected LinearLayout tabsContainer;
 	private ViewPager pager;
 
 	private int tabCount;
@@ -216,15 +216,19 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	}
 
-	private void addTextTab(final int position, String title) {
-
+	protected void addTextTab(final int position,final  String title) {
+		addTab(position, makeTabTextView(title));
+	}
+	
+	//生成tab上的文字，子类可以覆盖这个方法，实现自己需要的效果
+	protected TextView makeTabTextView(final String title){
 		TextView tab = new TextView(getContext());
 		tab.setText(title);
 		tab.setGravity(Gravity.CENTER);
 		tab.setSingleLine();
-		addTab(position, tab);
+		return tab;
 	}
-
+	
 	private void addIconTab(final int position, int resId) {
 
 		ImageButton tab = new ImageButton(getContext());
@@ -234,7 +238,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	}
 
-	private void addTab(final int position, View tab) {
+	protected void addTab(final int position, View tab) {
 		tab.setFocusable(true);
 		tab.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

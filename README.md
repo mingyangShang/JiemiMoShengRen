@@ -17,14 +17,14 @@
  - 在xml中指定view的属性android:onClick="func"报`Can't find func(View)……`错误：在xml里为view指定处理函数的话，就要相应地在Controller（更多时候就是指Activity）里创建和该属性指定的名字相同的方法，并且带上一个View的参数，还有一点不能忽略的是，要把这个方法声明成public的，也就是说要让所有地方都能访问这个方法，举个例子
 xml中:
  ```
-<TextView
+ <TextView
    android:layout_width="wrap_content"
    android:layout_height="wrap_content"
    android:onClick="back"/>
  ```
 java代码中:
-```
-Java
-public void back(View v){}
-```
-很小的一个知识点，但是以前没有搞懂，出错了也没找出来是为什么，现在还不能说彻底明白了，因为还不知道xml中onClick是怎样和java代码中的handler函数绑定的，`View`的源码还是得好好看看
+ ```
+ Java
+ public void back(View v){}
+ ```
+ 很小的一个知识点，但是以前没有搞懂，出错了也没找出来是为什么，现在还不能说彻底明白了，因为还不知道xml中onClick是怎样和java代  码中的handler函数绑定的，`View`的源码还是得好好看看

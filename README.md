@@ -8,7 +8,7 @@
  - BaiduMap：百度地图，地图显示和处理
  - Base-Adapter-Helper:简化Adapter的书写，减少Adapter编写的重复冗余代码
  - PinYin4j：处理中文和拼音之间的转换
- - 
+ - Gson：处理json字符串解析，使用Model类对象化
  
 
 **<font size='+1'>遇到的问题</font>**

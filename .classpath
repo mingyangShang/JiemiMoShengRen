@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="libs/volley.jar"/>
 	<classpathentry kind="lib" path="libs/easemobchat_2.1.8.jar"/>
 	<classpathentry kind="lib" path="libs/picasso-2.4.0.jar"/>
+	<classpathentry kind="lib" path="libs/gson-1.7.2-sources.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

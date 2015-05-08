@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:smy="http://schemas.android.com/apk/res/com.levelup.jiemimoshengren"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+    
+      <com.levelup.jiemimoshengren.widget.ScaleButton
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="#ff0000"
+            android:gravity="center"
+            android:text="登录"
+            android:layout_marginBottom="10dp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            smy:outerRadius="10dp"
+            smy:outerStrokeColor="#ff0000"
+            smy:outerStrokeWidth="2dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.levelup.jiemimoshengren.widget.ScaleButton
+            android:id="@+id/bt_login"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="#ff0000"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            smy:outerRadius="10dp"
+            smy:outerStrokeColor="#ff0000"
+            smy:outerStrokeWidth="2dp" />
+        
+        <ProgressBar 
+            android:id="@+id/bar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:indeterminate="false"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/bt_login2"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@drawable/scale_bakck"
+        android:gravity="center"
+        android:text="登录"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/bt_login3"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="#ff0000"
+        android:gravity="center"
+        android:text="登录" />
+
+
+</LinearLayout>

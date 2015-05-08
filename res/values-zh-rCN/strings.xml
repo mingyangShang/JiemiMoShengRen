@@ -254,4 +254,9 @@
     <string name="The_dissolution_of_chatting_new">解散群聊</string>
     
     <string name="gorup_not_found">找不到这个群组</string>
+    
+    <!-- 在使用volley过程中出现的错误情况处理的字符串 -->
+    <string name="generic_server_down">请求超时，请重试</string>
+    <string name="no_internet">无法连接到服务器，请检查网络设置</string>
+    <string name="generic_error">抱歉,好像出错了,请重试</string>
 </resources>

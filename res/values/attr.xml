@@ -19,4 +19,15 @@
         <attr name="pstsShouldExpand" format="boolean" />
         <attr name="pstsTextAllCaps" format="boolean" />
     </declare-styleable>
+    
+    <!-- ScaleButton -->
+    <declare-styleable name="ScaleButton">
+        <attr name="outerRadius" format="dimension"/>
+        <attr name="outerStrokeColor" format="color"/>
+        <attr name="outerStrokeWidth" format="dimension"/>
+        <attr name="android:background"/>
+        <attr name="android:text"/>
+        <attr name="android:textColor"/>
+        <attr name="android:textSize"/>
+    </declare-styleable>
 </resources>

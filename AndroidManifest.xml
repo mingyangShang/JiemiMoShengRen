@@ -55,6 +55,11 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- 欢迎 -->
@@ -72,6 +77,8 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
+        <activity android:name="com.levelup.jiemimoshengren.ui.Test" >
+        </activity>
 
         <!-- 登录 -->
         <activity
@@ -80,11 +87,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 聊天页面 -->
@@ -95,14 +97,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
         </activity>
-        
+
         <!-- 添加联系人 -->
         <activity
             android:name="com.levelup.jiemimoshengren.ui.AddContactActivity"
             android:label="@string/activity_add_contact"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- 新朋友 -->
         <activity

@@ -429,17 +429,18 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		outState.putBoolean("isConflict", isConflict);
-		outState.putBoolean(Constant.ACCOUNT_REMOVED, isCurrentAccountRemoved);
 		super.onSaveInstanceState(outState);
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		System.out.println("onkeydown"+keyCode);
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			moveTaskToBack(false);
+			moveTaskToBack(true);
+			System.out.println("back");
 			return true;
 		}
+		System.out.println("ketdown");
 		return super.onKeyDown(keyCode, event);
 	}
 }

@@ -176,8 +176,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_chat);
+		super.onCreate(savedInstanceState,R.layout.activity_chat);
 		activityInstance = this;
 		initView();
 		setUpView();
@@ -804,7 +803,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	 * @param selectedImage
 	 */
 	private void sendPicByUri(Uri selectedImage) {
-		// String[] filePathColumn = { MediaStore.Images.Media.DATA };
 		Cursor cursor = getContentResolver().query(selectedImage, null, null,
 				null, null);
 		String st8 = getResources().getString(R.string.cant_find_pictures);

@@ -55,11 +55,6 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 欢迎 -->
@@ -87,6 +82,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- 聊天页面 -->
@@ -97,6 +97,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
         </activity>
+        
+        <!-- 查看大图界面 -->
+        <activity 
+            android:name="com.levelup.jiemimoshengren.ui.ShowBigImageActivity"
+            android:label="@string/activity_big_image"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
 
         <!-- 添加联系人 -->
         <activity
@@ -114,13 +121,19 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
         </activity>
+        
+        <!-- 游戏界面 -->
+         <activity 
+            android:name="com.levelup.jiemimoshengren.ui.GameActivity"
+            android:label="@string/activity_game"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
 
         <!-- 开机自启动服务 -->
         <receiver android:name="com.easemob.chat.StartServiceReceiver" >
             <intent-filter android:priority="1000" >
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>

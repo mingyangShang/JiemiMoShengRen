@@ -133,7 +133,7 @@
                 android:layout_weight="1"
                 android:gravity="bottom" >
 
-                <com.
+                <com.levelup.jiemimoshengren.widget.PasteEditText
                     android:id="@+id/et_sendmessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -27,7 +27,7 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.util.ImageUtils;
-import com.levelup.jiemimoshengren.ui.ShowBigImage;
+import com.levelup.jiemimoshengren.ui.ShowBigImageActivity;
 import com.levelup.jiemimoshengren.utils.CommonUtils;
 import com.levelup.jiemimoshengren.utils.ImageCache;
 
@@ -75,7 +75,7 @@ public class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
 				public void onClick(View v) {
 					if (thumbnailPath != null) {
 
-						Intent intent = new Intent(activity, ShowBigImage.class);
+						Intent intent = new Intent(activity, ShowBigImageActivity.class);
 						File file = new File(localFullSizePath);
 						if (file.exists()) {
 							Uri uri = Uri.fromFile(file);

@@ -12,7 +12,7 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 
-public class BaiduMapActivity extends BaseActivity {
+public abstract class BaiduMapActivity extends BaseActivity {
 	
 	protected MapView mMapView = null; //地图mapview控件
 	protected BaiduMap map;
@@ -42,10 +42,6 @@ public class BaiduMapActivity extends BaseActivity {
 		mMapView.onPause();
 	}
 	
-
-
-
-
     /**
      * 在地图上添加标记
      * @param pos 位置，（经度，纬度）
@@ -80,8 +76,6 @@ public class BaiduMapActivity extends BaseActivity {
         }
     }
 
-
-
     public void addMarker(LatLng pos){
         addMarker(pos,null);
     }
@@ -93,23 +87,18 @@ public class BaiduMapActivity extends BaseActivity {
     }
 
 
-
-
-
-
+    /**设置默认的标记图片*/
 	public void setDefaultMarkerRes(int defaultMarkerRes) {
 		this.defaultMarkerRes = defaultMarkerRes;
 	}
 
 	@Override
 	protected void initData() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected void initView() {
-		// TODO Auto-generated method stub
 		
 	}
 }

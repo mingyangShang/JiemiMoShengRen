@@ -12,6 +12,16 @@ public class MapMarkerActivity extends BaiduMapActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState, R.layout.activity_map_marker);
     }
+    
+    @Override
+	protected void initData() {
+		
+	}
+
+	@Override
+	protected void initView() {
+		
+	}
 
 
 

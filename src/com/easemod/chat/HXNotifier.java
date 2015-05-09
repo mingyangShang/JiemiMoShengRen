@@ -19,6 +19,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.Ringtone;
@@ -95,7 +96,6 @@ public class HXNotifier {
     
     /**
      * 开发者可以重载此函数
-     * this function can be override
      */
     public void reset(){
         resetNotificationCount();
@@ -114,7 +114,6 @@ public class HXNotifier {
 
     /**
      * 处理新收到的消息，然后发送通知
-     * 
      * 开发者可以重载此函数
      * this function can be override
      * 
@@ -154,7 +153,6 @@ public class HXNotifier {
                 notifyText += msgs[1];
                 break;
             case VOICE:
-
                 notifyText += msgs[2];
                 break;
             case LOCATION:
@@ -169,6 +167,7 @@ public class HXNotifier {
 			default:
 				break;
             }
+            
             
             PackageManager packageManager = appContext.getPackageManager();
             String appname = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
@@ -318,7 +317,6 @@ public class HXNotifier {
 
     /**
      * 设置NotificationInfoProvider
-     * 
      * @param provider
      */
     public void setNotificationInfoProvider(HXNotificationInfoProvider provider) {

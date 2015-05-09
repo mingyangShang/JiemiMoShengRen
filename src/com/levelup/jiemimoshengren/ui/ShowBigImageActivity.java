@@ -2,7 +2,7 @@ package com.levelup.jiemimoshengren.ui;
 
 import com.levelup.jiemimoshengren.base.BaseActivity;
 
-public class ShowBigImage extends BaseActivity {
+public class ShowBigImageActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {

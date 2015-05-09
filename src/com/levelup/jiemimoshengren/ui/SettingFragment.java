@@ -319,8 +319,5 @@ public class SettingFragment extends Fragment implements OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
-        if(((MainActivity)getActivity()).isConflict){
-        	outState.putBoolean("isConflict", true);
-        }
     }
 }

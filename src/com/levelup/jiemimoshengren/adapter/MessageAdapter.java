@@ -72,7 +72,7 @@ import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.BaiduMapActivity;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.ui.ChatActivity;
-import com.levelup.jiemimoshengren.ui.ShowBigImage;
+import com.levelup.jiemimoshengren.ui.ShowBigImageActivity;
 import com.levelup.jiemimoshengren.ui.ShowNormalFileActivity;
 import com.levelup.jiemimoshengren.ui.ShowVideoActivity;
 import com.levelup.jiemimoshengren.utils.ImageCache;
@@ -1289,7 +1289,7 @@ public class MessageAdapter extends BaseAdapter{
 			iv.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					System.err.println("image view on click");
-					Intent intent = new Intent(activity, ShowBigImage.class);
+					Intent intent = new Intent(activity, ShowBigImageActivity.class);
 					File file = new File(localFullSizePath);
 					if (file.exists()) {
 						Uri uri = Uri.fromFile(file);

@@ -190,7 +190,7 @@ public class LoginActivity extends BaseActivity {
 							pd.dismiss();
 						// 进入主页面
 						startActivity(new Intent(LoginActivity.this,
-								MainActivityBackup.class));
+								MainActivity.class));
 						finish();
 					}
 

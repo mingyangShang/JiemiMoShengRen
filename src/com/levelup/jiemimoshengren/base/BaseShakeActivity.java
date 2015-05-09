@@ -1,17 +1,13 @@
 package com.levelup.jiemimoshengren.base;
 
-import android.app.Activity;
 import android.app.Service;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
 import android.os.Vibrator;
 
-import com.levelup.jiemimoshengren.R;
-
-public abstract class BaseShakeActivity extends Activity implements SensorEventListener{
+public abstract class BaseShakeActivity extends BaseActivity implements SensorEventListener{
 
     protected SensorManager sensorManager;
     protected Vibrator vibrator;
@@ -19,11 +15,8 @@ public abstract class BaseShakeActivity extends Activity implements SensorEventL
     public final static int MIN_SHAKE_THRESHOLD = 14; //摇一摇最小变化值
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.test_round_img);
-
-        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+    protected void initData(){
+    	sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         vibrator = (Vibrator)getSystemService(Service.VIBRATOR_SERVICE);
     }
 

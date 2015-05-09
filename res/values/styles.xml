@@ -123,6 +123,21 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
     </style>
 
+    <!-- 游戏界面style -->
+    <style name="GameBtnStyle">
+        <item name="android:background">@drawable/game_btn_bg</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#ff00ff</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="LeftGameBtnStyle" parent="GameBtnStyle"></style>
+    <style name="MiddleGameBtnStyle" parent="GameBtnStyle">
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+    </style>
+    <style name="RightGameBtnStyle" parent="GameBtnStyle"></style>
+
     <!--
     <style name="chat_text_date_style">
         <item name="android:padding">2dp</item>
@@ -255,7 +270,7 @@
         <item name="android:paddingBottom">6.0dip</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/edit_text_bg</item>
-    </style>
+    </style>
     -->
 
 </resources>

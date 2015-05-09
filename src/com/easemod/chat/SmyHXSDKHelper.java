@@ -39,7 +39,7 @@ import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.model.User;
 import com.levelup.jiemimoshengren.ui.ChatActivity;
-import com.levelup.jiemimoshengren.ui.MainActivityBackup;
+import com.levelup.jiemimoshengren.ui.MainActivity;
 import com.levelup.jiemimoshengren.utils.CommonUtils;
 
 /**
@@ -235,7 +235,7 @@ public class SmyHXSDKHelper extends HXSDKHelper {
 
 	@Override
 	protected void onConnectionConflict() {
-		Intent intent = new Intent(appContext, MainActivityBackup.class);
+		Intent intent = new Intent(appContext, MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra("conflict", true);
 		appContext.startActivity(intent);
@@ -243,7 +243,7 @@ public class SmyHXSDKHelper extends HXSDKHelper {
 
 	@Override
 	protected void onCurrentAccountRemoved() {
-		Intent intent = new Intent(appContext, MainActivityBackup.class);
+		Intent intent = new Intent(appContext, MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra(Constant.ACCOUNT_REMOVED, true);
 		appContext.startActivity(intent);
@@ -312,7 +312,6 @@ public class SmyHXSDKHelper extends HXSDKHelper {
 
 	/**
 	 * 设置好友user list到内存中
-	 * 
 	 * @param contactList
 	 */
 	public void setContactList(Map<String, User> contactList) {

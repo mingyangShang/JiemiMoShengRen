@@ -62,7 +62,7 @@ public class SplashActivity extends BaseActivity {
 						}
 					}
 					//进入主页面
-					startActivity(new Intent(SplashActivity.this, MainActivityBackup.class));
+					startActivity(new Intent(SplashActivity.this, MainActivity.class));
 					finish();
 				}else {
 					try {

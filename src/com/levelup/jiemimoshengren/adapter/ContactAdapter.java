@@ -81,11 +81,10 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 		}
 		
 		User user = getItem(position);
-		if(user == null)
-			Log.d("ContactAdapter", position + "");
 		//设置nick，demo里不涉及到完整user，用username代替nick显示
-		String username = user.getUsername();
-		String header = user.getHeader();
+		final String username = user.getNick();
+		System.out.println("userName:"+username);
+		final String header = user.getHeader();
 		if (position == 0 || header != null && !header.equals(getItem(position - 1).getHeader())) {
 			if ("".equals(header)) {
 			    holder.tvHeader.setVisibility(View.GONE);
@@ -106,10 +105,6 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 			}else{
 			    holder.unreadMsgView.setVisibility(View.INVISIBLE);
 			}
-		}else if(username.equals(Constant.GROUP_USERNAME)){
-			//群聊item
-		    holder.nameTextview.setText(user.getNick());
-		    holder.avatar.setImageResource(R.drawable.groups_icon);
 		}else{
 		    holder.nameTextview.setText(username);
 		    //设置用户头像
@@ -117,7 +112,6 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 			if(holder.unreadMsgView != null)
 			    holder.unreadMsgView.setVisibility(View.INVISIBLE);
 		}
-		
 		return convertView;
 	}
 	

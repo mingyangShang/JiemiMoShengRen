@@ -137,10 +137,12 @@ public class SettingFragment extends Fragment implements OnClickListener {
 		iv_switch_open_speaker = (ImageView) getView().findViewById(R.id.iv_switch_open_speaker);
 		iv_switch_close_speaker = (ImageView) getView().findViewById(R.id.iv_switch_close_speaker);
 		logoutBtn = (Button) getView().findViewById(R.id.btn_logout);
-		if(!TextUtils.isEmpty(EMChatManager.getInstance().getCurrentUser())){
-			logoutBtn.setText(getString(R.string.button_logout) + "(" + EMChatManager.getInstance().getCurrentUser() + ")");
+		
+		final String nick = SmyApplication.getSingleton().getMe().getNick();
+		if(nick!=null){
+			logoutBtn.setText(getString(R.string.button_logout) + "(" + nick + ")");
 		}
-
+		
 		textview1 = (TextView) getView().findViewById(R.id.textview1);
 		textview2 = (TextView) getView().findViewById(R.id.textview2);
 		

@@ -51,7 +51,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 	private boolean hidden;
 	private Sidebar sidebar;
 	private InputMethodManager inputMethodManager;
-	private List<String> blackList;
 	ImageButton clearSearch;
 	EditText query;
 
@@ -70,8 +69,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 		listView = (ListView) getView().findViewById(R.id.list);
 		sidebar = (Sidebar) getView().findViewById(R.id.sidebar);
 		sidebar.setListView(listView);
-		//黑名单列表
-		blackList = EMContactManager.getInstance().getBlackListUsernames();
 		contactList = new ArrayList<User>();
 		// 获取设置contactlist
 		getContactList();
@@ -186,7 +183,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 
 	/**
 	 * 删除联系人
-	 * 
 	 * @param toDeleteUser
 	 */
 	public void deleteContact(final User tobeDeleteUser) {
@@ -226,44 +222,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 		}).start();
 
 	}
-
-	/**
-	 * 把user移入到黑名单
-	 * TODO 暂时不使用黑名单功能
-	 */
-	/*private void moveToBlacklist(final String username){
-		final ProgressDialog pd = new ProgressDialog(getActivity());
-		String st1 = getResources().getString(R.string.Is_moved_into_blacklist);
-		final String st2 = getResources().getString(R.string.Move_into_blacklist_success);
-		final String st3 = getResources().getString(R.string.Move_into_blacklist_failure);
-		pd.setMessage(st1);
-		pd.setCanceledOnTouchOutside(false);
-		pd.show();
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					//加入到黑名单
-					EMContactManager.getInstance().addUserToBlackList(username,false);
-					getActivity().runOnUiThread(new Runnable() {
-						public void run() {
-							pd.dismiss();
-							Toast.makeText(getActivity(), st2, 0).show();
-							refreshUI();
-						}
-					});
-				} catch (EaseMobException e) {
-					e.printStackTrace();
-					getActivity().runOnUiThread(new Runnable() {
-						public void run() {
-							pd.dismiss();
-							Toast.makeText(getActivity(), st3, 0).show();
-						}
-					});
-				}
-			}
-		}).start();
-		
-	}*/
 	
 	// 刷新ui
 	public void refreshUI() {
@@ -287,23 +245,19 @@ public class ContactFragment extends Fragment implements OnClickListener{
 		contactList.clear();
 		//获取本地好友列表
 		Map<String, User> users = SmyApplication.getSingleton().getContactList();
+		System.out.println("users:"+users);
 		Iterator<Entry<String, User>> iterator = users.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<String, User> entry = iterator.next();
-			if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME) && !entry.getKey().equals(Constant.GROUP_USERNAME)
-					&& !blackList.contains(entry.getKey()))
+			if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME))
 				contactList.add(entry.getValue());
 		}
 		// 排序
 		Collections.sort(contactList, new Comparator<User>() {
 			public int compare(User lhs, User rhs) {
-				return lhs.getUsername().compareTo(rhs.getUsername());
+				return lhs.getNick().compareTo(rhs.getNick());
 			}
 		});
-
-		// 加入"申请与通知"和"群聊"
-		if(users.get(Constant.GROUP_USERNAME) != null)
-		    contactList.add(0, users.get(Constant.GROUP_USERNAME));
 		// 把"申请与通知"添加到首位
 		if(users.get(Constant.NEW_FRIENDS_USERNAME) != null)
 		    contactList.add(0, users.get(Constant.NEW_FRIENDS_USERNAME));

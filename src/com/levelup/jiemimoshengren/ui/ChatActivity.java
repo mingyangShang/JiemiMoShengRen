@@ -184,8 +184,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	
 	@Override
 	protected void initData() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
@@ -302,10 +300,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
 				.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "demo");
-		// 判断单聊还是群聊
-
 		toChatUsername = getIntent().getStringExtra("userId");
-		((TextView) findViewById(R.id.name)).setText(toChatUsername);
+		final String userNick = SmyApplication.getSingleton().getContactList().get(toChatUsername).getNick();
+		((TextView) findViewById(R.id.name)).setText(userNick);
 		conversation = EMChatManager.getInstance().getConversation(
 				toChatUsername);
 		// 把此会话的未读数置为0
@@ -315,7 +312,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 		// 这个数目如果比用户期望进入会话界面时显示的个数不一样，就多加载一些
 		final List<EMMessage> msgs = conversation.getAllMessages();
 		int msgCount = msgs != null ? msgs.size() : 0;
-		if (msgCount < conversation.getAllMsgCount() && msgCount < pagesize) {
+		if (msgCount <conversation.getAllMsgCount() && msgCount < pagesize) {
 			String msgId = null;
 			if (msgs != null && msgs.size() > 0) {
 				msgId = msgs.get(0).getMsgId();

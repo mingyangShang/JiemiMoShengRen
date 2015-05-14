@@ -1,14 +1,22 @@
 package com.levelup.jiemimoshengren.base;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.VolleyError;
 import com.easemod.chat.SmyHXSDKHelper;
+import com.levelup.jiemimoshengren.R;
+import com.levelup.jiemimoshengren.ui.LoginActivity;
 
 public abstract class BaseActivity extends FragmentActivity {
 
@@ -16,12 +24,13 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE); //设置无标题栏
     }
 
     /**sub class can override this func not old onCreate to simpleify manipulation*/
     protected void onCreate(Bundle savedInstanceState,int resId){
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //设置无标题栏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
       /*  getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
         WindowManager.LayoutParams.FLAG_FULLSCREEN);*/ //设置全屏
         setContentView(resId);
@@ -71,13 +80,24 @@ public abstract class BaseActivity extends FragmentActivity {
         return findViewById(resId);
     }
 
-    protected void goTo(Class<? extends Activity> destActivity,Bundle bundle) {
+    protected void goTo(Class<? extends Activity> destActivity,Bundle bundle,boolean finish) {
         Intent intent = new Intent(this,destActivity);
-        intent.putExtras(bundle);
+        if(bundle!=null){
+        	intent.putExtras(bundle);
+        }
         startActivity(intent);
+        if(finish){
+        	finish();
+        }
+    }
+    protected void goTo(Class<? extends Activity> destActivity,boolean finish){
+        goTo(destActivity,null,finish);
     }
     protected void goTo(Class<? extends Activity> destActivity){
-        goTo(destActivity,null);
+    	goTo(destActivity,false);
+    }
+    protected void goToWithFinish(Class<? extends Activity> destActivity){
+    	goTo(destActivity,true);
     }
     protected Bundle getBundleFromUp(){
         return getIntent().getExtras();
@@ -96,4 +116,13 @@ public abstract class BaseActivity extends FragmentActivity {
     public void back(View v){
     	this.finish();
     }
+
+	/**生成对话框*/
+	protected ProgressDialog makeProgressDialog(final Context context,final String msg,final OnCancelListener onCancelListener){
+		final ProgressDialog pd = new ProgressDialog(context);
+		pd.setCanceledOnTouchOutside(false);
+		pd.setOnCancelListener(onCancelListener);
+		pd.setMessage(msg);
+		return pd;
+	}
 }

@@ -7,10 +7,14 @@ import android.graphics.Bitmap;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.CoordinateConverter;
+import com.levelup.jiemimoshengren.R;
 
 public abstract class BaiduMapActivity extends BaseActivity {
 	
@@ -19,7 +23,7 @@ public abstract class BaiduMapActivity extends BaseActivity {
 
 	protected long centerLong,centerLan; //
 	
-	private int defaultMarkerRes; //标记物的资源id
+	private int defaultMarkerRes = R.drawable.icon_marka; //标记物的资源id
 
 	@Override
 	protected void onDestroy() {
@@ -44,7 +48,7 @@ public abstract class BaiduMapActivity extends BaseActivity {
 	
     /**
      * 在地图上添加标记
-     * @param pos 位置，（经度，纬度）
+     * @param pos 位置，（经度，纬度）,记得要用convert函数转换在地图上显示的坐标
      * @param descBmp 标记物图片，如果是空的话显示默认的图片,see{setDefaultMarkerRes()}
      */
     public void addMarker(LatLng pos,Bitmap descBmp){
@@ -54,9 +58,12 @@ public abstract class BaiduMapActivity extends BaseActivity {
         }else{
             descriptor = BitmapDescriptorFactory.fromBitmap(descBmp);
         }
+        final LatLng convertPos = convert(pos);
         if(descriptor!=null){
-            OverlayOptions option = new MarkerOptions().position(pos).icon(descriptor);
+            OverlayOptions option = new MarkerOptions().position(convertPos).icon(descriptor).zIndex(4).draggable(true);
             this.mMapView.getMap().addOverlay(option);
+            MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(convertPos, 17.0f);
+            this.mMapView.getMap().animateMapStatus(mapStatusUpdate);
         }else{
             throw new IllegalArgumentException("添加标记物失败");
         }
@@ -85,7 +92,14 @@ public abstract class BaiduMapActivity extends BaseActivity {
     public void addMarker(long latitude,long longitude){
         addMarker(latitude,longitude,null);
     }
-
+    
+    /**转换坐标*/
+    public LatLng convert(LatLng latlng){
+    	CoordinateConverter converter= new CoordinateConverter();
+    	converter.coord(latlng);
+    	converter.from(CoordinateConverter.CoordType.COMMON);
+    	return converter.convert();
+    }
 
     /**设置默认的标记图片*/
 	public void setDefaultMarkerRes(int defaultMarkerRes) {

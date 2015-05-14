@@ -13,127 +13,184 @@
  */
 package com.levelup.jiemimoshengren.ui;
 
+import java.io.File;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.Response.Listener;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import com.easemob.exceptions.EaseMobException;
+import com.easemob.media.IGxStatusCallback;
 import com.levelup.jiemimoshengren.R;
-import com.levelup.jiemimoshengren.base.BaseActivity;
+import com.levelup.jiemimoshengren.base.DefaultActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
+import com.levelup.jiemimoshengren.config.Constant;
+import com.levelup.jiemimoshengren.utils.FileUtil;
+import com.smy.volley.extend.EasyJsonObject;
 
 /**
  * 注册页
  * 
  */
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends DefaultActivity {
 	private EditText userNameEditText;
 	private EditText passwordEditText;
 	private EditText confirmPwdEditText;
 
+	private ProgressDialog progressDialog; // 显示进度对话框
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register);
-		userNameEditText = (EditText) findViewById(R.id.username);
-		passwordEditText = (EditText) findViewById(R.id.password);
-		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
-	}
-
-	//注册
-	public void register(View view) {
-		String st1 = getResources().getString(R.string.User_name_cannot_be_empty);
-		String st2 = getResources().getString(R.string.Password_cannot_be_empty);
-		String st3 = getResources().getString(R.string.Confirm_password_cannot_be_empty);
-		String st4 = getResources().getString(R.string.Two_input_password);
-		String st5 = getResources().getString(R.string.Is_the_registered);
-		final String st6 = getResources().getString(R.string.Registered_successfully);
-		final String username = userNameEditText.getText().toString().trim();
-		final String pwd = passwordEditText.getText().toString().trim();
-		String confirm_pwd = confirmPwdEditText.getText().toString().trim();
-		if (TextUtils.isEmpty(username)) {
-			Toast.makeText(this, st1, Toast.LENGTH_SHORT).show();
-			userNameEditText.requestFocus();
-			return;
-		} else if (TextUtils.isEmpty(pwd)) {
-			Toast.makeText(this, st2, Toast.LENGTH_SHORT).show();
-			passwordEditText.requestFocus();
-			return;
-		} else if (TextUtils.isEmpty(confirm_pwd)) {
-			Toast.makeText(this, st3, Toast.LENGTH_SHORT).show();
-			confirmPwdEditText.requestFocus();
-			return;
-		} else if (!pwd.equals(confirm_pwd)) {
-			Toast.makeText(this, st4, Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(pwd)) {
-			final ProgressDialog pd = new ProgressDialog(this);
-			pd.setMessage(st5);
-			pd.show();
-			final String st7 = getResources().getString(R.string.network_anomalies);
-			final String st8 = getResources().getString(R.string.User_already_exists);
-			final String st9 = getResources().getString(R.string.registration_failed_without_permission);
-			final String st10 = getResources().getString(R.string.Registration_failed);
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						// 调用sdk注册方法
-						EMChatManager.getInstance().createAccountOnServer(username, pwd);
-						runOnUiThread(new Runnable() {
-							public void run() {
-								if (!RegisterActivity.this.isFinishing())
-									pd.dismiss();
-								// 保存用户名
-								SmyApplication.getSingleton().setUserName(username);
-								Toast.makeText(getApplicationContext(), st6, 0).show();
-								finish();
-							}
-						});
-					} catch (final EaseMobException e) {
-						runOnUiThread(new Runnable() {
-							public void run() {
-								if (!RegisterActivity.this.isFinishing())
-									pd.dismiss();
-								int errorCode=e.getErrorCode();
-								if(errorCode==EMError.NONETWORK_ERROR){
-									Toast.makeText(getApplicationContext(), st7, Toast.LENGTH_SHORT).show();
-								}else if(errorCode==EMError.USER_ALREADY_EXISTS){
-									Toast.makeText(getApplicationContext(), st8, Toast.LENGTH_SHORT).show();
-								}else if(errorCode==EMError.UNAUTHORIZED){
-									Toast.makeText(getApplicationContext(), st9, Toast.LENGTH_SHORT).show();
-								}else{
-									Toast.makeText(getApplicationContext(), st10 + e.getMessage(), Toast.LENGTH_SHORT).show();
-								}
-							}
-						});
-					}
-				}
-			}).start();
-
-		}
-	}
-
-	public void back(View view) {
-		finish();
+		super.onCreate(savedInstanceState, R.layout.activity_register);
+		final String imgpath = Environment.getExternalStorageDirectory()+ "/beauty.jpg";
+		System.out.println("imgpath:" + imgpath);
+//		 new UploadImgTask().execute(imgpath,Constant.URL_UPLOAD);
 	}
 
 	@Override
 	protected void initData() {
-		// TODO Auto-generated method stub
-		
+		super.initData();
 	}
 
 	@Override
 	protected void initView() {
-		// TODO Auto-generated method stub
-		
+		super.initView();
+		userNameEditText = (EditText) findViewById(R.id.username);
+		passwordEditText = (EditText) findViewById(R.id.password);
+		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
+	}
+	
+	/** 处理volley请求错误 */
+	@Override
+	public void onErrorResponse(VolleyError error) {
+		super.onErrorResponse(error);
+		if(this.progressDialog!=null){
+			this.progressDialog.dismiss();
+		}
 	}
 
+	// 注册
+	public void register(View view) {
+		final String username = userNameEditText.getText().toString().trim();
+		final String pwd = passwordEditText.getText().toString().trim();
+		String confirm_pwd = confirmPwdEditText.getText().toString().trim();
+		if (TextUtils.isEmpty(username)) {
+			showMsgFromRes(R.string.User_name_cannot_be_empty);
+			userNameEditText.requestFocus();
+			return;
+		} else if (TextUtils.isEmpty(pwd)) {
+			showMsgFromRes(R.string.Password_cannot_be_empty);
+			passwordEditText.requestFocus();
+			return;
+		} else if (TextUtils.isEmpty(confirm_pwd)) {
+			showMsgFromRes(R.string.Confirm_password_cannot_be_empty);
+			confirmPwdEditText.requestFocus();
+			return;
+		} else if (!pwd.equals(confirm_pwd)) {
+			showMsgFromRes(R.string.Two_input_password);
+			return;
+		}
+
+		if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(pwd)) {
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setMessage(getString(R.string.Is_the_registered));
+			progressDialog.show();
+			registerUser(username, pwd, "F", "hello:"+username);
+		}
+	}
+
+	/** 注册用户 */
+	public void registerUser(final String nick, final String psw,
+			final String sex, final String sign) {
+		JSONObject regiJson = makeRegiJson(nick, psw, sex, sign);
+		this.requestQueue.add(new JsonObjectRequest(Constant.URL_REGISTER,
+				regiJson, new Listener<JSONObject>() {
+					public void onResponse(JSONObject response) {
+						if(progressDialog!=null){
+							progressDialog.dismiss();
+						}
+						EasyJsonObject easyResp = new EasyJsonObject(response);
+						boolean success = easyResp.getBoolean("success");
+						if (success) { // 注册成功
+							// 显示注册成功，开启上传图片任务
+							System.out.println("注册成功");
+							showMsgFromRes(R.string.Registered_successfully);
+							onRegisterSuccess(); //返回到登录界面
+							/*final String imgpath = Environment
+									.getExternalStorageDirectory()
+									+ File.pathSeparator
+									+ easyResp.getString("uid") + ".png";
+							System.out.println("imgpath:" + imgpath);
+							new UploadImgTask().execute(imgpath,
+									Constant.URL_UPLOAD);*/
+						} else { // 注册失败
+							showMsg(easyResp.getString("error")); // 显示错误信息
+						}
+					}
+				}, this));
+	}
+
+	/**
+	 * 生成注册用的jsonobject
+	 * @throws JSONException
+	 */
+	private JSONObject makeRegiJson(String nick, String psw, String sex,String sign) {
+		EasyJsonObject json = new EasyJsonObject();
+		json.put("nick", nick);
+		json.put("password", psw);
+		json.put("sex", sex);
+		json.put("sign", sign);
+		return json;
+	}
+
+	/** 上传图片task */
+	public class UploadImgTask extends AsyncTask<String, Void, Boolean> {
+		// 在上传之前重新设置显示对话框文字
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			if (progressDialog != null) {
+				progressDialog.setMessage(getString(R.string.Is_img_uploading));
+			}
+		}
+
+		// 上传图片，参数为上传文件名和上传的url地址
+		@Override
+		protected Boolean doInBackground(String... params) {
+			return FileUtil.uploadFile(new File(params[0]), params[1]);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			if (result) { // 上传成功
+				onRegisterSuccess();
+			} else { // 上传失败
+						// TODO 以后再处理
+				System.err.println("上传失败");
+			}
+		}
+	}
+
+	/** 登录成功回传数据给登录界面 */
+	private void onRegisterSuccess() {
+		Intent intent = new Intent();
+		intent.putExtra("username", userNameEditText.getText().toString());
+		setResult(RESULT_OK, intent);
+		finish();
+	}
 }

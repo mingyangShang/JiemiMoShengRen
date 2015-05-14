@@ -7,10 +7,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
 
-public abstract class BaseShakeActivity extends BaseActivity implements SensorEventListener{
+public abstract class BaseShakeActivity extends DefaultActivity implements SensorEventListener{
 
     protected SensorManager sensorManager;
     protected Vibrator vibrator;
+    
+    protected OnShakeSuccessListener onShakeSuccessListener;
 
     public final static int MIN_SHAKE_THRESHOLD = 14; //摇一摇最小变化值
 
@@ -18,6 +20,7 @@ public abstract class BaseShakeActivity extends BaseActivity implements SensorEv
     protected void initData(){
     	sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         vibrator = (Vibrator)getSystemService(Service.VIBRATOR_SERVICE);
+        //子类在此创建一个OnShakeSuccessListener
     }
 
     @Override
@@ -29,6 +32,7 @@ public abstract class BaseShakeActivity extends BaseActivity implements SensorEv
     @Override
     protected void onStop() {
         super.onStop();
+        sensorManager.unregisterListener(this);
     }
 
     @Override
@@ -42,7 +46,10 @@ public abstract class BaseShakeActivity extends BaseActivity implements SensorEv
         int sensorType = event.sensor.getType();
         float[] values = event.values;
         if(sensorType == Sensor.TYPE_ACCELEROMETER){
-            if(shakeSucceed(values)){
+            if(shakeSucceed(values)){ //摇一摇成功
+            	if(onShakeSuccessListener!=null){
+            		onShakeSuccessListener.onShakeSuccess(event);
+            	}
                 System.out.println("values[0]:"+values[0]);
                 System.out.println("values[1]:" + values[1]);
                 System.out.println("values[2]"+values[2]);
@@ -56,12 +63,17 @@ public abstract class BaseShakeActivity extends BaseActivity implements SensorEv
     }
 
     //摇一摇是否成功
-    private boolean shakeSucceed(float[] sensorValues){
+    protected boolean shakeSucceed(float[] sensorValues){
         if(Math.abs(sensorValues[0])>MIN_SHAKE_THRESHOLD ||
                 Math.abs(sensorValues[1])>MIN_SHAKE_THRESHOLD ||
                 Math.abs(sensorValues[2])>MIN_SHAKE_THRESHOLD){
             return true;
         }
         return  false;
+    }
+    
+    /**摇一摇成功回调接口*/
+    public static interface OnShakeSuccessListener{
+    	void onShakeSuccess(SensorEvent event);
     }
 }

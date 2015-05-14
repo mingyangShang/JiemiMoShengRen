@@ -6,7 +6,7 @@ import android.location.LocationManager;
 
 import com.baidu.mapapi.model.LatLng;
 
-public class LocationTool {
+public class LocationUtil {
 	/**
 	 * 得到所在位置，采用的是安卓原带api
 	 * @param context
@@ -42,6 +42,11 @@ public class LocationTool {
 			e.printStackTrace();
 		}
 		return gp;
+	}
+	
+	/**获取当前位置*/
+	public static LatLng getPos(Context context){
+		return getGeoByLocation(getLocation(context));
 	}
 
 	/**

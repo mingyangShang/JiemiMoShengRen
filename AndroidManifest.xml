@@ -71,7 +71,8 @@
             android:label="@string/activity_register"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" />
+            android:theme="@style/horizontal_slide" >
+        </activity>
         <activity android:name="com.levelup.jiemimoshengren.ui.Test" >
         </activity>
 
@@ -84,7 +85,6 @@
             android:theme="@style/horizontal_slide" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -97,13 +97,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
         </activity>
-        
+
         <!-- 查看大图界面 -->
-        <activity 
+        <activity
             android:name="com.levelup.jiemimoshengren.ui.ShowBigImageActivity"
             android:label="@string/activity_big_image"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!-- 添加联系人 -->
         <activity
@@ -121,19 +121,36 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
         </activity>
-        
+
+        <!-- 摇一摇界面 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.ShakeActivity"
+            android:label="@string/activity_shake"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+
         <!-- 游戏界面 -->
-         <activity 
+        <activity
             android:name="com.levelup.jiemimoshengren.ui.GameActivity"
             android:label="@string/activity_game"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+
+        <!-- 地图标记陌生人界面 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.MapMarkerActivity"
+            android:label="@string/activity_map_marker"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <!-- 开机自启动服务 -->
         <receiver android:name="com.easemob.chat.StartServiceReceiver" >
             <intent-filter android:priority="1000" >
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>

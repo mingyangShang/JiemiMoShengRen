@@ -37,6 +37,7 @@ import com.easemob.chat.ImageMessageBody;
 import com.easemob.chat.TextMessageBody;
 import com.easemob.util.DateUtils;
 import com.levelup.jiemimoshengren.R;
+import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.utils.SmileUtils;
 import com.levelup.jiemimoshengren.utils.UserUtils;
@@ -87,7 +88,7 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		// 获取与此用户/群组的会话
 		EMConversation conversation = getItem(position);
 		// 获取用户username或者群组groupid
-		String username = conversation.getUserName();
+		String username = SmyApplication.getSingleton().getContactList().get(conversation.getUserName()).getNick();
 		List<EMGroup> groups = EMGroupManager.getInstance().getAllGroups();
 		EMContact contact = null;
 		boolean isGroup = false;

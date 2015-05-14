@@ -20,21 +20,14 @@ public class User extends EMContact {
 	private String header;
 	private String avatar;
 
-	private String id;
-	private String name;
 	private String sign;
 	private boolean isFemale;
 	private String imgUrl;
+	
+	public static final String SEX_FEMALE = "F",SEX_MALE = "M";
 
 	public User() {}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public boolean isFemale() {
 		return isFemale;
@@ -42,14 +35,6 @@ public class User extends EMContact {
 
 	public void setFemale(boolean isFemale) {
 		this.isFemale = isFemale;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getImgUrl() {

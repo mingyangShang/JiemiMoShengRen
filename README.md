@@ -29,3 +29,5 @@ java代码中:
  ```
  很小的一个知识点，但是以前没有搞懂，出错了也没找出来是为什么，现在还不能说彻底明白了，因为还不知道xml中onClick是怎样和java代  码中的handler函数绑定的，`View`的源码还是得好好看看
  - 登录效果：有时间再把效果图传上来，实现这种效果的话是属性动画再加上自定义view包装基本的Button，xml中的shape是如何转换成java代码的，自定义属性时如何使用系统自带的并且在代码中获得，在onMeasure中获得的高度和宽度不对
+ - 创建JSONObject的封装类EasyJSONObject时出错：首先从JSONObject的getJSONObject方法中拿到的必须要是JSONObject才行，而且不能是符合json格式的字符串，另外封装类一定要重写toString方法，返回jsonObject的toString，现在还不清楚到底是在哪用到了这些，见`EasyJsonObject`,`JSONObject`
+ - 百度地图使用：注意从百度地图拿到的坐标要重新显示到地图上还要经过一个转换，方法见`BaiduMapActivity.convert(Latlng)`，这点比较坑，自家拿到的东西还得让开发者自己去做转换，太不人性化了；在添加完覆盖物标记后，要记得更新地图,见`addMarker(...)`；百度地图的初始化`SDKInitializer.initialize(getApplicationContext());`要写在onCreate的setContentView之前，但是这样界面加载好慢，以后要想想在这方面做下优化，现在的思路是提前初始化，在任务比较轻松而且下个界面可能会用到地图的时候提前初始化好地图

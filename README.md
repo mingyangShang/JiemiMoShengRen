@@ -31,3 +31,4 @@ java代码中:
  - 登录效果：有时间再把效果图传上来，实现这种效果的话是属性动画再加上自定义view包装基本的Button，xml中的shape是如何转换成java代码的，自定义属性时如何使用系统自带的并且在代码中获得，在onMeasure中获得的高度和宽度不对
  - 创建JSONObject的封装类EasyJSONObject时出错：首先从JSONObject的getJSONObject方法中拿到的必须要是JSONObject才行，而且不能是符合json格式的字符串，另外封装类一定要重写toString方法，返回jsonObject的toString，现在还不清楚到底是在哪用到了这些，见`EasyJsonObject`,`JSONObject`
  - 百度地图使用：注意从百度地图拿到的坐标要重新显示到地图上还要经过一个转换，方法见`BaiduMapActivity.convert(Latlng)`，这点比较坑，自家拿到的东西还得让开发者自己去做转换，太不人性化了；在添加完覆盖物标记后，要记得更新地图,见`addMarker(...)`；百度地图的初始化`SDKInitializer.initialize(getApplicationContext());`要写在onCreate的setContentView之前，但是这样界面加载好慢，以后要想想在这方面做下优化，现在的思路是提前初始化，在任务比较轻松而且下个界面可能会用到地图的时候提前初始化好地图
+ - 环信在某些地方自动设置nick：因为环信的用户名不能是汉字，而在app里肯定显示的更多是汉字昵称，这就给程序带来了很多不方便，还要手动去设置本地存储的用户的昵称，以便显示的是昵称而不是用户名。在ChatActivity中会有某个地方自动调用setNick方法，传入的参数是当前用户名，这就使得当从聊天界面返回到主界面的时候该用户的显示信息又显示成username，现在已经确认是在onresume方法后执行的setNick方法，以后要查证到底是在哪重新设置的昵称，现在的解决办法见`User.setNick(String newNick)`

@@ -17,7 +17,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,8 +33,8 @@ import com.easemob.chat.EMChatOptions;
 import com.easemod.chat.HXSDKHelper;
 import com.easemod.chat.HXSDKModel;
 import com.levelup.jiemimoshengren.R;
+import com.levelup.jiemimoshengren.base.BaseShakeActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
-import com.levelup.jiemimoshengren.config.Constant;
 
 /**
  * 设置界面
@@ -302,7 +301,6 @@ public class SettingFragment extends Fragment implements OnClickListener {
 						// 重新显示登陆页面
 						((MainActivity) getActivity()).finish();
 						startActivity(new Intent(getActivity(), LoginActivity.class));
-						
 					}
 				});
 			}

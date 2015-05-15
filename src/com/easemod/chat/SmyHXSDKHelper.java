@@ -182,7 +182,6 @@ public class SmyHXSDKHelper extends HXSDKHelper {
 
 	/**
 	 * 自定义通知栏提示内容
-	 * 
 	 * @return
 	 */
 	protected HXNotificationInfoProvider getNotificationListener() {

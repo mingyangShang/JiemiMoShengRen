@@ -67,8 +67,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private int currentTabIndex;
 	// 账号在别处登录
 	public boolean isConflict = false;
-	// 账号被移除
-	private boolean isCurrentAccountRemoved = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -218,10 +216,10 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	/**获取未读申请与通知消息*/
 	public int getUnreadAddressCountTotal() {
 		int unreadAddressCountTotal = 0;
-		if (SmyApplication.getSingleton().getContactList()
+		if (SmyApplication.getSingleton().getContacts()
 				.get(Constant.NEW_FRIENDS_USERNAME) != null)
 			unreadAddressCountTotal = SmyApplication.getSingleton()
-					.getContactList().get(Constant.NEW_FRIENDS_USERNAME)
+					.getContacts().get(Constant.NEW_FRIENDS_USERNAME)
 					.getUnreadMsgCount();
 		return unreadAddressCountTotal;
 	}
@@ -241,7 +239,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		public void onContactAdded(List<String> usernameList) {
 			// 保存增加的联系人
 			Map<String, User> localUsers = SmyApplication.getSingleton()
-					.getContactList();
+					.getContacts();
 			Map<String, User> toAddUsers = new HashMap<String, User>();
 			for (String username : usernameList) {
 				User user = setUserHead(username);
@@ -259,31 +257,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 		public void onContactDeleted(final List<String> usernameList) {
 			// 被删除
-			Map<String, User> localUsers = SmyApplication.getSingleton()
-					.getContactList();
-			for (String username : usernameList) {
-				localUsers.remove(username);
-				userDao.deleteContact(username);
-				inviteMessgeDao.deleteMessage(username);
-			}
-			runOnUiThread(new Runnable() {
-				public void run() {
-					// 如果正在与此用户的聊天页面
-					String st10 = getResources().getString(
-							R.string.have_you_removed);
-					if (ChatActivity.activityInstance != null
-							&& usernameList
-									.contains(ChatActivity.activityInstance
-											.getToChatUsername())) {
-						showMsg(ChatActivity.activityInstance.getToChatUsername() + st10);
-						ChatActivity.activityInstance.finish();
-					}
-					updateUnreadLabel();
-					// 刷新ui
-					contactListFragment.refreshUI();
-					chatHistoryFragment.refreshUI();
-				}
-			});
 		}
 
 		public void onContactInvited(String username, String reason) {
@@ -364,7 +337,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		saveInviteMsg(msg);
 		// 提示有新消息
 		EMNotifier.getInstance(getApplicationContext()).notifyOnNewMsg();
-
 		// 刷新bottom bar消息未读数
 		updateUnreadAddressLable();
 		// 刷新好友页面ui
@@ -377,8 +349,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		// 保存msg
 		inviteMessgeDao.saveMessage(msg);
 		// 未读数加1
-		User user = SmyApplication.getSingleton().getContactList()
-				.get(Constant.NEW_FRIENDS_USERNAME);
+		User user = SmyApplication.getSingleton().getContacts().get(Constant.NEW_FRIENDS_USERNAME);
 		if (user.getUnreadMsgCount() == 0)
 			user.setUnreadMsgCount(user.getUnreadMsgCount() + 1);
 	}
@@ -411,12 +382,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (!isConflict && !isCurrentAccountRemoved) {
-			updateUnreadLabel();
-			updateUnreadAddressLable();
-			EMChatManager.getInstance().activityResumed();
-		}
-		// register the event listener when enter the foreground
 		EMChatManager.getInstance().registerEventListener(this,
 						new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage });
 	}
@@ -434,13 +399,10 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		System.out.println("onkeydown"+keyCode);
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			moveTaskToBack(true);
-			System.out.println("back");
 			return true;
 		}
-		System.out.println("ketdown");
 		return super.onKeyDown(keyCode, event);
 	}
 }

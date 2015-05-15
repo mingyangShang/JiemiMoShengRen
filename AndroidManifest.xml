@@ -73,9 +73,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
-        <activity android:name="com.levelup.jiemimoshengren.ui.Test" >
-        </activity>
-
+        <!-- 选择头像图片对话框 -->
+        <activity 
+            android:name="com.levelup.jiemimoshengren.ui.SelectImgPopupActivity" 
+            android:label="@string/activity_cropimg"
+            android:launchMode="singleTop"
+            android:theme="@style/MyDialogStyleBottom"
+            android:screenOrientation="portrait"/>
         <!-- 登录 -->
         <activity
             android:name="com.levelup.jiemimoshengren.ui.LoginActivity"

@@ -15,7 +15,7 @@ public class UserUtils {
      * @return
      */
     public static User getUserInfo(String username){
-        User user = ((SmyApplication)(SmyApplication.getSingleton())).getContactList().get(username);
+        User user = ((SmyApplication)(SmyApplication.getSingleton())).getContacts().get(username);
         if(user == null){
             user = new User(username);
         }

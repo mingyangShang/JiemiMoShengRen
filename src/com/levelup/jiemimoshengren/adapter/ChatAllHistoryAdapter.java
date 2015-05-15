@@ -88,7 +88,8 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		// 获取与此用户/群组的会话
 		EMConversation conversation = getItem(position);
 		// 获取用户username或者群组groupid
-		String username = SmyApplication.getSingleton().getContactList().get(conversation.getUserName()).getNick();
+		final String username = SmyApplication.getSingleton().getContacts().get(conversation.getUserName()).getNick();
+		System.out.println("username:"+username);
 		List<EMGroup> groups = EMGroupManager.getInstance().getAllGroups();
 		EMContact contact = null;
 		boolean isGroup = false;

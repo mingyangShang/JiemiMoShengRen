@@ -80,6 +80,17 @@ public class User extends EMContact {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+	
+	public void setNick(String newNick){
+		System.err.println("setnick");
+		System.err.println("newNick:"+newNick);
+		System.err.println("currusername:"+username);
+		if(!newNick.equals(username)){
+			super.setNick(newNick);
+		}else{
+			System.err.println("不同意修改昵称");
+		}
+	}
 
 	@Override
 	public int hashCode() {
@@ -96,6 +107,6 @@ public class User extends EMContact {
 
 	@Override
 	public String toString() {
-		return nick == null ? username : nick;
+		return "username:"+username+",usernick:"+(nick==null?"null":nick+",female:"+isFemale);
 	}
 }

@@ -22,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -41,7 +40,6 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactManager;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
-import com.easemob.util.EMLog;
 import com.easemob.util.HanziToPinyin;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.DefaultActivity;
@@ -150,6 +148,10 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 						e.printStackTrace();
 						System.err.println("解析contacts的json数据错误");
 					}
+					EMChatManager.getInstance().updateCurrentUserNick(currentUsername);
+					if (!LoginActivity.this.isFinishing() && pd!=null) {pd.dismiss();}
+					// 进入主页面
+					goToWithFinish(MainActivity.class);
 				}else{
 					showMsg(contactsJson.getString("error"));
 				}
@@ -168,7 +170,6 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 	/**处理获得的好友信息
 	 * @throws JSONException */
 	private void processContacts(JSONArray contacts) throws JSONException{
-		EMLog.d("roster", "contacts size: " + contacts.length());
 		Map<String, User> userlist = new HashMap<String, User>();
 		for(int i=0,len=contacts.length();i<len;++i){
 			EasyJsonObject contact = new EasyJsonObject(contacts.getJSONObject(i));
@@ -189,7 +190,7 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 		userlist.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
 
 		// 存入内存
-		SmyApplication.getSingleton().setContactList(userlist);
+		SmyApplication.getSingleton().setContacts(userlist);
 		
 		// 存入db
 		UserDao dao = new UserDao(LoginActivity.this);
@@ -221,8 +222,6 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 			}
 		}
 	}
-
-	
 	
 	/**登录环信*/
 	private void huanxinLogin(String uid,String password){
@@ -256,9 +255,6 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 					});
 					return;
 				}
-				if (!LoginActivity.this.isFinishing() && pd!=null) {pd.dismiss();}
-				// 进入主页面
-				goToWithFinish(MainActivity.class);
 			}
 			
 			public void onProgress(int arg0, String arg1) {}
@@ -286,8 +282,8 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 				if(easyJsonObject.getBoolean("success")){ //如果登录成功
 					EasyJsonObject msgJsonObject = easyJsonObject.getStringAsJSONObject("msg");
 					me = new User();
-					me.setNick(msgJsonObject.getString("nick"));
 					me.setUsername(msgJsonObject.getString("uid"));
+					me.setNick(msgJsonObject.getString("nick"));
 					me.setImgUrl(msgJsonObject.getString("head"));
 					me.setFemale(msgJsonObject.getString("sex").equals(User.SEX_FEMALE));
 					//环信登录，使用id和password

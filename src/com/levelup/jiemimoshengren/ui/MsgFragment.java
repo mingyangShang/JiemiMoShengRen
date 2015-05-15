@@ -197,6 +197,7 @@ public class MsgFragment extends Fragment implements
 		if (!hidden) {
 			refreshUI();
 		}
+		System.out.println("contacts:"+SmyApplication.getSingleton().getContacts());
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.levelup.jiemimoshengren.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,9 @@ import java.net.URL;
 import java.util.UUID;
 
 import android.app.backup.FileBackupHelper;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.util.Base64;
 
 /** 对文件的相关操作 */
 public class FileUtil {
@@ -92,6 +96,14 @@ public class FileUtil {
 			throw new IllegalArgumentException("上传的文件不存在:"+file.getAbsolutePath());
 		}
 		return uploadFile(file, uploadUrl);
+	}
+	
+	/**Base64压缩图片*/
+	public static String base64EncodeImg(Bitmap bmp){
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bmp.compress(CompressFormat.PNG, 40, bos); //参数100表示不压缩
+		byte[] bytes = bos.toByteArray();
+		return Base64.encodeToString(bytes, Base64.DEFAULT);
 	}
 
 }

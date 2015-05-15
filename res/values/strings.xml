@@ -7,6 +7,7 @@
     <!-- activity name -->
     <string name="activity_index">主界面</string>
     <string name="activity_register">注册</string>
+    <string name="activity_cropimg">裁剪图像</string>
     <string name="activity_login">登录</string>
     <string name="activity_chat">聊天</string>
     <string name="activity_big_image">查看大图</string>
@@ -20,6 +21,8 @@
     <string name="activity_info">个人信息</string>
     
     <string name="net_error">网络断开</string>
+    <string name="error_to_get_img">抱歉，获取图片失败</string>
+    <string name="no_sdcard">您的设备未安装sd卡</string>
     <string name="cannot_find_location">未能获取您的位置，请稍后重试</string>
     <string name="msg_json_error">json生成错误</string>
     <string name="text_ack_msg">已读</string>

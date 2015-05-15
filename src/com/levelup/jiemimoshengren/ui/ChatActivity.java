@@ -148,7 +148,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	private List<String> reslist;
 	private Drawable[] micImages;
 	private EMConversation conversation;
-	public static ChatActivity activityInstance = null;
 	// 给谁发送消息
 	private String toChatUsername;
 	private VoiceRecorder voiceRecorder;
@@ -177,7 +176,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState,R.layout.activity_chat);
-		activityInstance = this;
 		initView();
 		setUpView();
 	}
@@ -301,7 +299,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 		wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
 				.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "demo");
 		toChatUsername = getIntent().getStringExtra("userId");
-		final String userNick = SmyApplication.getSingleton().getContactList().get(toChatUsername).getNick();
+		final String userNick = SmyApplication.getSingleton().getContacts().get(toChatUsername).getNick();
+		System.out.println("userNick:"+userNick);
 		((TextView) findViewById(R.id.name)).setText(userNick);
 		conversation = EMChatManager.getInstance().getConversation(
 				toChatUsername);
@@ -560,16 +559,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 		case EventNewMessage: {
 			// 获取到message
 			EMMessage message = (EMMessage) event.getData();
-
-			String username = null;
-			// 群组消息
-			if (message.getChatType() == ChatType.GroupChat) {
-				username = message.getTo();
-			} else {
-				// 单聊消息
-				username = message.getFrom();
-			}
-
+			String username = message.getFrom();;
 			// 如果是当前会话的消息，刷新聊天页面
 			if (username.equals(getToChatUsername())) {
 				refreshUIWithNewMessage();
@@ -580,7 +570,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 				// 如果消息不是和当前聊天ID的消息
 				HXSDKHelper.getInstance().getNotifier().onNewMsg(message);
 			}
-
 			break;
 		}
 		case EventDeliveryAck: {
@@ -605,6 +594,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 		default:
 			break;
 		}
+		System.out.println("onevenetfinish");
 
 	}
 
@@ -703,15 +693,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 			// 通知adapter有消息变动，adapter会根据加入的这条message显示消息和调用sdk的发送方法
 			adapter.refreshSelectLast();
 			mEditTextContent.setText("");
-
 			setResult(RESULT_OK);
-
 		}
 	}
 
 	/**
 	 * 发送语音
-	 * 
 	 * @param filePath
 	 * @param fileName
 	 * @param length
@@ -1220,7 +1207,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		activityInstance = null;
 	}
 
 	@Override
@@ -1241,6 +1227,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	@Override
 	protected void onStop() {
 		Log.i("ChatActivity", "onStop");
+		System.out.println(SmyApplication.getSingleton().getContacts());
 		// unregister this event listener when this activity enters the
 		// background
 		EMChatManager.getInstance().unregisterEventListener(this);
@@ -1249,6 +1236,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	@Override
 	protected void onPause() {
+		Log.i("ChatActivity", "onPause");
+		System.out.println(SmyApplication.getSingleton().getContacts());
 		super.onPause();
 		if (wakeLock.isHeld())
 			wakeLock.release();
@@ -1319,7 +1308,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	/**
 	 * 返回
-	 * 
 	 * @param view
 	 */
 	public void back(View view) {

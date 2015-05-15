@@ -20,24 +20,21 @@ import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import com.android.volley.VolleyError;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.easemob.EMError;
-import com.easemob.chat.EMChatManager;
-import com.easemob.exceptions.EaseMobException;
-import com.easemob.media.IGxStatusCallback;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.DefaultActivity;
-import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.utils.FileUtil;
 import com.smy.volley.extend.EasyJsonObject;
@@ -50,7 +47,8 @@ public class RegisterActivity extends DefaultActivity {
 	private EditText userNameEditText;
 	private EditText passwordEditText;
 	private EditText confirmPwdEditText;
-
+	private ImageView headIv; //头像
+	private Bitmap headBmp; //头像bitmap
 	private ProgressDialog progressDialog; // 显示进度对话框
 
 	@Override
@@ -72,6 +70,7 @@ public class RegisterActivity extends DefaultActivity {
 		userNameEditText = (EditText) findViewById(R.id.username);
 		passwordEditText = (EditText) findViewById(R.id.password);
 		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
+		headIv = (ImageView) findViewById(R.id.img_head);
 	}
 	
 	/** 处理volley请求错误 */
@@ -81,6 +80,11 @@ public class RegisterActivity extends DefaultActivity {
 		if(this.progressDialog!=null){
 			this.progressDialog.dismiss();
 		}
+	}
+	
+	/**跳到选择图片的界面*/
+	public void selectImg(View view){
+		startActivityForResult(new Intent(this,SelectImgPopupActivity.class),0);
 	}
 
 	// 注册
@@ -109,14 +113,17 @@ public class RegisterActivity extends DefaultActivity {
 			progressDialog = new ProgressDialog(this);
 			progressDialog.setMessage(getString(R.string.Is_the_registered));
 			progressDialog.show();
-			registerUser(username, pwd, "F", "hello:"+username);
+			if(headBmp==null){ //加载默认图片
+				headBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+			}
+			registerUser(username, pwd, "F", "hello:"+username,FileUtil.base64EncodeImg(headBmp));
 		}
 	}
 
 	/** 注册用户 */
 	public void registerUser(final String nick, final String psw,
-			final String sex, final String sign) {
-		JSONObject regiJson = makeRegiJson(nick, psw, sex, sign);
+			final String sex, final String sign,final String img) {
+		JSONObject regiJson = makeRegiJson(nick, psw, sex, sign,img);
 		this.requestQueue.add(new JsonObjectRequest(Constant.URL_REGISTER,
 				regiJson, new Listener<JSONObject>() {
 					public void onResponse(JSONObject response) {
@@ -126,17 +133,9 @@ public class RegisterActivity extends DefaultActivity {
 						EasyJsonObject easyResp = new EasyJsonObject(response);
 						boolean success = easyResp.getBoolean("success");
 						if (success) { // 注册成功
-							// 显示注册成功，开启上传图片任务
 							System.out.println("注册成功");
 							showMsgFromRes(R.string.Registered_successfully);
 							onRegisterSuccess(); //返回到登录界面
-							/*final String imgpath = Environment
-									.getExternalStorageDirectory()
-									+ File.pathSeparator
-									+ easyResp.getString("uid") + ".png";
-							System.out.println("imgpath:" + imgpath);
-							new UploadImgTask().execute(imgpath,
-									Constant.URL_UPLOAD);*/
 						} else { // 注册失败
 							showMsg(easyResp.getString("error")); // 显示错误信息
 						}
@@ -148,12 +147,13 @@ public class RegisterActivity extends DefaultActivity {
 	 * 生成注册用的jsonobject
 	 * @throws JSONException
 	 */
-	private JSONObject makeRegiJson(String nick, String psw, String sex,String sign) {
+	private JSONObject makeRegiJson(String nick, String psw, String sex,String sign,String img) {
 		EasyJsonObject json = new EasyJsonObject();
 		json.put("nick", nick);
 		json.put("password", psw);
 		json.put("sex", sex);
 		json.put("sign", sign);
+		json.put("head", img);
 		return json;
 	}
 
@@ -179,9 +179,25 @@ public class RegisterActivity extends DefaultActivity {
 			super.onPostExecute(result);
 			if (result) { // 上传成功
 				onRegisterSuccess();
-			} else { // 上传失败
-						// TODO 以后再处理
+			} else { // 上传失败  TODO 以后再处理
 				System.err.println("上传失败");
+			}
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(data!=null){
+			Bundle bundle = data.getExtras();
+			if(bundle!=null){
+				Bitmap imgBmp = bundle.getParcelable("data");
+				if(imgBmp!=null){
+					headBmp = imgBmp;
+					headIv.setImageBitmap(imgBmp);
+				}else{
+					showMsgFromRes(R.string.error_to_get_img);
+				}
 			}
 		}
 	}

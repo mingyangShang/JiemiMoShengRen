@@ -35,6 +35,8 @@ public class SmyApplication extends Application {
 
 	public static final SmyHXSDKHelper hxSdkHelper = new SmyHXSDKHelper();
 	private RequestQueue requestQueue; // 网络请求队列
+	
+	private Map<String, User> contacts; //联系人列表
 
 	@Override
 	public void onCreate() {
@@ -105,20 +107,14 @@ public class SmyApplication extends Application {
 		}
 		return this.requestQueue;
 	}
-
-	/**
-	 * 获取内存中好友user list
-	 */
-	public Map<String, User> getContactList() {
+	
+	/**联系人列表的hxSdkHelper的存取实现*/
+	/*public Map<String, User> getContactList() {
 		return hxSdkHelper.getContactList();
 	}
-
-	/**
-	 * 设置好友user list到内存中
-	 */
 	public void setContactList(Map<String, User> contactList) {
 		hxSdkHelper.setContactList(contactList);
-	}
+	}*/
 
 	/**
 	 * 获取当前登陆用户名
@@ -155,5 +151,13 @@ public class SmyApplication extends Application {
 
 	public void setMe(User me) {
 		this.me = me;
+	}
+
+	public Map<String, User> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(Map<String, User> contacts) {
+		this.contacts = contacts;
 	}
 }

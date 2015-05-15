@@ -15,12 +15,13 @@ public abstract class BaseShakeActivity extends DefaultActivity implements Senso
     protected OnShakeSuccessListener onShakeSuccessListener;
 
     public final static int MIN_SHAKE_THRESHOLD = 14; //摇一摇最小变化值
+    public final static int VIBRATE_DURATION = 500; //震动持续时间（:ms）
 
     @Override
     protected void initData(){
     	sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         vibrator = (Vibrator)getSystemService(Service.VIBRATOR_SERVICE);
-        //子类在此创建一个OnShakeSuccessListener
+        //TODO 子类在此创建一个OnShakeSuccessListener
     }
 
     @Override
@@ -53,7 +54,7 @@ public abstract class BaseShakeActivity extends DefaultActivity implements Senso
                 System.out.println("values[0]:"+values[0]);
                 System.out.println("values[1]:" + values[1]);
                 System.out.println("values[2]"+values[2]);
-                vibrator.vibrate(500);
+                vibrator.vibrate(VIBRATE_DURATION);
             }
         }
     }

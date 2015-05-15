@@ -48,7 +48,6 @@ public class ShakeActivity extends BaseShakeActivity {
 		super.onCreate(savedInstanceState,R.layout.activity_game);
 	}
 
-
 	@Override
 	protected void initData(){
 		super.initData();
@@ -57,11 +56,11 @@ public class ShakeActivity extends BaseShakeActivity {
 			public void onShakeSuccess(SensorEvent event) {
 				//摇一摇成功，向服务器发送自己的位置等信息
 				System.out.println("摇一摇成功");
-				if(mLastLocation!=null){
+				/*if(mLastLocation!=null){
 					doFirstShake("", mLastLocation.getLatitude(), mLastLocation.getLongitude());
 				}else{
 					showMsgFromRes(R.string.cannot_find_location);
-				}
+				}*/
 			}
 		};
 		

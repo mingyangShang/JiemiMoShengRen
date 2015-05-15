@@ -16,6 +16,7 @@
     <dimen name="chats_list_divider_height">2dp</dimen>
 
     <!-- 图片大小 -->
+    <dimen name="regi_img_size">50dp</dimen>
     <dimen name="contact_img_size">40dp</dimen>
     <dimen name="msg_img_size">50dp</dimen>
     <dimen name="height_top_bar">46dp</dimen>

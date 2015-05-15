@@ -134,7 +134,7 @@ public class AddContactActivity extends DefaultActivity {
 			return;
 		}
 
-		if (SmyApplication.getSingleton().getContactList()
+		if (SmyApplication.getSingleton().getContacts()
 				.containsKey(toAddUserId)) {
 			// 提示已在好友列表中，无需添加
 			showMsgFromRes(R.string.This_user_is_already_your_friend);

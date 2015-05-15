@@ -62,9 +62,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		//防止被T后，没点确定按钮然后按了home键，长期在后台又进app导致的crash
-		if(savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
-		    return;
 		inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		listView = (ListView) getView().findViewById(R.id.list);
 		sidebar = (Sidebar) getView().findViewById(R.id.sidebar);
@@ -112,7 +109,7 @@ public class ContactFragment extends Fragment implements OnClickListener{
 				String username = adapter.getItem(position).getUsername();
 				if (Constant.NEW_FRIENDS_USERNAME.equals(username)) {
 					// 进入申请与通知页面
-					User user = SmyApplication.getSingleton().getContactList().get(Constant.NEW_FRIENDS_USERNAME);
+					User user = SmyApplication.getSingleton().getContacts().get(Constant.NEW_FRIENDS_USERNAME);
 					user.setUnreadMsgCount(0);
 					startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
 				} else {
@@ -176,6 +173,7 @@ public class ContactFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onResume() {
 		super.onResume();
+		System.out.println("contacts:"+SmyApplication.getSingleton().getContacts());
 		if (!hidden) {
 			refreshUI();
 		}
@@ -199,13 +197,12 @@ public class ContactFragment extends Fragment implements OnClickListener{
 					// 删除db和内存中此用户的数据
 					UserDao dao = new UserDao(getActivity());
 					dao.deleteContact(tobeDeleteUser.getUsername());
-					SmyApplication.getSingleton().getContactList().remove(tobeDeleteUser.getUsername());
+					SmyApplication.getSingleton().getContacts().remove(tobeDeleteUser.getUsername());
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
 							adapter.remove(tobeDeleteUser);
 							adapter.notifyDataSetChanged();
-
 						}
 					});
 				} catch (final Exception e) {
@@ -244,7 +241,7 @@ public class ContactFragment extends Fragment implements OnClickListener{
 	private void getContactList() {
 		contactList.clear();
 		//获取本地好友列表
-		Map<String, User> users = SmyApplication.getSingleton().getContactList();
+		Map<String, User> users = SmyApplication.getSingleton().getContacts();
 		System.out.println("users:"+users);
 		Iterator<Entry<String, User>> iterator = users.entrySet().iterator();
 		while (iterator.hasNext()) {

@@ -16,7 +16,7 @@
     <dimen name="chats_list_divider_height">2dp</dimen>
 
     <!-- 图片大小 -->
-    <dimen name="regi_img_size">50dp</dimen>
+    <dimen name="regi_img_size">60dp</dimen>
     <dimen name="contact_img_size">40dp</dimen>
     <dimen name="msg_img_size">50dp</dimen>
     <dimen name="height_top_bar">46dp</dimen>
@@ -32,8 +32,14 @@
     <dimen name="sidebar_text_size">10dp</dimen>
     <dimen name="image_thumbnail_size">100dp</dimen>
     <dimen name="image_thumbnail_spacing">1dp</dimen>
+    <dimen name="game_num_size">60dp</dimen><!-- 游戏数字方块大小 -->
+    <dimen name="game_pb_height">20dp</dimen>
     
     <!-- 布局高度 -->
     <dimen name="net_error_height">50dp</dimen> <!-- 网络错误布局高度 -->
+    <dimen name="pb_h_height">20dp</dimen>
+    <dimen name="regi_form_item_height">40dp</dimen>
+    <dimen name="regi_btn_height">48dp</dimen>
+    <dimen name="cpb_stroke_width">48dp</dimen>
 
 </resources>

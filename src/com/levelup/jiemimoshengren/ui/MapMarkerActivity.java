@@ -81,7 +81,6 @@ public class MapMarkerActivity extends BaiduMapActivity {
         //注意该方法要再setContentView方法之前实现  
         SDKInitializer.initialize(getApplicationContext());  
 		setContentView(R.layout.activity_map_marker);
-		System.out.println("start");
 		initView();
 		initData();
 		
@@ -104,7 +103,6 @@ public class MapMarkerActivity extends BaiduMapActivity {
 		mBaiduMap.setMapStatus(msu);
 		initMapView();
 		if (latitude == 0) {
-//			mMapView = new MapView(this, new BaiduMapOptions());
 			mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
 							mCurrentMode, true, null));
 			showMapWithLocationClient();
@@ -143,14 +141,7 @@ public class MapMarkerActivity extends BaiduMapActivity {
 	}
 
 	private void showMapWithLocationClient() {
-		String str1 = getResources().getString(R.string.Making_sure_your_location);
-		progressDialog = new ProgressDialog(this);
-		progressDialog.setCanceledOnTouchOutside(false);
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		progressDialog.setMessage(str1);
-
-		progressDialog.setOnCancelListener(new OnCancelListener() {
-
+		progressDialog = makeProgressDialog(this, getString(R.string.Making_sure_your_location), new OnCancelListener() {
 			public void onCancel(DialogInterface arg0) {
 				if (progressDialog.isShowing()) {
 					progressDialog.dismiss();
@@ -159,7 +150,6 @@ public class MapMarkerActivity extends BaiduMapActivity {
 				finish();
 			}
 		});
-
 		progressDialog.show();
 
 		mLocClient = new LocationClient(this);
@@ -236,10 +226,6 @@ public class MapMarkerActivity extends BaiduMapActivity {
 			converter.from(CoordinateConverter.CoordType.COMMON);
 			LatLng convertLatLng = converter.convert();
 			System.out.println("long:"+llA.longitude+",lati:"+llA.latitude);
-			OverlayOptions ooA = new MarkerOptions().position(convertLatLng).icon(BitmapDescriptorFactory
-					.fromResource(R.drawable.icon_marka))
-					.zIndex(4).draggable(true);
-//			mBaiduMap.addOverlay(ooA);
 			addMarker(llA);
 //			addMarker(new LatLng(39.085721,121.819113));
 			MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(convertLatLng, 17.0f);
@@ -258,7 +244,6 @@ public class MapMarkerActivity extends BaiduMapActivity {
 		}
 	}
 
-
 	public void sendLocation(View view) {
 		Intent intent = this.getIntent();
 		intent.putExtra("latitude", lastLocation.getLatitude());
@@ -268,5 +253,4 @@ public class MapMarkerActivity extends BaiduMapActivity {
 		finish();
 		overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
 	}
-
 }

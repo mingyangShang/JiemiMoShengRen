@@ -72,14 +72,19 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!-- 选择头像图片对话框 -->
-        <activity 
-            android:name="com.levelup.jiemimoshengren.ui.SelectImgPopupActivity" 
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.SelectImgPopupActivity"
             android:label="@string/activity_cropimg"
             android:launchMode="singleTop"
-            android:theme="@style/MyDialogStyleBottom"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleBottom" />
         <!-- 登录 -->
         <activity
             android:name="com.levelup.jiemimoshengren.ui.LoginActivity"
@@ -87,10 +92,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 聊天页面 -->
@@ -100,6 +101,8 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity android:name="com.levelup.jiemimoshengren.ui.Test" >
         </activity>
 
         <!-- 查看大图界面 -->
@@ -139,7 +142,8 @@
             android:name="com.levelup.jiemimoshengren.ui.GameActivity"
             android:label="@string/activity_game"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+        </activity>
 
         <!-- 地图标记陌生人界面 -->
         <activity

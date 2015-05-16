@@ -6,8 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -124,5 +128,27 @@ public abstract class BaseActivity extends FragmentActivity {
 		pd.setOnCancelListener(onCancelListener);
 		pd.setMessage(msg);
 		return pd;
+	}
+	
+	/**适配图片*/
+	protected Bitmap adaptive(Bitmap bmp,int desiredWidth,int desiredHeight){
+		int width = bmp.getWidth();
+		int height = bmp.getHeight();
+		Matrix matrix = new Matrix();
+		matrix.postScale(desiredWidth/(float)width, desiredHeight/(float)height);
+		return Bitmap.createBitmap(bmp,0,0,width,height,matrix,true);
+	}
+	protected Bitmap adaptiveToScreenWidth(Bitmap bmp){
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		int screenWidth = dm.widthPixels;
+		Matrix matrix = new Matrix();
+		matrix.postScale((float)screenWidth/bmp.getWidth(), (float)screenWidth/bmp.getWidth());
+		return Bitmap.createBitmap(bmp,0,0,bmp.getWidth(),bmp.getHeight(),matrix,true);
+	}
+	protected Bitmap adaptive(int res,int desiredWidth,int desiredHeight){
+		return adaptive(BitmapFactory.decodeResource(getResources(), res),desiredWidth,desiredHeight);
+	}
+	protected void adaptiveBack(View view,Bitmap bmp,int desiredWidth,int desiredHeight){
+		
 	}
 }

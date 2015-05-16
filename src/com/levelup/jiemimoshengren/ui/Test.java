@@ -23,12 +23,12 @@ public class Test extends Activity implements AnimatorListener,OnClickListener{
 	@Override
 	protected void onCreate(Bundle bundle){
 		super.onCreate(bundle);
-		setContentView(R.layout.test2);
-		button = (Button) findViewById(R.id.bt_login2);
+		setContentView(R.layout.test);
+		/*button = (Button) findViewById(R.id.bt_login2);
 		progressBar = (ProgressBar) findViewById(R.id.bar);
 		scaleButton = (ScaleButton) findViewById(R.id.bt_login);
 		scaleButton.setAnimatorListener(this);
-		scaleButton.setOnClickListener(this);
+		scaleButton.setOnClickListener(this);*/
 	}
 
 

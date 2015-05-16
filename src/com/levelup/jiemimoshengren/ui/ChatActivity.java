@@ -91,9 +91,9 @@ import com.levelup.jiemimoshengren.widget.PasteEditText;
 /** 好友聊天界面 */
 public class ChatActivity extends BaseActivity implements OnClickListener,EMEventListener{
 
-	private static final int REQUEST_CODE_EMPTY_HISTORY = 2;
+	public static final int REQUEST_CODE_EMPTY_HISTORY = 2;
 	public static final int REQUEST_CODE_CONTEXT_MENU = 3;
-	private static final int REQUEST_CODE_MAP = 4;
+	public static final int REQUEST_CODE_MAP = 4;
 	public static final int REQUEST_CODE_TEXT = 5;
 	public static final int REQUEST_CODE_VOICE = 6;
 	public static final int REQUEST_CODE_PICTURE = 7;
@@ -176,7 +176,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState,R.layout.activity_chat);
-		initView();
 		setUpView();
 	}
 	
@@ -239,23 +238,17 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 		voiceRecorder = new VoiceRecorder(micImageHandler);
 		buttonPressToSpeak.setOnTouchListener(new PressToSpeakListen());
 		mEditTextContent.setOnFocusChangeListener(new OnFocusChangeListener() {
-
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
-					edittext_layout
-							.setBackgroundResource(R.drawable.input_bar_bg_active);
+					edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_active);
 				} else {
-					edittext_layout
-							.setBackgroundResource(R.drawable.input_bar_bg_normal);
+					edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_normal);
 				}
-
 			}
 		});
 		mEditTextContent.setOnClickListener(new OnClickListener() {
-
 			public void onClick(View v) {
-				edittext_layout
-						.setBackgroundResource(R.drawable.input_bar_bg_active);
+				edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_active);
 				more.setVisibility(View.GONE);
 				iv_emoticons_normal.setVisibility(View.VISIBLE);
 				iv_emoticons_checked.setVisibility(View.INVISIBLE);
@@ -265,9 +258,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 		});
 		// 监听文字框
 		mEditTextContent.addTextChangedListener(new TextWatcher() {
-
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(CharSequence s, int start, int before,int count) {
 				if (!TextUtils.isEmpty(s)) {
 					btnMore.setVisibility(View.GONE);
 					buttonSend.setVisibility(View.VISIBLE);
@@ -276,16 +267,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 					buttonSend.setVisibility(View.GONE);
 				}
 			}
-
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-
-			public void afterTextChanged(Editable s) {
-
-			}
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			public void afterTextChanged(Editable s) {}
 		});
-
 	}
 
 	private void setUpView() {
@@ -1148,13 +1132,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 					if (buttonSetModeKeyboard.getVisibility() != View.VISIBLE) {
 						if (filename != "delete_expression") { // 不是删除键，显示表情
 							// 这里用的反射，所以混淆的时候不要混淆SmileUtils这个类
-							Class clz = Class.forName("com.easemob.chatuidemo.utils.SmileUtils");
+							Class clz = Class.forName("com.levelup.jiemimoshengren.utils.SmileUtils");
 							Field field = clz.getField(filename);
 							mEditTextContent.append(SmileUtils.getSmiledText(
 									ChatActivity.this, (String) field.get(null)));
 						} else { // 删除文字或者表情
 							if (!TextUtils.isEmpty(mEditTextContent.getText())) {
-
 								int selectionStart = mEditTextContent
 										.getSelectionStart();// 获取光标的位置
 								if (selectionStart > 0) {
@@ -1195,13 +1178,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	public List<String> getExpressionRes(int getSum) {
 		List<String> reslist = new ArrayList<String>();
 		for (int x = 1; x <= getSum; x++) {
-			String filename = "ee_" + x;
-
-			reslist.add(filename);
-
+			reslist.add("ee_" + x);
 		}
 		return reslist;
-
 	}
 
 	@Override
@@ -1226,18 +1205,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	@Override
 	protected void onStop() {
-		Log.i("ChatActivity", "onStop");
-		System.out.println(SmyApplication.getSingleton().getContacts());
-		// unregister this event listener when this activity enters the
-		// background
 		EMChatManager.getInstance().unregisterEventListener(this);
 		super.onStop();
 	}
 
 	@Override
 	protected void onPause() {
-		Log.i("ChatActivity", "onPause");
-		System.out.println(SmyApplication.getSingleton().getContacts());
 		super.onPause();
 		if (wakeLock.isHeld())
 			wakeLock.release();
@@ -1270,7 +1243,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	/**
 	 * 加入到黑名单
-	 * 
 	 * @param username
 	 */
 	private void addUserToBlacklist(final String username) {
@@ -1307,14 +1279,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 	}
 
 	/**
-	 * 返回
-	 * @param view
-	 */
-	public void back(View view) {
-		finish();
-	}
-
-	/**
 	 * 覆盖手机返回键
 	 */
 	@Override
@@ -1330,7 +1294,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	/**
 	 * listview滑动监听listener
-	 * 
 	 */
 	private class ListScrollListener implements OnScrollListener {
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -1367,17 +1330,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 					}
 					loadmorePB.setVisibility(View.GONE);
 					isloading = false;
-
 				}
 				break;
 			}
 		}
 
 		public void onScroll(AbsListView view, int firstVisibleItem,
-				int visibleItemCount, int totalItemCount) {
-
-		}
-
+				int visibleItemCount, int totalItemCount) {}
 	}
 
 	@Override
@@ -1390,12 +1349,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 			finish();
 			startActivity(intent);
 		}
-
 	}
 
 	/**
 	 * 转发消息
-	 * 
 	 * @param forward_msg_id
 	 */
 	protected void forwardMessage(String forward_msg_id) {

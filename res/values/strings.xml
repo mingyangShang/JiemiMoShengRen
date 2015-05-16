@@ -20,7 +20,18 @@
     <string name="activity_first">引导</string>
     <string name="activity_info">个人信息</string>
     
+    <string name="title_game">记忆快块</string>
+    <string name="hint_name">用户名</string>
+    <string name="edit_hint_name">请输入用户名</string>
+    <string name="hint_pwd">密码</string>
+    <string name="edit_hint_pwd">请输入登录密码</string>
+    <string name="hint_pwd2">确认密码</string>
+    <string name="edit_hint_pwd2">请确认登录密码</string>
+    <string name="hint_sex">性别</string>
+    <string name="hint_sex_female">女</string>
+    <string name="hint_sex_male">男</string>
     <string name="net_error">网络断开</string>
+    <string name="start">开始游戏</string>
     <string name="error_to_get_img">抱歉，获取图片失败</string>
     <string name="no_sdcard">您的设备未安装sd卡</string>
     <string name="cannot_find_location">未能获取您的位置，请稍后重试</string>

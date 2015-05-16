@@ -2,14 +2,135 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_back"
     android:orientation="vertical" >
-    
-    <TextView 
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="#0000ff"
-        android:text="21212"/>
+        android:background="@drawable/register_back"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="back"
+            android:padding="5dp"
+            android:src="@drawable/back" />
+
+        <ImageView
+            android:layout_width="@dimen/regi_img_size"
+            android:layout_height="@dimen/regi_img_size"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/head_circle" />
+
+        <com.levelup.jiemimoshengren.widget.CircularImageView
+            android:id="@+id/img_head"
+            android:layout_width="@dimen/regi_img_size"
+            android:layout_height="@dimen/regi_img_size"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="selectImg"
+            android:src="@drawable/default_head" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/layout_name"
+            style="@style/RegiFormItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/RegiTextStyle"
+                android:text="@string/hint_name" />
+
+            <ImageView style="@style/RegiVLineStyle" />
+
+            <EditText
+                android:id="@+id/username"
+                style="@style/RegiHintStyle" />
+        </LinearLayout>
+
+        <View style="@style/RegiHLineStyle" />
+
+        <LinearLayout
+            android:id="@+id/layout_pwd"
+            style="@style/RegiFormItemStyle" >
+
+            <TextView
+                android:id="@+id/tv_pwd"
+                style="@style/RegiTextStyle"
+                android:text="@string/hint_pwd" />
+
+            <ImageView style="@style/RegiVLineStyle" />
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/RegiHintStyle" />
+        </LinearLayout>
+
+        <View style="@style/RegiHLineStyle" />
+
+        <LinearLayout
+            android:id="@+id/layout_pwd2"
+            style="@style/RegiFormItemStyle" >
+
+            <TextView
+                android:id="@+id/tv_pwd2"
+                style="@style/RegiTextStyle"
+                android:text="@string/hint_pwd2" />
+
+            <ImageView style="@style/RegiVLineStyle" />
+
+            <EditText
+                android:id="@+id/confirm_password"
+                style="@style/RegiHintStyle" />
+        </LinearLayout>
+
+        <View style="@style/RegiHLineStyle" />
+
+        <LinearLayout
+            android:id="@+id/layout_sex"
+            style="@style/RegiFormItemStyle" >
+
+            <TextView
+                android:id="@+id/tv_sex"
+                style="@style/RegiTextStyle"
+                android:text="@string/hint_sex" />
+
+            <ImageView style="@style/RegiVLineStyle" />
+
+            <RadioGroup
+                android:id="@+id/rg_sex"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/regi_form_item_height"
+                android:layout_weight="3.5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/rb_male"
+                    style="@style/RegiSexRbStyle"
+                    android:layout_marginRight="8dp"
+                    android:checked="true"
+                    android:text="@string/hint_sex_male" />
+
+                <RadioButton
+                    android:id="@+id/rb_female"
+                    style="@style/RegiSexRbStyle"
+                    android:text="@string/hint_sex_female" />
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

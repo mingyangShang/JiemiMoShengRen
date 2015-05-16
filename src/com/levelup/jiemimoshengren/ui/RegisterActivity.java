@@ -13,8 +13,6 @@
  */
 package com.levelup.jiemimoshengren.ui;
 
-import java.io.File;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,11 +20,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -56,7 +55,6 @@ public class RegisterActivity extends DefaultActivity {
 		super.onCreate(savedInstanceState, R.layout.activity_register);
 		final String imgpath = Environment.getExternalStorageDirectory()+ "/beauty.jpg";
 		System.out.println("imgpath:" + imgpath);
-//		 new UploadImgTask().execute(imgpath,Constant.URL_UPLOAD);
 	}
 
 	@Override
@@ -71,8 +69,32 @@ public class RegisterActivity extends DefaultActivity {
 		passwordEditText = (EditText) findViewById(R.id.password);
 		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
 		headIv = (ImageView) findViewById(R.id.img_head);
+		resizeImg();
+		
 	}
 	
+	/**适配图片*/
+	private void resizeImg() {
+		View regiBack = findViewById(R.id.layout_title);
+		Bitmap bmp = adaptiveToScreenWidth(BitmapFactory.decodeResource(getResources(),R.drawable.register_back));
+		regiBack.setBackgroundDrawable(new BitmapDrawable(bmp));
+		LayoutParams layoutParams = regiBack.getLayoutParams();
+		layoutParams.height = bmp.getHeight();
+		regiBack.setLayoutParams(layoutParams);
+		
+		View headBack = findViewById(R.id.img_circle);
+		layoutParams = headBack.getLayoutParams();
+		bmp = adaptive(R.drawable.head_circle,(int)(bmp.getHeight()*0.67),(int)(bmp.getHeight()*0.67 ));
+		headBack.setBackgroundDrawable(new BitmapDrawable(bmp));
+		layoutParams.height = (int) (bmp.getHeight()*0.67);
+		layoutParams.width = layoutParams.height;
+		headBack.setLayoutParams(layoutParams);
+		
+		bmp = adaptive(R.drawable.default_head, bmp.getWidth(), bmp.getHeight());
+		headIv.setImageBitmap(bmp);
+		headIv.setLayoutParams(layoutParams);
+	}
+
 	/** 处理volley请求错误 */
 	@Override
 	public void onErrorResponse(VolleyError error) {
@@ -155,51 +177,6 @@ public class RegisterActivity extends DefaultActivity {
 		json.put("sign", sign);
 		json.put("head", img);
 		return json;
-	}
-
-	/** 上传图片task */
-	public class UploadImgTask extends AsyncTask<String, Void, Boolean> {
-		// 在上传之前重新设置显示对话框文字
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			if (progressDialog != null) {
-				progressDialog.setMessage(getString(R.string.Is_img_uploading));
-			}
-		}
-
-		// 上传图片，参数为上传文件名和上传的url地址
-		@Override
-		protected Boolean doInBackground(String... params) {
-			return FileUtil.uploadFile(new File(params[0]), params[1]);
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			super.onPostExecute(result);
-			if (result) { // 上传成功
-				onRegisterSuccess();
-			} else { // 上传失败  TODO 以后再处理
-				System.err.println("上传失败");
-			}
-		}
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if(data!=null){
-			Bundle bundle = data.getExtras();
-			if(bundle!=null){
-				Bitmap imgBmp = bundle.getParcelable("data");
-				if(imgBmp!=null){
-					headBmp = imgBmp;
-					headIv.setImageBitmap(imgBmp);
-				}else{
-					showMsgFromRes(R.string.error_to_get_img);
-				}
-			}
-		}
 	}
 
 	/** 登录成功回传数据给登录界面 */

@@ -1,185 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:smy="http://schemas.android.com/apk/res/com.levelup.jiemimoshengren"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f0eb"
+    android:background="@color/white_back"
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
-        android:background="@color/common_top_bar_blue" >
-
-        <LinearLayout
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/common_tab_bg"
-            android:onClick="back" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="9dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/mm_title_back" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/register"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_head"
+        android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp" >
+        android:background="@drawable/register_back" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="back"
+            android:padding="10dp"
+            android:src="@drawable/back" />
+
+        <ImageView
+            android:id="@+id/img_circle"
+            android:layout_width="@dimen/regi_img_size"
+            android:layout_height="@dimen/regi_img_size"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/head_circle" />
 
         <com.levelup.jiemimoshengren.widget.CircularImageView
             android:id="@+id/img_head"
             android:layout_width="@dimen/regi_img_size"
             android:layout_height="@dimen/regi_img_size"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:onClick="selectImg"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/default_head" />
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/layout_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical" >
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/layout_name"
+            style="@style/RegiFormItemStyle"
             android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="25dp" >
+            android:layout_height="wrap_content" >
 
-            <ImageView
-                android:id="@+id/iv_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_account" />
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/RegiTextStyle"
+                android:text="@string/hint_name" />
+
+            <ImageView style="@style/RegiVLineStyle" />
 
             <EditText
                 android:id="@+id/username"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="11dp"
-                android:layout_toRightOf="@id/iv_username"
-                android:background="@null"
-                android:hint="@string/user_name"
-                android:singleLine="true"
-                android:textSize="18sp" />
+                style="@style/RegiHintStyle" />
+        </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="#b3b3b3" />
-        </RelativeLayout>
+        <View style="@style/RegiHLineStyle" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp" >
+        <LinearLayout
+            android:id="@+id/layout_pwd"
+            style="@style/RegiFormItemStyle" >
 
-            <ImageView
-                android:id="@+id/iv_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_pwd" />
+            <TextView
+                android:id="@+id/tv_pwd"
+                style="@style/RegiTextStyle"
+                android:text="@string/hint_pwd" />
+
+            <ImageView style="@style/RegiVLineStyle" />
 
             <EditText
                 android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="11dp"
-                android:layout_toRightOf="@id/iv_password"
-                android:background="@null"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textSize="18sp" />
+                style="@style/RegiHintStyle"
+                android:inputType="textPassword" />
+        </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="#b3b3b3" />
-        </RelativeLayout>
+        <View style="@style/RegiHLineStyle" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp" >
+        <LinearLayout
+            android:id="@+id/layout_pwd2"
+            style="@style/RegiFormItemStyle" >
 
-            <ImageView
-                android:id="@+id/iv_password2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_pwd" />
+            <TextView
+                android:id="@+id/tv_pwd2"
+                style="@style/RegiTextStyle"
+                android:text="@string/hint_pwd2" />
+
+            <ImageView style="@style/RegiVLineStyle" />
 
             <EditText
                 android:id="@+id/confirm_password"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="11dp"
-                android:layout_toRightOf="@id/iv_password2"
-                android:background="@null"
-                android:hint="@string/confirmpassword"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textSize="18sp" />
+                style="@style/RegiHintStyle"
+                android:inputType="textPassword" />
+        </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="#b3b3b3" />
-        </RelativeLayout>
+        <View style="@style/RegiHLineStyle" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal" >
+            android:id="@+id/layout_sex"
+            style="@style/RegiFormItemStyle" >
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_register_bg"
-                android:onClick="register"
-                android:paddingBottom="7dp"
-                android:paddingTop="7dp"
-                android:text="@string/register"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tv_sex"
+                style="@style/RegiTextStyle"
+                android:text="@string/hint_sex" />
+
+            <ImageView style="@style/RegiVLineStyle" />
+
+            <RadioGroup
+                android:id="@+id/rg_sex"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/regi_form_item_height"
+                android:layout_weight="3.5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/rb_male"
+                    style="@style/RegiSexRbStyle"
+                    android:layout_marginRight="8dp"
+                    android:checked="true"
+                    android:text="@string/hint_sex_male" />
+
+                <RadioButton
+                    android:id="@+id/rb_female"
+                    style="@style/RegiSexRbStyle"
+                    android:text="@string/hint_sex_female" />
+            </RadioGroup>
         </LinearLayout>
+
+        <com.dd.circularprogressbutton.CircularProgressButton
+            android:id="@+id/circularButton1"
+           android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:onClick="register"
+            android:background="@color/app_blue"
+            android:textColor="@color/cpb_white"
+            android:textSize="18sp"
+            smy:cpb_cornerRadius="@dimen/regi_btn_height"
+            smy:cpb_iconComplete="@drawable/ic_action_accept"
+            smy:cpb_iconError="@drawable/ic_action_cancel"
+            smy:cpb_textIdle="shanghcuan" />
     </LinearLayout>
 
 </LinearLayout>

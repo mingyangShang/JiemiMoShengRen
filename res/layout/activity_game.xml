@@ -2,95 +2,129 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <LinearLayout 
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/top_bar_normal_bg"
+        android:gravity="center_vertical" >
+        <include layout="@layout/commom_back_btn" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:text="@string/title_game"
+            android:textSize="20sp" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/layout_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_bar"
+        android:paddingLeft="6dp" 
+        android:paddingRight="6dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp">
+        <ProgressBar
+            android:id="@+id/pb"
+            style="@style/PBHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pb_h_height"
+            android:layout_centerInParent="true"
+            android:background="@drawable/pb_h"
+            android:progress="0"
+            android:padding="4dp" />
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
-        
-        <LinearLayout 
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            
-            <Button 
+            android:orientation="horizontal" >
+
+            <ImageView
                 android:id="@+id/Button1Id"
-                style="@style/LeftGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
-            <Button 
+                style="@style/LeftGameBtnStyle"/>
+
+            <ImageView
                 android:id="@+id/Button2Id"
-                style="@style/MiddleGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
-            <Button 
+                style="@style/MiddleGameBtnStyle"/>
+
+            <ImageView
                 android:id="@+id/Button3Id"
-                style="@style/RightGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
+                style="@style/RightGameBtnStyle"/>
         </LinearLayout>
-        
-        <LinearLayout 
-            android:layout_marginTop="4dp"
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            
-            <Button 
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal" >
+
+            <ImageView
                 android:id="@+id/Button4Id"
-                style="@style/LeftGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
-            <Button 
+                style="@style/LeftGameBtnStyle"/>
+
+            <ImageView
                 android:id="@+id/Button5Id"
-                style="@style/MiddleGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
-            <Button 
+                style="@style/MiddleGameBtnStyle"/>
+
+            <ImageView
                 android:id="@+id/Button6Id"
-                style="@style/RightGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
+                style="@style/RightGameBtnStyle"/>
         </LinearLayout>
-        
-        <LinearLayout 
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            
-            <Button 
+            android:orientation="horizontal" >
+
+            <ImageView
                 android:id="@+id/Button7Id"
-                style="@style/LeftGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
-            <Button 
+                style="@style/LeftGameBtnStyle"/>
+
+            <ImageView
                 android:id="@+id/Button8Id"
-                style="@style/MiddleGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
-            <Button 
+                style="@style/MiddleGameBtnStyle"/>
+
+            <ImageView
                 android:id="@+id/Button9Id"
-                style="@style/RightGameBtnStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            
+                style="@style/RightGameBtnStyle"/>
         </LinearLayout>
-        
     </LinearLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/layout0_countdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp">
+        
+        <ImageView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/game_timer_3"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
+        <Button
+            android:id="@+id/bt_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/start"/>
+        
+    </RelativeLayout>
 
 </RelativeLayout>

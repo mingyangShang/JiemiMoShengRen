@@ -5,7 +5,11 @@
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="gray">#808080</color> <!-- 灰色 -->
     <color name="black">#000000</color> <!-- 黑色 -->
-    <color name="app_blue">#2ea7e0</color>
+    
+    <color name="app_blue">#2ea7e0</color> <!-- 主题蓝色 -->
+    <color name="app_white_back">#fbfbfb</color>
+    <color name="app_text_color">#53514e</color>
+    
     <color name="white_back">#f2f0eb</color>
     <color name="cpb_grey">#ffdedede</color>
     <color name="cpb_blue">#ff0099cc</color>

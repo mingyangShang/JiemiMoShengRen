@@ -70,7 +70,6 @@ public class RegisterActivity extends DefaultActivity {
 		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
 		headIv = (ImageView) findViewById(R.id.img_head);
 		resizeImg();
-		
 	}
 	
 	/**适配图片*/

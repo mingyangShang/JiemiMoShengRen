@@ -76,7 +76,7 @@ public class RegisterActivity extends DefaultActivity {
 	private void resizeImg() {
 		View regiBack = findViewById(R.id.layout_title);
 		Bitmap bmp = adaptiveToScreenWidth(BitmapFactory.decodeResource(getResources(),R.drawable.register_back));
-		regiBack.setBackgroundDrawable(new BitmapDrawable(bmp));
+		regiBack.setBackgroundDrawable(new BitmapDrawable(getResources(),bmp));
 		LayoutParams layoutParams = regiBack.getLayoutParams();
 		layoutParams.height = bmp.getHeight();
 		regiBack.setLayoutParams(layoutParams);
@@ -84,7 +84,7 @@ public class RegisterActivity extends DefaultActivity {
 		View headBack = findViewById(R.id.img_circle);
 		layoutParams = headBack.getLayoutParams();
 		bmp = adaptive(R.drawable.head_circle,(int)(bmp.getHeight()*0.67),(int)(bmp.getHeight()*0.67 ));
-		headBack.setBackgroundDrawable(new BitmapDrawable(bmp));
+		headBack.setBackgroundDrawable(new BitmapDrawable(getResources(),bmp));
 		layoutParams.height = (int) (bmp.getHeight()*0.67);
 		layoutParams.width = layoutParams.height;
 		headBack.setLayoutParams(layoutParams);

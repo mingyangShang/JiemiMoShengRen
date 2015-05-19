@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -30,15 +31,14 @@ public class ShakeActivity extends BaseShakeActivity {
 	
 	private LocationClient mLocClient;
 	private BDLocation mLastLocation; //上次的位置
+	
+	private boolean canShake = true; //控制避免摇一摇多次请求
 	private Handler handler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			if(msg.what == SECOND_SHAKE_MSG){ //在收到了消息后开始摇一摇的第二次请求
-				int lasttime = msg.arg1;
-				//使用上次返回的时间lasttime
-				//TODO 错误
-				doSecondShake("uid",mLastLocation.getLatitude(),mLastLocation.getLongitude(),msg.arg1);
+				doSecondShake(me.getUsername(),mLastLocation.getLatitude(),mLastLocation.getLongitude(),msg.arg1);
 			}
 		}
 	};
@@ -55,12 +55,18 @@ public class ShakeActivity extends BaseShakeActivity {
 		this.onShakeSuccessListener = new OnShakeSuccessListener() {
 			public void onShakeSuccess(SensorEvent event) {
 				//摇一摇成功，向服务器发送自己的位置等信息
+				if(!canShake){return ;}
 				System.out.println("摇一摇成功");
-				/*if(mLastLocation!=null){
-					doFirstShake("", mLastLocation.getLatitude(), mLastLocation.getLongitude());
+				if(mLastLocation!=null){
+					if(meNotNull() && canShake){
+						canShake = false;
+						doFirstShake(me.getUsername(), mLastLocation.getLatitude(), mLastLocation.getLongitude());
+					}else if(!meNotNull()){
+						showMsgFromRes(R.string.please_login);
+					}
 				}else{
 					showMsgFromRes(R.string.cannot_find_location);
-				}*/
+				}
 			}
 		};
 		
@@ -122,6 +128,7 @@ public class ShakeActivity extends BaseShakeActivity {
 		requestQueue.add(new JsonObjectRequest(Constant.URL_SHAKE_FIRST, firstShakeJson, new Listener<JSONObject>() {
 			public void onResponse(JSONObject response) {
 				EasyJsonObject easyRespons = new EasyJsonObject(response);
+				easyRespons = easyRespons.getStringAsJSONObject("msg");
 				final int currtime = easyRespons.getInt("currtime"); //第一次请求的服务器时间
 				final int nexttime = easyRespons.getInt("nexttime"); //下一次请求的时间间隔
 				Message msg = handler.obtainMessage(SECOND_SHAKE_MSG, currtime, nexttime);
@@ -146,6 +153,7 @@ public class ShakeActivity extends BaseShakeActivity {
 				}else{
 					showMsg(easyJsonObject.getString("error"));
 				}
+				canShake = true;
 			}
 		}, this));
 	}
@@ -187,4 +195,12 @@ public class ShakeActivity extends BaseShakeActivity {
 		secondShakeJson.put("lasttime", lasttime);
 		return secondShakeJson;
 	}
+
+	@Override
+	public void onErrorResponse(VolleyError error) {
+		super.onErrorResponse(error);
+		canShake = true;
+	}
+	
+	
 }

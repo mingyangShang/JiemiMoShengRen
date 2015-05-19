@@ -23,7 +23,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,8 +32,9 @@ import com.easemob.chat.EMChatOptions;
 import com.easemod.chat.HXSDKHelper;
 import com.easemod.chat.HXSDKModel;
 import com.levelup.jiemimoshengren.R;
-import com.levelup.jiemimoshengren.base.BaseShakeActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
+import com.levelup.jiemimoshengren.model.User;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 设置界面
@@ -97,9 +97,13 @@ public class SettingFragment extends Fragment implements OnClickListener {
 	/**
 	 * 声音和震动中间的那条线
 	 */
-	private TextView textview1, textview2;
+//	private TextView textview1, textview2;
 
-	private LinearLayout blacklistContainer;
+//	private LinearLayout blacklistContainer;
+	
+	/**个人信息*/
+	private ImageView ivHead;
+	private TextView tvName,tvSex,tvSign;
 	
 	/**
 	 * 退出按钮
@@ -107,14 +111,16 @@ public class SettingFragment extends Fragment implements OnClickListener {
 	private Button logoutBtn;
 
 	private EMChatOptions chatOptions;
+	
+	private User me;
  
 	/**
 	 * 诊断
 	 */
-	private LinearLayout llDiagnose;
+//	private LinearLayout llDiagnose;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_conversation_settings, container, false);
+		return inflater.inflate(R.layout.fragment_more, container, false);
 	}
 
 	@Override
@@ -122,6 +128,7 @@ public class SettingFragment extends Fragment implements OnClickListener {
 		super.onActivityCreated(savedInstanceState);
 		if(savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
             return;
+		final View view = getView();
 		rl_switch_notification = (RelativeLayout) getView().findViewById(R.id.rl_switch_notification);
 		rl_switch_sound = (RelativeLayout) getView().findViewById(R.id.rl_switch_sound);
 		rl_switch_vibrate = (RelativeLayout) getView().findViewById(R.id.rl_switch_vibrate);
@@ -137,23 +144,34 @@ public class SettingFragment extends Fragment implements OnClickListener {
 		iv_switch_close_speaker = (ImageView) getView().findViewById(R.id.iv_switch_close_speaker);
 		logoutBtn = (Button) getView().findViewById(R.id.btn_logout);
 		
-		final String nick = SmyApplication.getSingleton().getMe().getNick();
-		if(nick!=null){
-			logoutBtn.setText(getString(R.string.button_logout) + "(" + nick + ")");
+		ivHead = (ImageView) view.findViewById(R.id.img_head);
+		tvName = (TextView) view.findViewById(R.id.tv_name);
+		tvSex = (TextView) view.findViewById(R.id.tv_sex);
+		tvSign = (TextView) view.findViewById(R.id.tv_sign);
+		me = SmyApplication.getSingleton().getMe();
+		if(me!=null){
+			tvName.setText(me.getNick());
+			logoutBtn.setText(getString(R.string.button_logout) + "(" + me.getNick() + ")");
+			tvSex.setText(me.isFemale()?getString(R.string.hint_sex_female):getString(R.string.hint_sex_male));
+			tvSign.setText(me.getSign());
+			if(tvSign.getText().equals("")){
+				tvSex.setText(getString(R.string.hint_no_sign));
+			}
+			ImageLoader.getInstance().displayImage(me.getImgUrl(), ivHead);
 		}
 		
-		textview1 = (TextView) getView().findViewById(R.id.textview1);
-		textview2 = (TextView) getView().findViewById(R.id.textview2);
+//		textview1 = (TextView) getView().findViewById(R.id.textview1);
+//		textview2 = (TextView) getView().findViewById(R.id.textview2);
 		
-		blacklistContainer = (LinearLayout) getView().findViewById(R.id.ll_black_list);
-		llDiagnose=(LinearLayout) getView().findViewById(R.id.ll_diagnose);
-		blacklistContainer.setOnClickListener(this);
+//		blacklistContainer = (LinearLayout) getView().findViewById(R.id.ll_black_list);
+//		llDiagnose=(LinearLayout) getView().findViewById(R.id.ll_diagnose);
+//		blacklistContainer.setOnClickListener(this);
 		rl_switch_notification.setOnClickListener(this);
 		rl_switch_sound.setOnClickListener(this);
 		rl_switch_vibrate.setOnClickListener(this);
 		rl_switch_speaker.setOnClickListener(this);
 		logoutBtn.setOnClickListener(this);
-		llDiagnose.setOnClickListener(this);
+//		llDiagnose.setOnClickListener(this);
 		
 		chatOptions = EMChatManager.getInstance().getChatOptions();
 		
@@ -209,8 +227,8 @@ public class SettingFragment extends Fragment implements OnClickListener {
 				iv_switch_close_notification.setVisibility(View.VISIBLE);
 				rl_switch_sound.setVisibility(View.GONE);
 				rl_switch_vibrate.setVisibility(View.GONE);
-				textview1.setVisibility(View.GONE);
-				textview2.setVisibility(View.GONE);
+//				textview1.setVisibility(View.GONE);
+//				textview2.setVisibility(View.GONE);
 				chatOptions.setNotificationEnable(false);
 				EMChatManager.getInstance().setChatOptions(chatOptions);
 
@@ -220,8 +238,8 @@ public class SettingFragment extends Fragment implements OnClickListener {
 				iv_switch_close_notification.setVisibility(View.INVISIBLE);
 				rl_switch_sound.setVisibility(View.VISIBLE);
 				rl_switch_vibrate.setVisibility(View.VISIBLE);
-				textview1.setVisibility(View.VISIBLE);
-				textview2.setVisibility(View.VISIBLE);
+//				textview1.setVisibility(View.VISIBLE);
+//				textview2.setVisibility(View.VISIBLE);
 				chatOptions.setNotificationEnable(true);
 				EMChatManager.getInstance().setChatOptions(chatOptions);
 				HXSDKHelper.getInstance().getModel().setSettingMsgNotification(true);

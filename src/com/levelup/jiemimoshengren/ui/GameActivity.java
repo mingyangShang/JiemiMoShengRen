@@ -48,37 +48,46 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	private ImageView countdownImg;
 	private View startView;
 	private ProgressBar pbCountdown; //倒计时的progressbar
-	private CountDownTimer countDownTimer = new CountDownTimer(4000, 1000) {
+	private CountDownTimer countDownTimer = new CountDownTimer(3999, 500) {
 		@Override
 		public void onTick(long millisUntilFinished) {
-			if(millisUntilFinished==3000){
-				System.err.println("3000");
+			System.err.println(""+millisUntilFinished);
+			if(millisUntilFinished<1000){
+				countdownImg.setVisibility(View.GONE);
 				return ;
 			}
-			int imgRes = countDownNumRes[(int) (millisUntilFinished/1000-1)];
+			int imgRes = countDownNumRes[(int) (millisUntilFinished/1000)-1];
 			countdownImg.setImageResource(imgRes);
 		}
 		@Override
 		public void onFinish() {
 			countdownImg.setVisibility(View.GONE);
 			countdownImg = null;
-			startGame();
+			findViewById(R.id.iv_cardio).setVisibility(View.VISIBLE); //心电图可见
+			for(int i=0;i<numberButtons.length;++i){ //倒计时结束后让数字不可见并可点击
+				final ImageView view = numberButtons[i];
+				view.setImageResource(R.drawable.game_num_back);
+				view.setClickable(true);
+			}
+			pbCountDownTimer.start();
 		}
 	};
 	private CountDownTimer pbCountDownTimer = new CountDownTimer(COUNT_DURATION,COUNT_INTERVAL) {
 		@Override
 		public void onTick(long millisUntilFinished) {
-			final int progress = (int) (MAX_PROGRESS*(COUNT_DURATION-millisUntilFinished)/(float)COUNT_DURATION);
-			System.err.println(""+progress);
+			final int progress = (int) (MAX_PROGRESS*millisUntilFinished/(float)COUNT_DURATION);
 			pbCountdown.setProgress(progress);
 		}
 		@Override
 		public void onFinish() {
-			System.err.println("结束");
-			for(int i=0;i<numberButtons.length;++i){
+			pbCountdown.setProgress(0);
+			for(int i=0;i<numberButtons.length;++i){ //倒计时结束后让数字不可见并可点击
 				final ImageView view = numberButtons[i];
-				view.setImageResource(R.drawable.game_num_back);
-				view.setClickable(true);
+				final int numText = btnNumMap.get(view.getId()); //显示的数字
+				if(numText>=currCount){ //还未点击
+					view.setImageResource(numNormalRes[numText-1]);
+				}
+				view.setClickable(false);
 			}
 		}
 	};
@@ -98,6 +107,7 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 		startView = findViewById(R.id.bt_start);
 		startView.setOnClickListener(this);
 		pbCountdown = (ProgressBar) findViewById(R.id.pb);
+		pbCountdown.setProgress(MAX_PROGRESS);
 		
 		ImageView button1 = (ImageView)findViewById(R.id.Button1Id);
 		ImageView button2 = (ImageView)findViewById(R.id.Button2Id);
@@ -132,7 +142,6 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	/***/
 	private void startGame() {
 		System.err.println("开始游戏");
-		showNums();
 		pbCountDownTimer.start();
 	}
 	
@@ -140,7 +149,7 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	private void showNums(){
 		for(int i=0;i<numberButtons.length;++i){
 			final ImageView img = numberButtons[i];
-			final int res = numNormalRes[btnNumMap.get(img.getId())-1];
+			final int res = numPressedRes[btnNumMap.get(img.getId())-1];
 			img.setImageResource(res);
 			img.setClickable(false);
 		}
@@ -163,6 +172,7 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	/**点击button数字错误*/
 	private void onErrorClick(ImageView btn){
 		Toast.makeText(this, "错误", 1000).show();	
+		pbCountDownTimer.cancel(); //停止倒计时
 		for(int i=0;i<numberButtons.length;++i){
 			final ImageView currBtn = numberButtons[i];
 			final int numText = btnNumMap.get(currBtn.getId()); //显示的数字
@@ -179,9 +189,9 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	}
 	/**点击button数字正确*/
 	private void onRightClick(ImageView btn){
-//		makeSecondAnim(btn).start();
 		btn.setImageResource(numPressedRes[currCount-1]);
 		if(currCount == 9){ //全部猜对
+			pbCountDownTimer.cancel();
 			showMsg("恭喜你，全都记对了");
 		}
 	}
@@ -234,6 +244,7 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 		case R.id.bt_start:
 			startView.setVisibility(View.GONE);
 			startView = null;
+			showNums();
 			countdownImg.setVisibility(View.VISIBLE);
 			countDownTimer.start();
 			break;

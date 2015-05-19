@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/game_bg"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
@@ -8,7 +9,6 @@
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
         android:gravity="center_vertical" >
         <include layout="@layout/commom_back_btn" />
         <TextView
@@ -38,7 +38,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/pb_h"
             android:progress="0"
-            android:padding="4dp" />
+            android:padding="0dp" />
     </RelativeLayout>
 
     <LinearLayout
@@ -108,8 +108,10 @@
         android:id="@+id/layout0_countdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="20dp">
         
         <ImageView
             android:id="@+id/timer"
@@ -120,10 +122,19 @@
             android:layout_centerInParent="true"/>
         <Button
             android:id="@+id/bt_start"
-            android:layout_width="wrap_content"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="@drawable/game_start_bg"
+            android:gravity="center"
             android:text="@string/start"/>
+        <ImageView
+            android:id="@+id/iv_cardio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:src="@drawable/cardiograph"/>
         
     </RelativeLayout>
 

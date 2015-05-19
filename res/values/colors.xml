@@ -9,6 +9,9 @@
     <color name="app_blue">#2ea7e0</color> <!-- 主题蓝色 -->
     <color name="app_white_back">#fbfbfb</color>
     <color name="app_text_color">#53514e</color>
+    <color name="app_game_pb_bg">#17eb4b</color> <!-- 游戏界面进度条颜色 -->
+    <color name="app_game_start_bg">#abd3f1</color> <!-- 游戏界面开始按钮颜色 -->
+    <color name="app_contact_name_color">#0f0f0e</color>
     
     <color name="white_back">#f2f0eb</color>
     <color name="cpb_grey">#ffdedede</color>

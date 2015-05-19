@@ -13,6 +13,8 @@
  */
 package com.easemod.chat;
 
+import com.levelup.jiemimoshengren.model.User;
+
 /**
  * HX SDK app model which will manage the user data and preferences
  * @author easemob
@@ -42,12 +44,9 @@ public abstract class HXSDKModel {
     // 是否打开扬声器
     // the speaker is switched on or not?
     public abstract boolean getSettingMsgSpeaker();
-   
-    public abstract boolean saveHXId(String hxId);
-    public abstract String getHXId();
     
-    public abstract boolean savePassword(String pwd);
-    public abstract String getPwd();
+    public abstract boolean saveMe(User me);
+    public abstract User getMe();
     
     /**
      * 返回application所在的process name,默认是包名

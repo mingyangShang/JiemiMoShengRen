@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.model.User;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 public class UserUtils {
@@ -34,10 +35,12 @@ public class UserUtils {
      */
     public static void setUserAvatar(Context context, String username, ImageView imageView){
         User user = getUserInfo(username);
-        if(user != null){
-            Picasso.with(context).load(user.getAvatar()).placeholder(R.drawable.default_avatar).into(imageView);
+        if(user != null && user.getImgUrl()!=null && user.getImgUrl().startsWith("http")){
+        	ImageLoader.getInstance().displayImage(user.getImgUrl(), imageView);
+//            Picasso.with(context).load(user.getAvatar()).placeholder(R.drawable.default_avatar).into(imageView);
         }else{
-            Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+//            Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+        	ImageLoader.getInstance().displayImage("drawable://"+R.drawable.default_avatar, imageView);
         }
     }
     

@@ -23,6 +23,7 @@
         android:paddingTop="5dp"
         android:singleLine="true"
         android:textSize="16sp" />
+    
 
     <ImageButton
         android:id="@+id/search_clear"

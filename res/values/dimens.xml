@@ -17,6 +17,7 @@
 
     <!-- 图片大小 -->
     <dimen name="regi_img_size">60dp</dimen>
+    <dimen name="info_img_size">60dp</dimen>
     <dimen name="contact_img_size">40dp</dimen>
     <dimen name="msg_img_size">50dp</dimen>
     <dimen name="height_top_bar">46dp</dimen>
@@ -37,9 +38,12 @@
     
     <!-- 布局高度 -->
     <dimen name="net_error_height">50dp</dimen> <!-- 网络错误布局高度 -->
+    <dimen name="main_footer_height">56dp</dimen>
+    <dimen name="msg_item_height">60dp</dimen>
     <dimen name="pb_h_height">20dp</dimen>
     <dimen name="regi_form_item_height">40dp</dimen>
     <dimen name="regi_btn_height">48dp</dimen>
     <dimen name="cpb_stroke_width">48dp</dimen>
+    <dimen name="info_up_height">100dp</dimen>
 
 </resources>

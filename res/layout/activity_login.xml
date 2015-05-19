@@ -20,48 +20,50 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <RelativeLayout
+    
+     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:layout_marginLeft="28dp"
         android:layout_marginRight="28dp"
         android:layout_marginTop="25dp" >
 
-        <ImageView
+		<ImageView
             android:id="@+id/iv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/icon_account" />
-
         <EditText
+            android:layout_centerVertical="true"
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="11dp"
             android:layout_toRightOf="@id/iv_username"
-            android:background="@null"
             android:hint="@string/user_name"
+            android:background="@null"
             android:singleLine="true"
-            android:textColor="@android:color/black"
             android:textSize="18sp" />
-
-        <View
+        
+        <View 
+            android:background="#b3b3b3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="#b3b3b3" />
+            
+            />
     </RelativeLayout>
+    
+    
 
-    <RelativeLayout
+       <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:layout_marginLeft="28dp"
         android:layout_marginRight="28dp"
         android:layout_marginTop="10dp" >
-
-        <ImageView
+ 		<ImageView
             android:id="@+id/iv_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,64 +71,66 @@
             android:src="@drawable/icon_pwd" />
 
         <EditText
+            android:layout_centerVertical="true"
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="11dip"
             android:layout_toRightOf="@id/iv_password"
-            android:background="@null"
             android:hint="@string/password"
-            android:inputType="textPassword"
+            android:background="@null"
             android:singleLine="true"
-            android:textColor="#000"
+            android:inputType="textPassword"
             android:textSize="18sp" />
-
-        <View
+        
+        <View 
+            android:background="#b3b3b3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="#b3b3b3" />
+            
+            />
     </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="13dp"
         android:layout_marginRight="13dp"
-        android:layout_marginTop="16dp"
         android:orientation="horizontal" >
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
             android:layout_marginTop="10dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginBottom="10dip"
+            android:layout_marginRight="5dip"
             android:layout_weight="3"
             android:background="@drawable/button_register_bg"
-            android:gravity="center"
             android:onClick="register"
             android:paddingBottom="7dp"
             android:paddingTop="7dp"
             android:text="@string/register"
+            android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
             android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
             android:layout_marginTop="10dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginBottom="10dip"
             android:layout_weight="5"
             android:background="@drawable/button_login_bg"
-            android:gravity="center"
             android:onClick="login"
             android:paddingBottom="7dp"
             android:paddingTop="7dp"
+            android:gravity="center"
             android:text="@string/login"
             android:textColor="@android:color/white"
             android:textSize="18sp" />

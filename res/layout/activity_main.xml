@@ -8,9 +8,9 @@
     <LinearLayout
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="@dimen/main_footer_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/bottom_bar_normal_bg"
+        android:background="@drawable/bottom_bar_normal_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
@@ -20,17 +20,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1" >
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_conversation"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/main_bottom_item_bg"
-                android:drawableTop="@drawable/tab_chat_bg"
                 android:onClick="onTabClicked"
                 android:paddingBottom="2dip"
+                android:background="@null"
                 android:paddingTop="7dip"
-                android:scaleType="matrix"
-                android:text="@string/session"
+                android:scaleType="centerInside"
+                android:src="@drawable/tab_chat_bg"
                 android:textColor="@color/main_botton_text_color"
                 android:textSize="12sp" />
 
@@ -42,7 +41,6 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/unread_count_bg"
                 android:gravity="center"
-                android:text="7"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:visibility="invisible" />
@@ -54,17 +52,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1" >
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_address_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/main_bottom_item_bg"
-                android:drawableTop="@drawable/tab_contact_list_bg"
                 android:onClick="onTabClicked"
                 android:paddingBottom="2dip"
+                android:background="@null"
+                android:src="@drawable/tab_contact_list_bg"
                 android:paddingTop="7dip"
-                android:scaleType="matrix"
-                android:text="@string/address_book"
+                android:scaleType="centerInside"
                 android:textColor="@color/main_botton_text_color"
                 android:textSize="12sp" />
 
@@ -88,17 +85,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1" >
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_setting"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/main_bottom_item_bg"
-                android:drawableTop="@drawable/tab_setting_bg"
                 android:onClick="onTabClicked"
                 android:paddingBottom="2dip"
+                android:background="@null"
+                android:src="@drawable/tab_setting_bg"
                 android:paddingTop="7dip"
-                android:scaleType="matrix"
-                android:text="@string/setting"
+                android:scaleType="centerInside"
                 android:textColor="@color/main_botton_text_color"
                 android:textSize="12sp" />
         </RelativeLayout>
@@ -106,6 +102,7 @@
 
     <RelativeLayout
         android:id="@+id/fragment_container"
+        android:background="@drawable/main_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/main_bottom" />

@@ -81,9 +81,8 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 		}
 		
 		User user = getItem(position);
-		//设置nick，demo里不涉及到完整user，用username代替nick显示
+		//设置nick
 		final String username = user.getNick();
-		System.out.println("userName:"+username);
 		final String header = user.getHeader();
 		if (position == 0 || header != null && !header.equals(getItem(position - 1).getHeader())) {
 			if ("".equals(header)) {

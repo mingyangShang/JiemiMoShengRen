@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-     android:background="@color/common_bg"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@drawable/top_bar_normal_bg"
         android:gravity="center_vertical" >
 
         <TextView
@@ -26,14 +25,11 @@
         android:id="@+id/rl_error_item"
         layout="@layout/msg_neterror_item"
         android:visibility="gone" />
-
-    
       <ListView
         android:cacheColorHint="#00000000"
         android:id="@+id/list_chats"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:divider="@null"
-        />
+        android:background="@drawable/msg_bg"
+        android:divider="@drawable/divider"/>
 </LinearLayout>

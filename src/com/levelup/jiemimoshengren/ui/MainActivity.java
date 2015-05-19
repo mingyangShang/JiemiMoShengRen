@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.easemob.EMConnectionListener;
@@ -57,7 +58,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	// 未读通讯录textview
 	private TextView unreadAddressLable;
 
-	private Button[] mTabs;
+	private ImageButton[] mTabs;
 	private ContactFragment contactListFragment;
 	private MsgFragment chatHistoryFragment;
 	private SettingFragment settingFragment;
@@ -65,8 +66,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private int index;
 	// 当前fragment的index
 	private int currentTabIndex;
-	// 账号在别处登录
-	public boolean isConflict = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +104,10 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	protected void initView() {
 		unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
 		unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
-		mTabs = new Button[3];
-		mTabs[0] = (Button) findViewById(R.id.btn_conversation);
-		mTabs[1] = (Button) findViewById(R.id.btn_address_list);
-		mTabs[2] = (Button) findViewById(R.id.btn_setting);
+		mTabs = new ImageButton[3];
+		mTabs[0] = (ImageButton) findViewById(R.id.btn_conversation);
+		mTabs[1] = (ImageButton) findViewById(R.id.btn_address_list);
+		mTabs[2] = (ImageButton) findViewById(R.id.btn_setting);
 		// 把第一个tab设为选中状态
 		mTabs[0].setSelected(true);
 	}

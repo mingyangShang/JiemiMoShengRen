@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="56dp"
+    android:background="@drawable/shake_bg"
+    android:orientation="vertical"
+    android:paddingLeft="8.0dip" >
+
+    <ImageView
+        android:id="@+id/img_head"
+        android:layout_width="@dimen/contact_img_size"
+        android:layout_height="@dimen/contact_img_size"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dp"
+        android:src="@drawable/shake" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/img_head"
+        android:text="@string/title_shake"
+        android:textColor="@color/app_contact_name_color" />
+
+</RelativeLayout>

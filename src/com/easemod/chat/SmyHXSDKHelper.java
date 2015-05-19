@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.impl.conn.SingleClientConnManager;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -67,7 +69,20 @@ public class SmyHXSDKHelper extends HXSDKHelper {
 	 * 用来记录foreground Activity
 	 */
 	private List<Activity> activityList = new ArrayList<Activity>();
+	
+	private static SmyHXSDKHelper singleton;
 
+	public static SmyHXSDKHelper getInstance(){
+		synchronized (SmyHXSDKHelper.class) {
+			if(singleton==null){
+				synchronized (SmyHXSDKHelper.class) {
+					singleton = new SmyHXSDKHelper();
+				}
+			}
+		}
+		return singleton;
+	}
+	
 	public void pushActivity(Activity activity) {
 		if (!activityList.contains(activity)) {
 			activityList.add(0, activity);
@@ -298,14 +313,12 @@ public class SmyHXSDKHelper extends HXSDKHelper {
 
 	/**
 	 * 获取内存中好友user list
-	 * 
 	 * @return
 	 */
 	public Map<String, User> getContactList() {
-		if (getHXId() != null && contactList == null) {
+		if (getModel().getMe() != null && contactList == null) {
 			contactList = ((SmyHXSDKModel) getModel()).getContactList();
 		}
-
 		return contactList;
 	}
 
@@ -315,6 +328,13 @@ public class SmyHXSDKHelper extends HXSDKHelper {
 	 */
 	public void setContactList(Map<String, User> contactList) {
 		this.contactList = contactList;
+	}
+	
+	public void setMe(User me){
+		getModel().saveMe(me);
+	}
+	public User getMe(){
+		return getModel().getMe();
 	}
 
 	@Override

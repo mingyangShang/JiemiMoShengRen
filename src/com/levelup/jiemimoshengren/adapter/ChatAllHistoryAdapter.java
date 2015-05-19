@@ -52,9 +52,10 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 	private List<EMConversation> conversationList;
 	private List<EMConversation> copyConversationList;
 	private ConversationFilter conversationFilter;
-    private boolean notiyfyByFilter;
+	private boolean notiyfyByFilter;
 
-	public ChatAllHistoryAdapter(Context context, int textViewResourceId, List<EMConversation> objects) {
+	public ChatAllHistoryAdapter(Context context, int textViewResourceId,
+			List<EMConversation> objects) {
 		super(context, textViewResourceId, objects);
 		this.conversationList = objects;
 		copyConversationList = new ArrayList<EMConversation>();
@@ -65,59 +66,49 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.row_chat_history, parent, false);
+			convertView = inflater.inflate(R.layout.row_chat_history, parent,
+					false);
 		}
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		if (holder == null) {
 			holder = new ViewHolder();
 			holder.name = (TextView) convertView.findViewById(R.id.name);
-			holder.unreadLabel = (TextView) convertView.findViewById(R.id.unread_msg_number);
+			holder.unreadLabel = (TextView) convertView
+					.findViewById(R.id.unread_msg_number);
 			holder.message = (TextView) convertView.findViewById(R.id.message);
 			holder.time = (TextView) convertView.findViewById(R.id.time);
 			holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
 			holder.msgState = convertView.findViewById(R.id.msg_state);
-			holder.list_item_layout = (RelativeLayout) convertView.findViewById(R.id.list_item_layout);
+			holder.list_item_layout = (RelativeLayout) convertView
+					.findViewById(R.id.list_item_layout);
 			convertView.setTag(holder);
 		}
 		if (position % 2 == 0) {
-			holder.list_item_layout.setBackgroundResource(R.drawable.mm_listitem);
+			holder.list_item_layout
+					.setBackgroundResource(R.drawable.mm_listitem);
 		} else {
-			holder.list_item_layout.setBackgroundResource(R.drawable.mm_listitem_grey);
+			holder.list_item_layout
+					.setBackgroundResource(R.drawable.mm_listitem_grey);
 		}
 
 		// 获取与此用户/群组的会话
 		EMConversation conversation = getItem(position);
 		// 获取用户username或者群组groupid
-		final String username = SmyApplication.getSingleton().getContacts().get(conversation.getUserName()).getNick();
-		System.out.println("username:"+username);
-		List<EMGroup> groups = EMGroupManager.getInstance().getAllGroups();
+		final String username = SmyApplication.getSingleton().getContacts()
+				.get(conversation.getUserName()).getNick();
 		EMContact contact = null;
-		boolean isGroup = false;
-		for (EMGroup group : groups) {
-			if (group.getGroupId().equals(username)) {
-				isGroup = true;
-				contact = group;
-				break;
-			}
+		UserUtils.setUserAvatar(getContext(), username, holder.avatar);
+		if (username.equals(Constant.GROUP_USERNAME)) {
+			holder.name.setText("群聊");
+		} else if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
+			holder.name.setText("申请与通知");
 		}
-		if (isGroup) {
-			// 群聊消息，显示群聊头像
-			holder.avatar.setImageResource(R.drawable.group_icon);
-			holder.name.setText(contact.getNick() != null ? contact.getNick() : username);
-		} else {
-		    UserUtils.setUserAvatar(getContext(), username, holder.avatar);
-			if (username.equals(Constant.GROUP_USERNAME)) {
-				holder.name.setText("群聊");
-
-			} else if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
-				holder.name.setText("申请与通知");
-			}
-			holder.name.setText(username);
-		}
+		holder.name.setText(username);
 
 		if (conversation.getUnreadMsgCount() > 0) {
 			// 显示与此用户的消息未读数
-			holder.unreadLabel.setText(String.valueOf(conversation.getUnreadMsgCount()));
+			holder.unreadLabel.setText(String.valueOf(conversation
+					.getUnreadMsgCount()));
 			holder.unreadLabel.setVisibility(View.VISIBLE);
 		} else {
 			holder.unreadLabel.setVisibility(View.INVISIBLE);
@@ -126,11 +117,18 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		if (conversation.getMsgCount() != 0) {
 			// 把最后一条消息的内容作为item的message内容
 			EMMessage lastMessage = conversation.getLastMessage();
-			holder.message.setText(SmileUtils.getSmiledText(getContext(), getMessageDigest(lastMessage, (this.getContext()))),
-					BufferType.SPANNABLE);
+			holder.message
+					.setText(
+							SmileUtils.getSmiledText(
+									getContext(),
+									getMessageDigest(lastMessage,
+											(this.getContext()))),
+							BufferType.SPANNABLE);
 
-			holder.time.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
-			if (lastMessage.direct == EMMessage.Direct.SEND && lastMessage.status == EMMessage.Status.FAIL) {
+			holder.time.setText(DateUtils.getTimestampString(new Date(
+					lastMessage.getMsgTime())));
+			if (lastMessage.direct == EMMessage.Direct.SEND
+					&& lastMessage.status == EMMessage.Status.FAIL) {
 				holder.msgState.setVisibility(View.VISIBLE);
 			} else {
 				holder.msgState.setVisibility(View.GONE);
@@ -166,7 +164,8 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 			break;
 		case IMAGE: // 图片消息
 			ImageMessageBody imageBody = (ImageMessageBody) message.getBody();
-			digest = getStrng(context, R.string.picture) + imageBody.getFileName();
+			digest = getStrng(context, R.string.picture)
+					+ imageBody.getFileName();
 			break;
 		case VOICE:// 语音消息
 			digest = getStrng(context, R.string.voice);
@@ -175,12 +174,14 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 			digest = getStrng(context, R.string.video);
 			break;
 		case TXT: // 文本消息
-			if(!message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL,false)){
+			if (!message.getBooleanAttribute(
+					Constant.MESSAGE_ATTR_IS_VOICE_CALL, false)) {
 				TextMessageBody txtBody = (TextMessageBody) message.getBody();
 				digest = txtBody.getMessage();
-			}else{
+			} else {
 				TextMessageBody txtBody = (TextMessageBody) message.getBody();
-				digest = getStrng(context, R.string.voice_call) + txtBody.getMessage();
+				digest = getStrng(context, R.string.voice_call)
+						+ txtBody.getMessage();
 			}
 			break;
 		case FILE: // 普通文件消息
@@ -215,8 +216,6 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 	String getStrng(Context context, int resId) {
 		return context.getResources().getString(resId);
 	}
-	
-	
 
 	@Override
 	public Filter getFilter() {
@@ -225,7 +224,7 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		}
 		return conversationFilter;
 	}
-	
+
 	private class ConversationFilter extends Filter {
 		List<EMConversation> mOriginalValues = null;
 
@@ -251,26 +250,28 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 				for (int i = 0; i < count; i++) {
 					final EMConversation value = mOriginalValues.get(i);
 					String username = value.getUserName();
-					
-					EMGroup group = EMGroupManager.getInstance().getGroup(username);
-					if(group != null){
+
+					EMGroup group = EMGroupManager.getInstance().getGroup(
+							username);
+					if (group != null) {
 						username = group.getGroupName();
 					}
 
 					// First match against the whole ,non-splitted value
 					if (username.startsWith(prefixString)) {
 						newValues.add(value);
-					} else{
-						  final String[] words = username.split(" ");
-	                        final int wordCount = words.length;
+					} else {
+						final String[] words = username.split(" ");
+						final int wordCount = words.length;
 
-	                        // Start at index 0, in case valueText starts with space(s)
-	                        for (int k = 0; k < wordCount; k++) {
-	                            if (words[k].startsWith(prefixString)) {
-	                                newValues.add(value);
-	                                break;
-	                            }
-	                        }
+						// Start at index 0, in case valueText starts with
+						// space(s)
+						for (int k = 0; k < wordCount; k++) {
+							if (words[k].startsWith(prefixString)) {
+								newValues.add(value);
+								break;
+							}
+						}
 					}
 				}
 
@@ -281,11 +282,12 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		}
 
 		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
+		protected void publishResults(CharSequence constraint,
+				FilterResults results) {
 			conversationList.clear();
 			conversationList.addAll((List<EMConversation>) results.values);
 			if (results.count > 0) {
-			    notiyfyByFilter = true;
+				notiyfyByFilter = true;
 				notifyDataSetChanged();
 			} else {
 				notifyDataSetInvalidated();
@@ -294,14 +296,14 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		}
 
 	}
-	
+
 	@Override
 	public void notifyDataSetChanged() {
-	    super.notifyDataSetChanged();
-	    if(!notiyfyByFilter){
-            copyConversationList.clear();
-            copyConversationList.addAll(conversationList);
-            notiyfyByFilter = false;
-        }
+		super.notifyDataSetChanged();
+		if (!notiyfyByFilter) {
+			copyConversationList.clear();
+			copyConversationList.addAll(conversationList);
+			notiyfyByFilter = false;
+		}
 	}
 }

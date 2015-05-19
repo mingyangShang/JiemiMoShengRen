@@ -22,7 +22,9 @@
     
     <string name="title_game">记忆快块</string>
     <string name="hint_name">用户名</string>
+    <string name="title_shake">摇一摇</string>
     <string name="edit_hint_name">请输入用户名</string>
+    <string name="please_login">请先登录</string>
     <string name="hint_pwd">密码</string>
     <string name="edit_hint_pwd">请输入登录密码</string>
     <string name="hint_pwd2">确认密码</string>
@@ -30,6 +32,7 @@
     <string name="hint_sex">性别</string>
     <string name="hint_sex_female">女</string>
     <string name="hint_sex_male">男</string>
+    <string name="hint_no_sign">暂未设置签名</string>
     <string name="net_error">网络断开</string>
     <string name="start">开始游戏</string>
     <string name="error_to_get_img">抱歉，获取图片失败</string>

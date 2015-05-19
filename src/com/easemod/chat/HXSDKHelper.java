@@ -171,34 +171,6 @@ public abstract class HXSDKHelper {
         return hxModel;
     }
     
-    public String getHXId(){
-        if(hxId == null){
-            hxId = hxModel.getHXId();
-        }
-        return hxId;
-    }
-    
-    public String getPassword(){
-        if(password == null){
-            password = hxModel.getPwd();
-        }
-        return password;    
-    }
-    
-    public void setHXId(String hxId){
-        if (hxId != null) {
-            if(hxModel.saveHXId(hxId)){
-                this.hxId = hxId;
-            }
-        }
-    }
-    
-    public void setPassword(String password){
-        if(hxModel.savePassword(password)){
-            this.password = password;
-        }
-    }
-    
     /**
      * the subclass must override this class to provide its own model or directly use {@link DefaultHXSDKModel}
      * @return
@@ -248,7 +220,7 @@ public abstract class HXSDKHelper {
      * logout HuanXin SDK
      */
     public void logout(final EMCallBack callback){
-        setPassword(null);
+        getModel().getMe().setPwd(""); //设置密码为空
         EMChatManager.getInstance().logout(new EMCallBack(){
 
             public void onSuccess() {

@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@drawable/top_bar_normal_bg"
         android:gravity="center_vertical" >
 
         <TextView
@@ -62,18 +61,18 @@
             </LinearLayout>
 
             <include
-                android:id="@+id/search_bar_view"
-                layout="@layout/search_bar_with_padding" />
+                android:id="@+id/shake"
+                layout="@layout/shake" />
 
             <ListView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/search_bar_view"
+                android:layout_below="@+id/shake"
                 android:background="@android:color/transparent"
                 android:cacheColorHint="#00000000"
                 android:descendantFocusability="afterDescendants"
-                android:divider="@color/divider_list"
+                android:divider="@drawable/divider"
                 android:dividerHeight="1px"
                 android:fastScrollEnabled="false" />
 

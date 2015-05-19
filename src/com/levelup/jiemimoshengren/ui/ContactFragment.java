@@ -51,8 +51,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 	private boolean hidden;
 	private Sidebar sidebar;
 	private InputMethodManager inputMethodManager;
-	ImageButton clearSearch;
-	EditText query;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,34 +70,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 		
 		//添加按钮
 		getView().findViewById(R.id.iv_new_contact).setOnClickListener(this);
-		
-		//搜索框
-		query = (EditText) getView().findViewById(R.id.query);
-		query.setHint(R.string.search);
-		clearSearch = (ImageButton) getView().findViewById(R.id.search_clear);
-		query.addTextChangedListener(new TextWatcher() {
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				adapter.getFilter().filter(s);
-				if (s.length() > 0) {
-					clearSearch.setVisibility(View.VISIBLE);
-				} else {
-					clearSearch.setVisibility(View.INVISIBLE);
-					
-				}
-			}
-
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			public void afterTextChanged(Editable s) {
-			}
-		});
-		clearSearch.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				query.getText().clear();
-				hideSoftKeyboard();
-			}
-		});
 		
 		// 设置adapter
 		adapter = new ContactAdapter(getActivity(), R.layout.row_contact, contactList);
@@ -130,8 +100,12 @@ public class ContactFragment extends Fragment implements OnClickListener{
 				return false;
 			}
 		});
+		getView().findViewById(R.id.shake).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				startActivity(new Intent(getActivity(),ShakeActivity.class));
+			}
+		});
 		registerForContextMenu(listView);
-
 	}
 
 /*	@Override
@@ -242,7 +216,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 		contactList.clear();
 		//获取本地好友列表
 		Map<String, User> users = SmyApplication.getSingleton().getContacts();
-		System.out.println("users:"+users);
 		Iterator<Entry<String, User>> iterator = users.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<String, User> entry = iterator.next();

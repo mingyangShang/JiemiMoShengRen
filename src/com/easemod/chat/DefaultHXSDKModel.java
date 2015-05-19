@@ -23,9 +23,11 @@ import java.util.Map;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 import com.levelup.jiemimoshengren.db.UserDao;
+import com.levelup.jiemimoshengren.model.User;
 
 /**
  * HuanXin default SDK Model implementation
@@ -35,6 +37,11 @@ import com.levelup.jiemimoshengren.db.UserDao;
 public class DefaultHXSDKModel extends HXSDKModel{
     private static final String PREF_USERNAME = "username";
     private static final String PREF_PWD = "pwd";
+    private static final String PREF_SEX = "female";
+    private static final String PREF_SIGN = "sign";
+    private static final String PREF_NICK = "nick";
+    private static final String PREF_IMG = "img";
+    
     UserDao dao = null;
     protected Context context = null;
     protected Map<Key,Object> valueCache = new HashMap<Key,Object>();
@@ -122,30 +129,6 @@ public class DefaultHXSDKModel extends HXSDKModel{
     }
 
     @Override
-    public boolean saveHXId(String hxId) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.edit().putString(PREF_USERNAME, hxId).commit();
-    }
-
-    @Override
-    public String getHXId() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(PREF_USERNAME, null);
-    }
-
-    @Override
-    public boolean savePassword(String pwd) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.edit().putString(PREF_PWD, pwd).commit();    
-    }
-
-    @Override
-    public String getPwd() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(PREF_PWD, null);
-    }
-
-    @Override
     public String getAppProcessName() {
         return null;
     }
@@ -206,4 +189,36 @@ public class DefaultHXSDKModel extends HXSDKModel{
         DisabledGroups,
         DisabledIds
     }
+
+	@Override
+	public boolean saveMe(User me) {
+		 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		 Editor editor = preferences.edit();
+		 editor.putString(PREF_USERNAME,me.getUsername());
+		 editor.putString(PREF_PWD, me.getPwd());
+		 editor.putBoolean(PREF_SEX, me.isFemale());
+		 editor.putString(PREF_SIGN, me.getSign());
+		 editor.putString(PREF_NICK, me.getNick());
+		 editor.putString(PREF_IMG,me.getImgUrl());
+		 return editor.commit();
+	}
+
+	@Override
+	public User getMe() {
+		User me = new User();
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		final String userName = preferences.getString(PREF_USERNAME, "");
+		final String userNick = preferences.getString(PREF_NICK, "");
+		final boolean userSex = preferences.getBoolean(PREF_SEX, true);
+		final String userSign = preferences.getString(PREF_SIGN, "");
+		final String userPwd = preferences.getString(PREF_PWD, "");
+		final String userImg = preferences.getString(PREF_IMG, "");
+		me.setPwd(userPwd);
+		me.setUsername(userName);
+		me.setNick(userNick);
+		me.setFemale(userSex);
+		me.setSign(userSign);
+		me.setImgUrl(userImg);
+		return me;
+	}
 }

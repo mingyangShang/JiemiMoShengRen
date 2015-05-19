@@ -210,7 +210,7 @@ public class MsgFragment extends Fragment implements
 			long id) {
 		EMConversation conversation = adapter.getItem(position);
 		String username = conversation.getUserName();
-		if (username.equals(SmyApplication.getSingleton().getUserName())) {
+		if (username.equals(SmyApplication.getSingleton().getMe().getUsername())) {
 			final String hintMsg = getResources().getString(
 					R.string.Cant_chat_with_yourself);
 			Toast.makeText(getActivity(), hintMsg, Toast.LENGTH_SHORT).show();

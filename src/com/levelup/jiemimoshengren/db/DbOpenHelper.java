@@ -59,7 +59,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	}
 	
 	private static String getUserDatabaseName() {
-        return  HXSDKHelper.getInstance().getHXId() + "_demo.db";
+        return  HXSDKHelper.getInstance().getModel().getMe().getUsername() + "_demo.db";
     }
 	
 	@Override

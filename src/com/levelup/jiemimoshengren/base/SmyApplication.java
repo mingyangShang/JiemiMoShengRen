@@ -6,6 +6,8 @@ import android.app.Application;
 import android.app.DownloadManager.Request;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
+import android.view.TextureView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -27,9 +29,6 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
  */
 public class SmyApplication extends Application {
 	private static SmyApplication singleton; // Application单例
-
-	// 登录的用户名
-	private final String PREF_USERNAME = "username";
 
 	private User me; // 当前用户
 
@@ -116,48 +115,30 @@ public class SmyApplication extends Application {
 		hxSdkHelper.setContactList(contactList);
 	}*/
 
-	/**
-	 * 获取当前登陆用户名
-	 */
-	public String getUserName() {
-		return hxSdkHelper.getHXId();
-	}
-
-	/**
-	 * 获取密码
-	 */
-	public String getPassword() {
-		return hxSdkHelper.getPassword();
-	}
-
-	/**
-	 * 设置用户名
-	 */
-	public void setUserName(String username) {
-		hxSdkHelper.setHXId(username);
-	}
-
-	/**
-	 * 设置密码 下面的实例代码 只是demo，实际的应用中需要加password 加密后存入 preference 环信sdk
-	 * 内部的自动登录需要的密码，已经加密存储了
-	 */
-	public void setPassword(String pwd) {
-		hxSdkHelper.setPassword(pwd);
-	}
-
 	public User getMe() {
-		return me;
+		if(me!=null && me.getUsername()!=null && TextUtils.isEmpty(me.getUsername())){
+			return me;
+		}else{
+			me =  hxSdkHelper.getMe();
+			return me;
+		}
 	}
 
 	public void setMe(User me) {
 		this.me = me;
+		hxSdkHelper.setMe(me);
 	}
 
 	public Map<String, User> getContacts() {
+		if(contacts==null){
+			contacts =  hxSdkHelper.getContactList();
+		}
 		return contacts;
 	}
 
 	public void setContacts(Map<String, User> contacts) {
 		this.contacts = contacts;
+		hxSdkHelper.setContactList(contacts);
 	}
+	
 }

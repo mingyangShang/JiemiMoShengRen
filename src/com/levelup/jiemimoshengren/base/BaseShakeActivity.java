@@ -19,6 +19,7 @@ public abstract class BaseShakeActivity extends DefaultActivity implements Senso
 
     @Override
     protected void initData(){
+    	super.initData();
     	sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         vibrator = (Vibrator)getSystemService(Service.VIBRATOR_SERVICE);
         //TODO 子类在此创建一个OnShakeSuccessListener

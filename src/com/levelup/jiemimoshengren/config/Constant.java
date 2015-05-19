@@ -21,7 +21,7 @@ public class Constant {
 	public static final String ACCOUNT_REMOVED = "account_removed";
 	
 	//服务器交互配置
-	public static final String HOST = "http://192.168.54.94:5000"; //主机名
+	public static final String HOST = "http://192.168.0.124:5000"; //主机名
 	public static final String URL_REGISTER = HOST +"/user/register"; //注册url
 	public static final String URL_LOGIN = HOST + "/user/login"; //登录url
 	public static final String URL_UPLOAD = HOST + "/user/upload_img"; //上传图片url

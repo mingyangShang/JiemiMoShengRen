@@ -284,7 +284,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 				.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "demo");
 		toChatUsername = getIntent().getStringExtra("userId");
 		final String userNick = SmyApplication.getSingleton().getContacts().get(toChatUsername).getNick();
-		System.out.println("userNick:"+userNick);
 		((TextView) findViewById(R.id.name)).setText(userNick);
 		conversation = EMChatManager.getInstance().getConversation(
 				toChatUsername);
@@ -362,7 +361,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 				Intent intent = new Intent(this, ForwardMessageActivity.class);
 				intent.putExtra("forward_msg_id", forwardMsg.getMsgId());
 				startActivity(intent);
-
 				break;
 
 			default:
@@ -479,7 +477,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	/**
 	 * 消息图标点击事件
-	 * 
 	 * @param view
 	 */
 	public void onClick(View view) {
@@ -535,7 +532,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	/**
 	 * 事件监听
-	 * 
 	 * see {@link EMNotifierEvent}
 	 */
 	public void onEvent(EMNotifierEvent event) {
@@ -579,7 +575,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 			break;
 		}
 		System.out.println("onevenetfinish");
-
 	}
 
 	private void refreshUIWithNewMessage() {
@@ -610,7 +605,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 		}
 
 		cameraFile = new File(PathUtil.getInstance().getImagePath(),
-				((SmyApplication)SmyApplication.getSingleton()).getUserName()
+				((SmyApplication)SmyApplication.getSingleton()).getMe().getUsername()
 						+ System.currentTimeMillis() + ".jpg");
 		cameraFile.getParentFile().mkdirs();
 		startActivityForResult(

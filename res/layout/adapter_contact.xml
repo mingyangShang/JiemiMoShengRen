@@ -1,42 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:id="@+id/tv_contact_index"
-        android:paddingRight="4.0dip"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_contact_index"
+        style="@style/MMListCatalog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/MMListCatalog" />
+        android:paddingRight="4.0dip" />
+
     <RelativeLayout
         android:id="@+id/layout_contact"
-        android:paddingLeft="8.0dip"
+        style="@style/MMListItem"
         android:layout_width="match_parent"
         android:layout_height="56.0dip"
-        style="@style/MMListItem"
-        >
-        <ImageView
+        android:paddingLeft="8.0dip" >
+
+        <com.levelup.jiemimoshengren.widget.CircularImageView
             android:id="@+id/img_head"
-            android:src="@drawable/icon"
+            android:layout_width="@dimen/contact_img_size"
+            android:layout_height="@dimen/contact_img_size"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:layout_width="@dimen/contact_img_size"
-            android:layout_height="@dimen/contact_img_size" />
+            android:src="@drawable/icon" />
+
         <TextView
             android:id="@+id/tv_name"
-            android:text="商明阳"
-            android:layout_toRightOf="@id/img_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"/>
-        <!--<CheckBox-->
-            <!--android:id="@+id/contactitem_select_cb"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:focusable="false"-->
-            <!--android:focusableInTouchMode="false"-->
-            <!--android:visibility="visible"-->
-            <!--android:clickable="false"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginRight="21.0dip" />-->
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/img_head"
+            android:text="商明阳"
+            android:textColor="@color/app_contact_name_color" />
+        <!-- <CheckBox -->
+        <!-- android:id="@+id/contactitem_select_cb" -->
+        <!-- android:layout_alignParentRight="true" -->
+        <!-- android:layout_centerVertical="true" -->
+        <!-- android:focusable="false" -->
+        <!-- android:focusableInTouchMode="false" -->
+        <!-- android:visibility="visible" -->
+        <!-- android:clickable="false" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:layout_marginRight="21.0dip" /> -->
     </RelativeLayout>
+
 </LinearLayout>

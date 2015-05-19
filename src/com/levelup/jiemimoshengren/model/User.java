@@ -23,6 +23,7 @@ public class User extends EMContact {
 	private String sign;
 	private boolean isFemale;
 	private String imgUrl;
+	private String pwd;
 	
 	public static final String SEX_FEMALE = "F",SEX_MALE = "M";
 
@@ -50,7 +51,11 @@ public class User extends EMContact {
 	}
 
 	public void setSign(String sign) {
-		this.sign = sign;
+		if(sign == null){
+			this.sign = "";
+		}else{
+			this.sign = sign;
+		}
 	}
 
 	public User(String username) {
@@ -107,6 +112,16 @@ public class User extends EMContact {
 
 	@Override
 	public String toString() {
-		return "username:"+username+",usernick:"+(nick==null?"null":nick+",female:"+isFemale);
+		return "username:"+username+",url:"+imgUrl+",usernick:"+(nick==null?"null":nick+",female:"+isFemale);
+	}
+
+
+	public String getPwd() {
+		return pwd;
+	}
+
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
 	}
 }

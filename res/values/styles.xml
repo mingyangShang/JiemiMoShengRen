@@ -129,7 +129,7 @@
         <item name="android:textColor">#ff00ff</item>
         <item name="android:layout_width">@dimen/game_num_size</item>
         <item name="android:layout_height">@dimen/game_num_size</item>
-        <item name="android:background">@drawable/game_num_back</item>
+        <item name="android:src">@drawable/game_num_back</item>
     </style>
 
     <style name="LeftGameBtnStyle" parent="GameBtnStyle"></style>
@@ -145,7 +145,7 @@
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -162,67 +162,97 @@
     <style name="MyDialogStyleBottom" parent="android:Theme.Dialog">
         <item name="android:windowAnimationStyle">@style/AnimBottom</item>
         <item name="android:windowFrame">@null</item>
-        <!-- 边框 -->        <item name="android:windowIsFloating">true</item>
-        <!-- 是否浮现在activity之上 -->        <item name="android:windowIsTranslucent">true</item>
-        <!-- 半透明 -->        <item name="android:windowNoTitle">true</item>
-        <!-- 无标题 -->        <item name="android:windowBackground">@android:color/transparent</item>
-        <!-- 背景透明 -->        <item name="android:backgroundDimEnabled">true</item>
-		<!-- 模糊 -->  	</style>
-	<!-- 游戏界面水平进度条样式 -->
-	<style name="PBHorizontal">
-	    <item name="android:indeterminateOnly">false</item>
-	    <item name="android:progressDrawable">@drawable/pb_h</item>
-	    <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
-	    <item name="android:minHeight">@dimen/game_pb_height</item>
-	    <item name="android:maxHeight">@dimen/game_pb_height</item>
-	</style>
-	
-	<!-- 注册界面 -->
-	<style name="RegiFormItemStyle">
-	    <item name="android:layout_width">match_parent</item>ss
-	    <item name="android:layout_height">@dimen/regi_form_item_height</item>
-	    <item name="android:orientation">horizontal</item>
-	    <item name="android:gravity">center_vertical</item>
-	</style>
-	<style name="RegiTextStyle">
-	    <item name="android:textSize">@dimen/medium_text_size</item>
-	    <item name="android:layout_width">0dp</item>
-	    <item name="android:layout_weight">1</item>
-	    <item name="android:layout_height">@dimen/regi_form_item_height</item>
-	    <item name="android:gravity">center</item>
-	    <item name="android:singleLine">true</item>
-	    <item name="android:textColor">@color/app_text_color</item>
-	</style>
-	<style name="RegiHintStyle">
-	    <item name="android:textSize">@dimen/medium_text_size</item>
-	    <item name="android:layout_width">0dp</item>
-	    <item name="android:layout_weight">3.5</item>
-	    <item name="android:layout_height">@dimen/regi_form_item_height</item>
-	    <item name="android:background">@null</item>
-	    <item name="android:imeOptions">actionNext</item>
-	    <item name="android:textColor">@color/app_text_color</item>
-	</style>
-	<style name="RegiVLineStyle">
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:layout_width">wrap_content</item>
-	    <item name="android:background">@drawable/vline</item>
-	    <item name="android:layout_marginTop">4dp</item>
-	    <item name="android:layout_marginBottom">4dp</item>
-	    <item name="android:layout_marginLeft">4dp</item>
-	    <item name="android:layout_marginRight">4dp</item>
-	</style>
-	<style name="RegiHLineStyle">
-	    <item name="android:layout_height">1.5dp</item>
-	    <item name="android:layout_width">match_parent</item>
-	    <item name="android:background">@drawable/regi_hline</item>
-	</style>
-	<style name="RegiSexRbStyle" >
-	    <item name="android:layout_width">wrap_content</item>
-	     <item name="android:layout_height">wrap_content</item>
-	     <item name="android:button">@drawable/regi_rb_selector</item>
-	     <item name="android:textSize">@dimen/medium_text_size</item>
-	     <item name="android:textColor">@color/app_text_color</item>
-	</style>
+        <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 模糊 -->
+    </style>
+    <!-- 游戏界面水平进度条样式 -->
+    <style name="PBHorizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/pb_h</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:minHeight">@dimen/game_pb_height</item>
+        <item name="android:maxHeight">@dimen/game_pb_height</item>
+    </style>
+
+    <!-- 注册界面 -->
+    <style name="RegiFormItemStyle">
+        <item name="android:layout_width">match_parent</item>
+ss        <item name="android:layout_height">@dimen/regi_form_item_height</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="RegiTextStyle">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">@dimen/regi_form_item_height</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/app_text_color</item>
+    </style>
+
+    <style name="RegiHintStyle">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">3.5</item>
+        <item name="android:layout_height">@dimen/regi_form_item_height</item>
+        <item name="android:background">@null</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:textColor">@color/app_text_color</item>
+    </style>
+
+    <style name="RegiVLineStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/vline</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+    </style>
+
+    <style name="RegiHLineStyle">
+        <item name="android:layout_height">1.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/regi_hline</item>
+    </style>
+
+    <style name="RegiSexRbStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@drawable/regi_rb_selector</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textColor">@color/app_text_color</item>
+    </style>
+
+    <!-- 个人信息 -->
+    <style name="UserInfoTextStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/app_text_color</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="HLineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/app_white_back</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+    </style>
     <!--
     <style name="chat_text_date_style">
         <item name="android:padding">2dp</item>
@@ -355,7 +385,7 @@
         <item name="android:paddingBottom">6.0dip</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/edit_text_bg</item>
-    </style>
+    </style>
     -->
 
 </resources>

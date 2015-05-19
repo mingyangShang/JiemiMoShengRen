@@ -21,8 +21,6 @@
                 />
             <solid android:color="#d84a4b"/>
         </shape>
-        
-        
     </item>
 
 </selector>

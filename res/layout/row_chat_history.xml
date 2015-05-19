@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="59dp"
+    android:layout_height="@dimen/msg_item_height"
+    android:background="@android:color/transparent"
      android:id="@+id/list_item_layout"
     android:gravity="center_vertical" >
 
     <RelativeLayout
         android:id="@+id/avatar_container"
-        android:layout_width="59dp"
+        android:layout_width="@dimen/msg_item_height"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true" >
 
-      <ImageView
+      <com.levelup.jiemimoshengren.widget.CircularImageView
             android:id="@+id/avatar"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="@dimen/msg_img_size"
+            android:layout_height="@dimen/msg_img_size"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:scaleType="fitXY"

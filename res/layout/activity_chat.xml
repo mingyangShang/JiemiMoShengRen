@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="#f2f0eb" >
+    android:background="@drawable/main_bg" >
 
     <RelativeLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@drawable/top_bar_normal_bg"
         android:gravity="center_vertical" >
 
         <include layout="@layout/commom_back_btn" />

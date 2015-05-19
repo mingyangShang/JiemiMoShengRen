@@ -23,7 +23,7 @@
         android:background="@drawable/mm_listitem"
         android:duplicateParentState="true" >
 
-        <ImageView
+        <com.levelup.jiemimoshengren.widget.CircularImageView
             android:id="@+id/avatar"
             android:layout_width="43dp"
             android:layout_height="43dp"

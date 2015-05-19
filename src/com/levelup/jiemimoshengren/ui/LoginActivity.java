@@ -26,12 +26,17 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -52,10 +57,8 @@ import com.smy.volley.extend.EasyJsonObject;
 
 /**
  * 登陆页面
- * 
  */
 public class LoginActivity extends DefaultActivity implements OnCancelListener{
-
 	public static final int REQUEST_CODE_SETNICK = 1;
 	private EditText usernameEditText;
 	private EditText passwordEditText;
@@ -101,11 +104,28 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
 			public void afterTextChanged(Editable s) {}
 		});
-		if (SmyApplication.getSingleton().getUserName() != null) {
-			usernameEditText.setText(SmyApplication.getSingleton().getUserName());
+		if (SmyApplication.getSingleton().getMe().getNick() != null) {
+			usernameEditText.setText(SmyApplication.getSingleton().getMe().getNick());
 		}
+		
 	}
 
+	public Bitmap setPictureSize(int id, float sx, float sy){
+//		Bitmap bitmap = ((BitmapDrawable)getResources().getDrawable(id)).getBitmap();
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), id);
+		int screen_width = getResources().getDisplayMetrics().widthPixels;
+		int screen_height = getResources().getDisplayMetrics().heightPixels;
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		float scaleX = (float)(screen_width * sx) / width;
+		float scaleY = (float)(screen_height * sy) / height;
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleX, scaleY);
+		Bitmap bitmap2 = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+		Canvas canvas = new Canvas();
+		canvas.drawBitmap(bitmap2, matrix, null);
+		return bitmap2;
+	}
 	/**登录,绑定在xml中*/
 	public void login(View view) {
 		if (!CommonUtils.isNetWorkConnected(this)) {
@@ -186,6 +206,7 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 		// 添加user"申请与通知"
 		User newFriends = new User();
 		newFriends.setUsername(Constant.NEW_FRIENDS_USERNAME);
+		newFriends.setHeader("");
 		newFriends.setNick(getString(R.string.Application_and_notify));
 		userlist.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
 
@@ -228,8 +249,8 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 		EMChatManager.getInstance().login(uid, password, new EMCallBack() {
 			public void onSuccess() {
 				// 登陆成功，保存用户名密码
-				SmyApplication.getSingleton().setUserName(currentUsername);
-				SmyApplication.getSingleton().setPassword(currentPassword);
+//				SmyApplication.getSingleton().setUserName(currentUsername);
+//				SmyApplication.getSingleton().setPassword(currentPassword);
 				SmyApplication.getSingleton().setMe(me);
 				runOnUiThread(new Runnable() {
 					public void run() {
@@ -286,6 +307,8 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener{
 					me.setNick(msgJsonObject.getString("nick"));
 					me.setImgUrl(msgJsonObject.getString("head"));
 					me.setFemale(msgJsonObject.getString("sex").equals(User.SEX_FEMALE));
+					me.setSign(msgJsonObject.getString("sign"));
+					me.setPwd(msgJsonObject.getString("pass"));
 					//环信登录，使用id和password
 					huanxinLogin(me.getUsername(), password);
 				}else{ //登录失败

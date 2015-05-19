@@ -44,7 +44,6 @@ import com.levelup.jiemimoshengren.utils.UserUtils;
 
 /**
  * 显示所有聊天记录adpater
- * 
  */
 public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 
@@ -83,28 +82,17 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 					.findViewById(R.id.list_item_layout);
 			convertView.setTag(holder);
 		}
-		if (position % 2 == 0) {
-			holder.list_item_layout
-					.setBackgroundResource(R.drawable.mm_listitem);
-		} else {
-			holder.list_item_layout
-					.setBackgroundResource(R.drawable.mm_listitem_grey);
-		}
-
-		// 获取与此用户/群组的会话
 		EMConversation conversation = getItem(position);
 		// 获取用户username或者群组groupid
 		final String username = SmyApplication.getSingleton().getContacts()
 				.get(conversation.getUserName()).getNick();
-		EMContact contact = null;
-		UserUtils.setUserAvatar(getContext(), username, holder.avatar);
+		UserUtils.setUserAvatar(getContext(), conversation.getUserName(), holder.avatar);
 		if (username.equals(Constant.GROUP_USERNAME)) {
 			holder.name.setText("群聊");
 		} else if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
 			holder.name.setText("申请与通知");
 		}
 		holder.name.setText(username);
-
 		if (conversation.getUnreadMsgCount() > 0) {
 			// 显示与此用户的消息未读数
 			holder.unreadLabel.setText(String.valueOf(conversation
@@ -134,7 +122,6 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 				holder.msgState.setVisibility(View.GONE);
 			}
 		}
-
 		return convertView;
 	}
 

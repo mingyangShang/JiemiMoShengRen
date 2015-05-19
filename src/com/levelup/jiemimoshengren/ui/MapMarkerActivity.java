@@ -220,16 +220,9 @@ public class MapMarkerActivity extends BaiduMapActivity {
 			}
 			lastLocation = location;
 			mBaiduMap.clear();
-			LatLng llA = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-			CoordinateConverter converter= new CoordinateConverter();
-			converter.coord(llA);
-			converter.from(CoordinateConverter.CoordType.COMMON);
-			LatLng convertLatLng = converter.convert();
-			System.out.println("long:"+llA.longitude+",lati:"+llA.latitude);
-			addMarker(llA);
-//			addMarker(new LatLng(39.085721,121.819113));
-			MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(convertLatLng, 17.0f);
-			mBaiduMap.animateMapStatus(u);
+			LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+			addMarker(latLng);
+//			addTextMarker(latLng, "商明阳");
 		}
 
 		public void onReceivePoi(BDLocation poiLocation) {

@@ -18,6 +18,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.easemod.chat.HXSDKHelper;
+import com.levelup.jiemimoshengren.base.SmyApplication;
 
 public class DbOpenHelper extends SQLiteOpenHelper{
 
@@ -59,7 +60,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	}
 	
 	private static String getUserDatabaseName() {
-        return  HXSDKHelper.getInstance().getModel().getMe().getUsername() + "_demo.db";
+        return  SmyApplication.getSingleton().getMe().getUsername() + "_demo.db";
     }
 	
 	@Override

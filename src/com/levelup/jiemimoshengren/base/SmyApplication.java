@@ -13,6 +13,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.easemob.EMCallBack;
 import com.easemob.media.IGxStatusCallback;
+import com.easemod.chat.HXSDKHelper;
 import com.easemod.chat.SmyHXSDKHelper;
 import com.levelup.jiemimoshengren.model.User;
 import com.levelup.jiemimoshengren.utils.SystemInfoUtil;
@@ -139,6 +140,10 @@ public class SmyApplication extends Application {
 	public void setContacts(Map<String, User> contacts) {
 		this.contacts = contacts;
 		hxSdkHelper.setContactList(contacts);
+	}
+	
+	public static SmyHXSDKHelper getSdkHelper(){
+		return hxSdkHelper;
 	}
 	
 }

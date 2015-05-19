@@ -11,6 +11,9 @@ import android.hardware.SensorEvent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
@@ -23,7 +26,6 @@ import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.BaseShakeActivity;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.model.FindUser;
-import com.levelup.jiemimoshengren.model.User;
 import com.smy.volley.extend.EasyJsonObject;
 /**摇一摇*/
 public class ShakeActivity extends BaseShakeActivity {
@@ -31,6 +33,8 @@ public class ShakeActivity extends BaseShakeActivity {
 	
 	private LocationClient mLocClient;
 	private BDLocation mLastLocation; //上次的位置
+	
+	private ImageView shakeImg; //摇一摇的图片
 	
 	private boolean canShake = true; //控制避免摇一摇多次请求
 	private Handler handler = new Handler(){
@@ -57,6 +61,7 @@ public class ShakeActivity extends BaseShakeActivity {
 				//摇一摇成功，向服务器发送自己的位置等信息
 				if(!canShake){return ;}
 				System.out.println("摇一摇成功");
+				startAnim(); //开始播放
 				if(mLastLocation!=null){
 					if(meNotNull() && canShake){
 						canShake = false;
@@ -95,8 +100,22 @@ public class ShakeActivity extends BaseShakeActivity {
 	
 	@Override
 	protected void initView() {
-		
+		shakeImg = (ImageView) findViewById(R.id.shake_iv);
 	}
+
+	/**开始动画*/
+	private void startAnim(){
+		Animation shake = AnimationUtils.loadAnimation(ShakeActivity.this, R.anim.shake);
+		shake.reset();
+		shake.setFillAfter(true);
+		shakeImg.startAnimation(shake);
+	}
+	
+	/**结束动画*/
+	private void endAnim(){
+		shakeImg.clearAnimation();
+	}
+
 	
 	@Override
 	protected void onPause(){
@@ -142,6 +161,7 @@ public class ShakeActivity extends BaseShakeActivity {
 		JSONObject secondShakeJson = makeSecondShakeJson(uid, latitude, longitude, lasttime);
 		requestQueue.add(new JsonObjectRequest(Constant.URL_SHAKE_SECOND, secondShakeJson, new Listener<JSONObject>() {
 			public void onResponse(JSONObject response) {
+				endAnim(); //停止动画播放
 				EasyJsonObject easyJsonObject = new EasyJsonObject(response);
 				if(easyJsonObject.getBoolean("success")){ //请求成功被响应
 					JSONArray findUsers = easyJsonObject.getStringAsJSONArray("msg");
@@ -199,6 +219,7 @@ public class ShakeActivity extends BaseShakeActivity {
 	@Override
 	public void onErrorResponse(VolleyError error) {
 		super.onErrorResponse(error);
+		endAnim();
 		canShake = true;
 	}
 	

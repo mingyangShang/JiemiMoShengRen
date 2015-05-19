@@ -28,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
@@ -46,14 +48,16 @@ public class RegisterActivity extends DefaultActivity {
 	private EditText userNameEditText;
 	private EditText passwordEditText;
 	private EditText confirmPwdEditText;
-	private ImageView headIv; //头像
-	private Bitmap headBmp; //头像bitmap
+	private ImageView headIv; // 头像
+	private Bitmap headBmp; // 头像bitmap
+	private RadioGroup rgSex; // 性别选择
 	private ProgressDialog progressDialog; // 显示进度对话框
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, R.layout.activity_register);
-		final String imgpath = Environment.getExternalStorageDirectory()+ "/beauty.jpg";
+		final String imgpath = Environment.getExternalStorageDirectory()
+				+ "/beauty.jpg";
 		System.out.println("imgpath:" + imgpath);
 	}
 
@@ -69,26 +73,29 @@ public class RegisterActivity extends DefaultActivity {
 		passwordEditText = (EditText) findViewById(R.id.password);
 		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
 		headIv = (ImageView) findViewById(R.id.img_head);
+		rgSex = (RadioGroup) findViewById(R.id.rg_sex);
 		resizeImg();
 	}
-	
-	/**适配图片*/
+
+	/** 适配图片 */
 	private void resizeImg() {
 		View regiBack = findViewById(R.id.layout_title);
-		Bitmap bmp = adaptiveToScreenWidth(BitmapFactory.decodeResource(getResources(),R.drawable.register_back));
-		regiBack.setBackgroundDrawable(new BitmapDrawable(getResources(),bmp));
+		Bitmap bmp = adaptiveToScreenWidth(BitmapFactory.decodeResource(
+				getResources(), R.drawable.register_back));
+		regiBack.setBackgroundDrawable(new BitmapDrawable(getResources(), bmp));
 		LayoutParams layoutParams = regiBack.getLayoutParams();
 		layoutParams.height = bmp.getHeight();
 		regiBack.setLayoutParams(layoutParams);
-		
+
 		View headBack = findViewById(R.id.img_circle);
 		layoutParams = headBack.getLayoutParams();
-		bmp = adaptive(R.drawable.head_circle,(int)(bmp.getHeight()*0.67),(int)(bmp.getHeight()*0.67 ));
-		headBack.setBackgroundDrawable(new BitmapDrawable(getResources(),bmp));
-		layoutParams.height = (int) (bmp.getHeight()*0.67);
+		bmp = adaptive(R.drawable.head_circle, (int) (bmp.getHeight() * 0.67),
+				(int) (bmp.getHeight() * 0.67));
+		headBack.setBackgroundDrawable(new BitmapDrawable(getResources(), bmp));
+		layoutParams.height = (int) (bmp.getHeight() * 0.67);
 		layoutParams.width = layoutParams.height;
 		headBack.setLayoutParams(layoutParams);
-		
+
 		bmp = adaptive(R.drawable.default_head, bmp.getWidth(), bmp.getHeight());
 		headIv.setImageBitmap(bmp);
 		headIv.setLayoutParams(layoutParams);
@@ -98,14 +105,15 @@ public class RegisterActivity extends DefaultActivity {
 	@Override
 	public void onErrorResponse(VolleyError error) {
 		super.onErrorResponse(error);
-		if(this.progressDialog!=null){
+		if (this.progressDialog != null) {
 			this.progressDialog.dismiss();
 		}
 	}
-	
-	/**跳到选择图片的界面*/
-	public void selectImg(View view){
-		startActivityForResult(new Intent(this,SelectImgPopupActivity.class),0);
+
+	/** 跳到选择图片的界面 */
+	public void selectImg(View view) {
+		startActivityForResult(new Intent(this, SelectImgPopupActivity.class),
+				0);
 	}
 
 	// 注册
@@ -134,21 +142,25 @@ public class RegisterActivity extends DefaultActivity {
 			progressDialog = new ProgressDialog(this);
 			progressDialog.setMessage(getString(R.string.Is_the_registered));
 			progressDialog.show();
-			if(headBmp==null){ //加载默认图片
-				headBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+			if (headBmp == null) { // 加载默认图片
+				headBmp = BitmapFactory.decodeResource(getResources(),
+						R.drawable.ic_launcher);
 			}
-			registerUser(username, pwd, "F", "hello:"+username,FileUtil.base64EncodeImg(headBmp));
+			String sex = rgSex.getCheckedRadioButtonId() == R.id.rb_male ? getString(R.string.hint_sex_male)
+					: getString(R.string.hint_sex_female);
+			registerUser(username, pwd, sex, "我是" + username,
+					FileUtil.base64EncodeImg(headBmp));
 		}
 	}
 
 	/** 注册用户 */
 	public void registerUser(final String nick, final String psw,
-			final String sex, final String sign,final String img) {
-		JSONObject regiJson = makeRegiJson(nick, psw, sex, sign,img);
+			final String sex, final String sign, final String img) {
+		JSONObject regiJson = makeRegiJson(nick, psw, sex, sign, img);
 		this.requestQueue.add(new JsonObjectRequest(Constant.URL_REGISTER,
 				regiJson, new Listener<JSONObject>() {
 					public void onResponse(JSONObject response) {
-						if(progressDialog!=null){
+						if (progressDialog != null) {
 							progressDialog.dismiss();
 						}
 						EasyJsonObject easyResp = new EasyJsonObject(response);
@@ -156,7 +168,7 @@ public class RegisterActivity extends DefaultActivity {
 						if (success) { // 注册成功
 							System.out.println("注册成功");
 							showMsgFromRes(R.string.Registered_successfully);
-							onRegisterSuccess(); //返回到登录界面
+							onRegisterSuccess(); // 返回到登录界面
 						} else { // 注册失败
 							showMsg(easyResp.getString("error")); // 显示错误信息
 						}
@@ -166,9 +178,11 @@ public class RegisterActivity extends DefaultActivity {
 
 	/**
 	 * 生成注册用的jsonobject
+	 * 
 	 * @throws JSONException
 	 */
-	private JSONObject makeRegiJson(String nick, String psw, String sex,String sign,String img) {
+	private JSONObject makeRegiJson(String nick, String psw, String sex,
+			String sign, String img) {
 		EasyJsonObject json = new EasyJsonObject();
 		json.put("nick", nick);
 		json.put("password", psw);
@@ -184,5 +198,16 @@ public class RegisterActivity extends DefaultActivity {
 		intent.putExtra("username", userNameEditText.getText().toString());
 		setResult(RESULT_OK, intent);
 		finish();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(data!=null){
+			Bundle bundle = data.getExtras();
+			if(bundle!=null){
+				headBmp = bundle.getParcelable("data");
+				headIv.setImageBitmap(headBmp);
+			}
+		}
 	}
 }

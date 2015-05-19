@@ -13,9 +13,14 @@
  */
 package com.levelup.jiemimoshengren.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,10 +29,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.Response.Listener;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.easemob.EMConnectionListener;
 import com.easemob.EMEventListener;
 import com.easemob.EMNotifierEvent;
@@ -37,11 +43,11 @@ import com.easemob.chat.EMContactListener;
 import com.easemob.chat.EMContactManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMNotifier;
+import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.HanziToPinyin;
 import com.easemob.util.NetUtils;
-import com.easemod.chat.HXSDKHelper;
 import com.levelup.jiemimoshengren.R;
-import com.levelup.jiemimoshengren.base.BaseActivity;
+import com.levelup.jiemimoshengren.base.DefaultActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.db.InviteMessgeDao;
@@ -49,10 +55,17 @@ import com.levelup.jiemimoshengren.db.UserDao;
 import com.levelup.jiemimoshengren.model.InviteMessage;
 import com.levelup.jiemimoshengren.model.InviteMessage.InviteMesageStatus;
 import com.levelup.jiemimoshengren.model.User;
+import com.smy.volley.extend.EasyJsonObject;
 
-public class MainActivity extends BaseActivity implements EMEventListener {
+public class MainActivity extends DefaultActivity implements EMEventListener {
 
 	protected static final String TAG = "MainActivity";
+	private static final int ON_CONTACT_ADDED = 1;
+	private static final int ON_CONTACT_REMOVED = 2;
+	private static final int ON_CONTACT_INVITED = 3;
+	private static final int ON_CONTACT_REFUSED = 4;
+	private static final int ON_CONTACT_AGREED = 5;
+
 	// 未读消息textview
 	private TextView unreadLabel;
 	// 未读通讯录textview
@@ -66,6 +79,8 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private int index;
 	// 当前fragment的index
 	private int currentTabIndex;
+
+	private InviteMessgeDao messgeDao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +101,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 	@Override
 	protected void initData() {
+		super.initData();
 		inviteMessgeDao = new InviteMessgeDao(this);
 		userDao = new UserDao(this);
 		chatHistoryFragment = new MsgFragment();
@@ -102,6 +118,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 	@Override
 	protected void initView() {
+		super.initView();
 		unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
 		unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
 		mTabs = new ImageButton[3];
@@ -149,13 +166,14 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	 * 后加入的事件监听会先收到事件的通知 如果收到的事件，能够被处理并且不需要其他的监听再处理，可以返回true，否则返回false
 	 */
 	public void onEvent(EMNotifierEvent event) {
+		System.err.println("msg");
 		switch (event.getEvent()) {
-		case EventNewMessage: 
-			EMMessage message = (EMMessage) event.getData();
-			HXSDKHelper.getInstance().getNotifier().onNewMsg(message);
+		case EventNewMessage:
 			refreshUI();
+			EMMessage message = (EMMessage) event.getData();
+			SmyApplication.getSdkHelper().getNotifier().onNewMsg(message);
 			break;
-		case EventOfflineMessage: 
+		case EventOfflineMessage:
 			refreshUI();
 			break;
 		default:
@@ -167,8 +185,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private void refreshUI() {
 		runOnUiThread(new Runnable() {
 			public void run() {
-				// 刷新bottom bar消息未读数
-				updateUnreadLabel();
+				updateUnreadLabel(); // 刷新bottom bar消息未读数
 				if (currentTabIndex == 0) {
 					// 当前页面如果为聊天历史页面，刷新此页面
 					if (chatHistoryFragment != null) {
@@ -197,7 +214,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		}
 	}
 
-	/**刷新申请与通知消息数*/
+	/** 刷新申请与通知消息数 */
 	public void updateUnreadAddressLable() {
 		runOnUiThread(new Runnable() {
 			public void run() {
@@ -212,7 +229,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		});
 	}
 
-	/**获取未读申请与通知消息*/
+	/** 获取未读申请与通知消息 */
 	public int getUnreadAddressCountTotal() {
 		int unreadAddressCountTotal = 0;
 		if (SmyApplication.getSingleton().getContacts()
@@ -223,7 +240,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		return unreadAddressCountTotal;
 	}
 
-	/**获取未读消息数*/
+	/** 获取未读消息数 */
 	public int getUnreadMsgCountTotal() {
 		int unreadMsgCountTotal = 0;
 		unreadMsgCountTotal = EMChatManager.getInstance().getUnreadMsgsCount();
@@ -233,10 +250,10 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private InviteMessgeDao inviteMessgeDao;
 	private UserDao userDao;
 
-	/**好友变化Listener*/
+	/** 好友变化Listener */
 	private class MyContactListener implements EMContactListener {
 		public void onContactAdded(List<String> usernameList) {
-			// 保存增加的联系人
+			/*// 保存增加的联系人aaaa
 			Map<String, User> localUsers = SmyApplication.getSingleton()
 					.getContacts();
 			Map<String, User> toAddUsers = new HashMap<String, User>();
@@ -248,7 +265,12 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 				}
 				toAddUsers.put(username, user);
 			}
-			localUsers.putAll(toAddUsers);
+			localUsers.putAll(toAddUsers);*/
+			try {
+				processContacts(usernameList);
+			} catch (EaseMobException e) {
+				e.printStackTrace();
+			}
 			// 刷新ui
 			if (currentTabIndex == 1)
 				contactListFragment.refreshUI();
@@ -256,6 +278,19 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 		public void onContactDeleted(final List<String> usernameList) {
 			// 被删除
+			Map<String, User> localUsers = SmyApplication.getSingleton()
+					.getContacts();
+			for (String username : usernameList) {
+				User user = setUserHead(username);
+				// 添加好友时可能会回调added方法两次
+				if (localUsers.containsKey(username)) {
+					userDao.deleteContact(username);
+				}
+				localUsers.remove(username);
+			}
+			// SmyApplication.getSingleton().setContacts(localUsers); //重新设置
+			if (currentTabIndex == 1)
+				contactListFragment.refreshUI();
 		}
 
 		public void onContactInvited(String username, String reason) {
@@ -267,7 +302,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 					inviteMessgeDao.deleteMessage(username);
 				}
 			}
-			// 自己封装的javabean
 			InviteMessage msg = new InviteMessage();
 			msg.setFrom(username);
 			msg.setTime(System.currentTimeMillis());
@@ -276,7 +310,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			// 设置相应status
 			msg.setStatus(InviteMesageStatus.BEINVITEED);
 			notifyNewIviteMessage(msg);
-
+			// acceptInvitation(msg); //当被申请添加好友后马上自动同意对方
 		}
 
 		public void onContactAgreed(String username) {
@@ -293,16 +327,15 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			Log.d(TAG, username + "同意了你的好友请求");
 			msg.setStatus(InviteMesageStatus.BEAGREED);
 			notifyNewIviteMessage(msg);
-
 		}
 
 		public void onContactRefused(String username) {
-			// 参考同意，被邀请实现此功能,demo未实现
+			// 参考同意，被邀请实现此功能,TODO 暂时不考虑
 			Log.d(username, username + "拒绝了你的好友请求");
 		}
 	}
 
-	/**连接监听*/
+	/** 连接监听 */
 	private class MyConnectionListener implements EMConnectionListener {
 
 		public void onConnected() {
@@ -331,7 +364,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		}
 	}
 
-	/**保存提示新消息*/
+	/** 保存提示新消息 */
 	private void notifyNewIviteMessage(InviteMessage msg) {
 		saveInviteMsg(msg);
 		// 提示有新消息
@@ -343,12 +376,13 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			contactListFragment.refreshUI();
 	}
 
-	/**保存邀请等msg*/
+	/** 保存邀请等msg */
 	private void saveInviteMsg(InviteMessage msg) {
 		// 保存msg
 		inviteMessgeDao.saveMessage(msg);
 		// 未读数加1
-		User user = SmyApplication.getSingleton().getContacts().get(Constant.NEW_FRIENDS_USERNAME);
+		User user = SmyApplication.getSingleton().getContacts()
+				.get(Constant.NEW_FRIENDS_USERNAME);
 		if (user.getUnreadMsgCount() == 0)
 			user.setUnreadMsgCount(user.getUnreadMsgCount() + 1);
 	}
@@ -378,13 +412,166 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		return user;
 	}
 
+	/** 查询用户信息 */
+	protected User queryUserInfo(final String uid, final int flag,
+			final String... args) {
+		final User user = new User();
+		JSONObject contactQueryJson = makeQueryJson(uid);
+		requestQueue.add(new JsonObjectRequest(Constant.URL_CONTACTS_INFO,
+				contactQueryJson, new Listener<JSONObject>() {
+					public void onResponse(JSONObject response) {
+						EasyJsonObject contactsJson = new EasyJsonObject(
+								response);
+						if (contactsJson.getBoolean("success")) {
+							EasyJsonObject contact = contactsJson
+									.getStringAsJSONObject("msg");
+							processContact(contact, user);
+							processUser(user, flag, args);
+						} else {
+							showMsg(contactsJson.getString("error"));
+						}
+					}
+				}, this));
+		return user;
+	}
+
+	/** 产生查询用户信息的json */
+	private JSONObject makeQueryJson(final String uid) {
+		EasyJsonObject queryJson = new EasyJsonObject();
+		queryJson.put("uid", uid);
+		return queryJson;
+	}
+
+	/** 处理用户信息 */
+	private void processContact(EasyJsonObject contactJson, User user) {
+		user.setUsername(contactJson.getString("uid"));
+		user.setNick(contactJson.getString("nick"));
+		user.setFemale(contactJson.getString("sex").equals(User.SEX_FEMALE));
+		user.setSign(contactJson.getString("sign"));
+		user.setImgUrl(contactJson.getString("head"));
+		// setUserHeader(user.getUsername(),user);
+		// userlist.put(user.getUsername(), user);
+	}
+
+	/** 处理用户信息在好友申请，同意了或拒绝的请求 */
+	private void processUser(final User user, final int flag,
+			final String... args) {
+		switch (flag) {
+		case ON_CONTACT_ADDED: // 好友添加成功
+
+			break;
+		case ON_CONTACT_INVITED: // 被邀请
+			// 自己封装的javabean
+
+			break;
+		case ON_CONTACT_AGREED: // 邀请被同意
+			break;
+		case ON_CONTACT_REFUSED: // 申请被拒绝
+			break;
+		}
+	}
+
+	/**处理用户和群组信息*/
+	private void processContacts(List<String> usernames) throws EaseMobException {
+		//获得用户名后再向应用服务器查询用户的具体信息
+		JSONObject contactsQueryJson = makeContactsQueryJson(usernames);
+		requestQueue.add(new JsonObjectRequest(Constant.URL_CONTACTS_INFO,contactsQueryJson,new Listener<JSONObject>() {
+			public void onResponse(JSONObject response) {
+				EasyJsonObject contactsJson = new EasyJsonObject(response);
+				if(contactsJson.getBoolean("success")){
+					JSONArray contacts = contactsJson.getStringAsJSONArray("msg");
+					try {
+						processContacts(contacts);
+					} catch (JSONException e) {
+						e.printStackTrace();
+						System.err.println("解析contacts的json数据错误");
+					}
+				}
+			}
+		}, this));
+	}
+	
+	/**创建查询联系人信息的json*/
+	private JSONObject makeContactsQueryJson(List<String> usernames){
+		EasyJsonObject easyJsonObject = new EasyJsonObject();
+		StringBuffer contacts = new StringBuffer();
+		for(int i=0,size=usernames.size();i<size;++i){
+			contacts.append(usernames.get(i));
+			if(i!=size-1){
+				contacts.append(",");
+			}
+		}
+		easyJsonObject.put("contacts", contacts.toString());
+		return easyJsonObject;
+	}
+	
+	/**处理获得的好友信息
+	 * @throws JSONException */
+	private void processContacts(JSONArray contacts) throws JSONException{
+		//要添加的user
+		Map<String, User> userlist = new HashMap<String, User>();
+		for(int i=0,len=contacts.length();i<len;++i){
+			EasyJsonObject contact = new EasyJsonObject(contacts.getJSONObject(i));
+			User user = new User();
+			user.setUsername(contact.getString("uid"));
+			user.setNick(contact.getString("nick"));
+			user.setFemale(contact.getString("sex").equals(User.SEX_FEMALE));
+			user.setSign(contact.getString("sign"));
+			user.setImgUrl(contact.getString("head"));
+			setUserHeader(user.getUsername(),user);
+			userlist.put(user.getUsername(), user);
+		}
+		//加入现在的好友列表
+		Map<String,User> localUsers = SmyApplication.getSingleton().getContacts();
+		localUsers.putAll(userlist);
+		
+		// 存入内存
+		SmyApplication.getSingleton().setContacts(localUsers);
+		
+		// 存入db
+		UserDao dao = new UserDao(MainActivity.this);
+		List<User> users = new ArrayList<User>(localUsers.values());
+		dao.saveContactList(users);
+	}
+	
+	/**
+	 * 设置hearder属性，方便通讯中对联系人按header分类显示，以及通过右侧ABCD...字母栏快速定位联系人
+	 * @param username
+	 * @param user
+	 */
+	protected void setUserHeader(String username, User user) {
+		String headerName = null;
+		if (!TextUtils.isEmpty(user.getNick())) {
+			headerName = user.getNick();
+		} else {
+			headerName = user.getUsername();
+		}
+		if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
+			user.setHeader("");
+		} else if (Character.isDigit(headerName.charAt(0))) {
+			user.setHeader("#");
+		} else {
+			user.setHeader(HanziToPinyin.getInstance().get(headerName.substring(0, 1)).get(0).target.substring(0,1).toUpperCase());
+			char header = user.getHeader().toLowerCase().charAt(0);
+			if (header < 'a' || header > 'z') {
+				user.setHeader("#");
+			}
+		}
+	}
+
+
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		EMChatManager.getInstance().registerEventListener(this,
+		EMChatManager
+				.getInstance()
+				.registerEventListener(
+						this,
 						new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage });
+		updateUnreadLabel(); //进入界面时刷新未读消息提示数		
 	}
-
+	
 	@Override
 	protected void onStop() {
 		EMChatManager.getInstance().unregisterEventListener(this);

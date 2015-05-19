@@ -175,7 +175,7 @@ public class SettingFragment extends Fragment implements OnClickListener {
 		
 		chatOptions = EMChatManager.getInstance().getChatOptions();
 		
-		HXSDKModel model = HXSDKHelper.getInstance().getModel();
+		HXSDKModel model = SmyApplication.getSdkHelper().getModel();
 		
 		// 震动和声音总开关，来消息时，是否允许此开关打开
 		// the vibrate and sound notification are allowed or not?

@@ -29,28 +29,23 @@ import com.levelup.jiemimoshengren.model.InviteMessage;
 
 /**
  * 申请与通知
- *
  */
 public class NewFriendsMsgActivity extends BaseActivity {
 	private ListView listView;
+	private NewFriendsMsgAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_friends_msg);
+		super.onCreate(savedInstanceState,R.layout.activity_new_friends_msg);
 
 		listView = (ListView) findViewById(R.id.list);
 		InviteMessgeDao dao = new InviteMessgeDao(this);
 		List<InviteMessage> msgs = dao.getMessagesList();
 		//设置adapter
-		NewFriendsMsgAdapter adapter = new NewFriendsMsgAdapter(this, 1, msgs); 
+		adapter = new NewFriendsMsgAdapter(this, 1, msgs); 
 		listView.setAdapter(adapter);
 		SmyApplication.getSingleton().getContacts().get(Constant.NEW_FRIENDS_USERNAME).setUnreadMsgCount(0);
 		
-	}
-
-	public void back(View view) {
-		finish();
 	}
 
 	@Override

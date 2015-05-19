@@ -70,6 +70,7 @@ import com.easemod.chat.LoadImageTask;
 import com.easemod.chat.LoadVideoImageTask;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.BaiduMapActivity;
+import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.ui.ChatActivity;
 import com.levelup.jiemimoshengren.ui.ShowBigImageActivity;
@@ -531,7 +532,8 @@ public class MessageAdapter extends BaseAdapter{
 	private void setUserAvatar(EMMessage message, ImageView imageView){
 	    if(message.direct == Direct.SEND){
 	        //显示自己头像
-	        UserUtils.setUserAvatar(context, EMChatManager.getInstance().getCurrentUser(), imageView);
+	    	System.err.println("msgadapter:"+EMChatManager.getInstance().getCurrentUser());
+	        UserUtils.setUserAvatar(context,SmyApplication.getSingleton().getMe(), imageView);
 	    }else{
 	        UserUtils.setUserAvatar(context, message.getFrom(), imageView);
 	    }
@@ -539,7 +541,6 @@ public class MessageAdapter extends BaseAdapter{
 
 	/**
 	 * 文本消息
-	 * 
 	 * @param message
 	 * @param holder
 	 * @param position

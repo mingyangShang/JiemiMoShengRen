@@ -161,8 +161,7 @@ public class AddContactActivity extends DefaultActivity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							recyclePd();
-							showMsg(getString(R.string.Request_add_buddy_failure)
-									+ e.getMessage());
+							showMsg(getString(R.string.Request_add_buddy_failure) + e.getMessage());
 						}
 					});
 				}

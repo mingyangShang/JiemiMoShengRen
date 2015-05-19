@@ -159,6 +159,7 @@
     <string name="This_user_is_already_your_friend">此用户已是你的好友</string>
     <string name="Add_a_friend">加个好友呗</string>
     <string name="send_successful">发送请求成功,等待对方验证</string>
+    <string name="add_successful">好友添加成功，快去聊天吧---></string>
     <string name="Request_add_buddy_failure">请求添加好友失败:</string>
     <string name="Network_error">网络出错</string>
     <string name="Making_sure_your_location">正在确定你的位置...</string>

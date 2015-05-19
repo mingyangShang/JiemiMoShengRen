@@ -139,6 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="35dip"
                     android:background="@null"
+                    android:textColor="@color/app_text_color"
                     android:maxLines="3"
                     android:minHeight="40dp"
                     android:onClick="editClick"

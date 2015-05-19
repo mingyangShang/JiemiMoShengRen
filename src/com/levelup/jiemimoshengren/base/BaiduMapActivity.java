@@ -12,6 +12,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
 import com.levelup.jiemimoshengren.R;
@@ -91,6 +92,13 @@ public abstract class BaiduMapActivity extends BaseActivity {
     }
     public void addMarker(long latitude,long longitude){
         addMarker(latitude,longitude,null);
+    }
+    
+    
+    public void addTextMarker(LatLng pos,final String msg){
+    	final LatLng convertPos = convert(pos);
+    	OverlayOptions textOption = new TextOptions().bgColor(0xAAFFFF00).fontSize(24).fontColor(0xFFFF00FF).text(msg).rotate(-30).position(convertPos);
+    	this.mMapView.getMap().addOverlay(textOption);
     }
     
     /**转换坐标*/

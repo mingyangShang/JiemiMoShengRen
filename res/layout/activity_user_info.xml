@@ -1,8 +1,166 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:smy="http://schemas.android.com/apk/res/com.levelup.jiemimoshengren"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:background="@drawable/sign_in_basic"
+    tools:context=".MainActivity" >
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@drawable/top_bar_normal_bg"
+        android:gravity="center_vertical" >
+
+        <include layout="@layout/commom_back_btn" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/title_userinfo"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <com.levelup.jiemimoshengren.widget.CircularImageView
+        android:id="@+id/avatarId"
+        android:layout_width="@dimen/regi_img_size"
+        android:layout_height="@dimen/regi_img_size"
+        android:layout_below="@+id/top_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/head_circle"
+        android:src="@drawable/default_head" />
+
+    <TextView
+        android:id="@+id/usernameId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatarId"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="XXX"
+        android:textSize="25sp" />
+
+    <RelativeLayout
+        android:id="@+id/label_layoutId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameId"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" >
+
+        <ImageView
+            android:id="@+id/labeiId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cardiograph" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="男"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/signature_layoutId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_layoutId"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="个性签名"
+                android:textSize="@dimen/medium_text_size" />
+
+            <TextView
+                android:id="@+id/signatureId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:maxLines="2"
+                android:text="bibibi"
+                android:textSize="@dimen/medium_text_size" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/hline"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/signature_layoutId"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/divider" />
+
+    <com.dd.circularprogressbutton.CircularProgressButton
+        android:id="@+id/add_contact"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/hline"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/app_blue"
+        android:onClick="addContact"
+        android:text="加为好友"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/medium_text_size"
+        smy:cpb_cornerRadius="@dimen/regi_btn_height"
+        smy:cpb_iconComplete="@drawable/ic_action_accept"
+        smy:cpb_iconError="@drawable/ic_action_cancel"
+        smy:cpb_textIdle="加为好友" />
+     <com.dd.circularprogressbutton.CircularProgressButton
+        android:id="@+id/remove_contact"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/hline"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/app_blue"
+        android:onClick="removeContact"
+        android:text="删除好友"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/medium_text_size"
+        smy:cpb_cornerRadius="@dimen/regi_btn_height"
+        smy:cpb_iconComplete="@drawable/ic_action_accept"
+        smy:cpb_iconError="@drawable/ic_action_cancel"
+        smy:cpb_textIdle="删除好友" />
+      <com.dd.circularprogressbutton.CircularProgressButton
+        android:id="@+id/chat"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/hline"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/app_blue"
+        android:onClick="goToChat"
+        android:text="发送消息"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/medium_text_size"
+        smy:cpb_cornerRadius="@dimen/regi_btn_height"
+        smy:cpb_iconComplete="@drawable/ic_action_accept"
+        smy:cpb_iconError="@drawable/ic_action_cancel"
+        smy:cpb_textIdle="发送消息" />
+
+</RelativeLayout>

@@ -9,11 +9,11 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E0E0E0"
+        android:background="@drawable/pinyin_bg"
         android:paddingBottom="2dp"
         android:paddingLeft="10dp"
         android:paddingTop="2dp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/app_white_back"
         android:textSize="15sp"
         android:visibility="gone" />
 
@@ -25,11 +25,12 @@
 
         <com.levelup.jiemimoshengren.widget.CircularImageView
             android:id="@+id/avatar"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
+            android:layout_width="@dimen/contact_img_size"
+            android:layout_height="@dimen/contact_img_size"
             android:layout_centerVertical="true"
             android:layout_marginLeft="11dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
+            android:background="@drawable/head_circle"
             android:src="@drawable/default_avatar" />
 
         <LinearLayout

@@ -101,6 +101,7 @@
             <EditText
                 android:id="@+id/confirm_password"
                 style="@style/RegiHintStyle"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword" />
         </LinearLayout>
 
@@ -140,7 +141,7 @@
         </LinearLayout>
 
         <com.dd.circularprogressbutton.CircularProgressButton
-            android:id="@+id/circularButton1"
+            android:id="@+id/register"
            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
@@ -153,7 +154,7 @@
             smy:cpb_cornerRadius="@dimen/regi_btn_height"
             smy:cpb_iconComplete="@drawable/ic_action_accept"
             smy:cpb_iconError="@drawable/ic_action_cancel"
-            smy:cpb_textIdle="shanghcuan" />
+            smy:cpb_textIdle="@string/register" />
     </LinearLayout>
 
 </LinearLayout>

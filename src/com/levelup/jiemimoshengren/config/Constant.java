@@ -19,6 +19,7 @@ public class Constant {
 	public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
 	public static final String MESSAGE_ATTR_IS_VIDEO_CALL = "is_video_call";
 	public static final String ACCOUNT_REMOVED = "account_removed";
+	public static final String SYSTEM_INFO = "JieMiMoShengRen"; //模拟系统提示消息
 	
 	//服务器交互配置
 	public static final String HOST = "http://192.168.0.107:5000"; //主机名

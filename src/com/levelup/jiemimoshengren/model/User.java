@@ -16,14 +16,14 @@ package com.levelup.jiemimoshengren.model;
 import com.easemob.chat.EMContact;
 /**用户模型类*/
 public class User extends EMContact {
-	private int unreadMsgCount;
-	private String header;
-	private String avatar;
+	protected int unreadMsgCount;
+	protected String header;
+	protected String avatar;
 
-	private String sign;
-	private boolean isFemale;
-	private String imgUrl;
-	private String pwd;
+	protected String sign;
+	protected boolean isFemale;
+	protected String imgUrl;
+	protected String pwd;
 	
 	public static final String SEX_FEMALE = "F",SEX_MALE = "M";
 

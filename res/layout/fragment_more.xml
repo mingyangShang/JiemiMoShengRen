@@ -69,7 +69,7 @@
                 android:layout_alignLeft="@+id/tv_name"
                 android:layout_below="@+id/tv_name"
                 android:layout_centerHorizontal="true"
-                android:maxWidth="80dp"
+                android:maxWidth="200dp"
                 android:padding="5dp"
                 android:singleLine="true"
                 android:text="" />

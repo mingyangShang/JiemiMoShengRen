@@ -7,10 +7,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.hardware.SensorEvent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -26,6 +28,7 @@ import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.BaseShakeActivity;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.model.FindUser;
+import com.levelup.jiemimoshengren.model.User;
 import com.smy.volley.extend.EasyJsonObject;
 /**摇一摇*/
 public class ShakeActivity extends BaseShakeActivity {
@@ -49,7 +52,7 @@ public class ShakeActivity extends BaseShakeActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState,R.layout.activity_game);
+		super.onCreate(savedInstanceState,R.layout.activity_shake);
 	}
 
 	@Override
@@ -100,6 +103,7 @@ public class ShakeActivity extends BaseShakeActivity {
 	
 	@Override
 	protected void initView() {
+		super.initView();
 		shakeImg = (ImageView) findViewById(R.id.shake_iv);
 	}
 
@@ -166,7 +170,16 @@ public class ShakeActivity extends BaseShakeActivity {
 				if(easyJsonObject.getBoolean("success")){ //请求成功被响应
 					JSONArray findUsers = easyJsonObject.getStringAsJSONArray("msg");
 					try {
-						handleFindUsers(findUsers); //处理
+						List<FindUser> users = handleFindUsers(findUsers); //处理
+						if(users.size()<=0){
+							showMsg(getString(R.string.shake_no_result));
+							canShake = true;
+							return ;
+						}
+						//带着摇到的人的信息跳到地图显示界面
+						Intent intent = new Intent(ShakeActivity.this,MapMarkerActivity.class);
+						intent.putParcelableArrayListExtra("findusers", (ArrayList<? extends Parcelable>) users);
+						startActivity(intent);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					} 
@@ -189,10 +202,12 @@ public class ShakeActivity extends BaseShakeActivity {
 			findUser.setNick(userJson.getString("nick"));
 			findUser.setSign(userJson.getString("sign"));
 			findUser.setImgUrl(userJson.getString("head"));
+			findUser.setFemale(userJson.getString("sex").equals(User.SEX_FEMALE));
 			findUser.setLatitude(userJson.getDouble("latitude"));
 			findUser.setLongitude(userJson.getDouble("longitude"));
 			findUser.setDistanceFromMe(userJson.getDouble("distance"));
 			users.add(findUser);
+			System.err.println(findUser);
 		}
 		return users;
 	}

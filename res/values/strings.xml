@@ -12,6 +12,7 @@
     <string name="activity_chat">聊天</string>
     <string name="activity_big_image">查看大图</string>
     <string name="activity_add_contact">添加朋友</string>
+    <string name="activity_user_info">个人信息</string>
     <string name="activity_new_friends">新朋友</string>
     <string name="activity_game">游戏</string>
     <string name="activity_map_marker">地图标记</string>
@@ -23,14 +24,19 @@
     <string name="title_game">记忆快块</string>
     <string name="hint_name">用户名</string>
     <string name="title_shake">摇一摇</string>
+    <string name="title_userinfo">个人资料</string>
+    <string name="contact_removed">好友已移除</string>
+    <string name="default_add_friend_reason">我想加你为好友</string>
     <string name="edit_hint_name">请输入用户名</string>
     <string name="please_login">请先登录</string>
+    <string name="shake_no_result">没有摇到小伙伴，再试试吧</string>
     <string name="hint_pwd">密码</string>
     <string name="edit_hint_pwd">请输入登录密码</string>
     <string name="hint_pwd2">确认密码</string>
     <string name="edit_hint_pwd2">请确认登录密码</string>
     <string name="hint_sex">性别</string>
     <string name="hint_sex_female">女</string>
+    <string name="sign_hint">我是：</string>
     <string name="hint_sex_male">男</string>
     <string name="hint_no_sign">暂未设置签名</string>
     <string name="net_error">网络断开</string>
@@ -160,7 +166,7 @@
     <string name="Add_a_friend">加个好友呗</string>
     <string name="send_successful">发送请求成功,等待对方验证</string>
     <string name="add_successful">好友添加成功，快去聊天吧---></string>
-    <string name="Request_add_buddy_failure">请求添加好友失败:</string>
+    <string name="Request_add_buddy_failure">添加好友失败:</string>
     <string name="Network_error">网络出错</string>
     <string name="Making_sure_your_location">正在确定你的位置...</string>
     <string name="please_check">key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置</string>

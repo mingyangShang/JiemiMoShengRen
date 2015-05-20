@@ -108,13 +108,13 @@ public abstract class BaseActivity extends FragmentActivity {
     }
     
     /**弹出Toast，Toast的样式今后可以自定义，暂时使用默认*/
-    protected void showMsg(String msg) {
+    public void showMsg(String msg) {
     	Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();	
 	}
-    protected void showMsg(String msg,int duration){
+    public void showMsg(String msg,int duration){
     	Toast.makeText(this, msg, duration).show();
     }
-    protected void showMsgFromRes(int resId){
+    public void showMsgFromRes(int resId){
     	showMsg(getString(resId));
     }
     public void back(View v){

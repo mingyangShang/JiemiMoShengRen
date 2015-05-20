@@ -30,8 +30,8 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.VoiceMessageBody;
-import com.easemod.chat.HXSDKHelper;
 import com.levelup.jiemimoshengren.R;
+import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.ui.ChatActivity;
 
 public class VoicePlayClickListener implements View.OnClickListener {
@@ -96,7 +96,7 @@ public class VoicePlayClickListener implements View.OnClickListener {
 		AudioManager audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
 
 		mediaPlayer = new MediaPlayer();
-		if (HXSDKHelper.getInstance().getModel().getSettingMsgSpeaker()) {
+		if (SmyApplication.getSdkHelper().getModel().getSettingMsgSpeaker()) {
 			audioManager.setMode(AudioManager.MODE_NORMAL);
 			audioManager.setSpeakerphoneOn(true);
 			mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);

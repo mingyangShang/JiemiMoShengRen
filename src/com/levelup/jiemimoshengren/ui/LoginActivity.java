@@ -33,6 +33,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -49,7 +51,6 @@ import com.dd.circularprogressbutton.CircularProgressButton;
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactManager;
-import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.HanziToPinyin;
 import com.levelup.jiemimoshengren.R;
@@ -58,29 +59,35 @@ import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.db.UserDao;
 import com.levelup.jiemimoshengren.model.User;
+import com.levelup.jiemimoshengren.utils.CommonUtils;
 import com.smy.volley.extend.EasyJsonObject;
 
 /**
  * 登陆页面
  */
-public class LoginActivity extends DefaultActivity implements OnCancelListener {
+public class LoginActivity extends DefaultActivity {
 	public static final int REQUEST_CODE_SETNICK = 1;
 	private EditText usernameEditText;
 	private EditText passwordEditText;
-	private ProgressDialog pd;
 	private ImageView label;
 	private ImageView circle;
 	private CircularProgressButton sign_in;
 	private TextView regiTv;
 	private RelativeLayout massage_layout;
-
-	private boolean progressShow;
 	private boolean autoLogin = false;
 
+	private User me; // 标识当前用户，仅当登录成功后才使用
 	private String currentUsername;
 	private String currentPassword;
-
-	private User me; // 标识当前用户，仅当登录成功后才使用
+	
+	private Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			// 进入主页面
+			goToWithFinish(MainActivity.class);
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +115,7 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 		label = (ImageView) findViewById(R.id.sign_in_labelId);
 		circle = (ImageView) findViewById(R.id.sign_in_circleId);
 		sign_in = (CircularProgressButton) findViewById(R.id.sign_in_buttonId);
+		sign_in.setIndeterminateProgressMode(true);
 		massage_layout = (RelativeLayout) findViewById(R.id.massage_layoutId);
 		regiTv = (TextView) findViewById(R.id.register);
 
@@ -178,23 +186,39 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 
 	/** 登录,绑定在xml中 */
 	public void login(View view) {
-		/*
-		 * if (!CommonUtils.isNetWorkConnected(this)) {
-		 * showMsgFromRes(R.string.network_isnot_available); return; }
-		 * currentUsername = usernameEditText.getText().toString().trim();
-		 * currentPassword = passwordEditText.getText().toString().trim();
-		 * 
-		 * if (TextUtils.isEmpty(currentUsername)) {
-		 * showMsgFromRes(R.string.User_name_cannot_be_empty); return; } if
-		 * (TextUtils.isEmpty(currentPassword)) {
-		 * showMsgFromRes(R.string.Password_cannot_be_empty); return; }
-		 * userLogin(currentUsername,currentPassword);
-		 */
-		  if (sign_in.getProgress() == 0) {
-              simulateSuccessProgress(sign_in);
-          } else {
-              sign_in.setProgress(0);
-          }
+
+		if (!CommonUtils.isNetWorkConnected(this)) {
+			showMsgFromRes(R.string.network_isnot_available);
+			return;
+		}
+		currentUsername = usernameEditText.getText().toString().trim();
+		currentPassword = passwordEditText.getText().toString().trim();
+
+		if (TextUtils.isEmpty(currentUsername)) {
+			showMsgFromRes(R.string.User_name_cannot_be_empty);
+			return;
+		}
+		if (TextUtils.isEmpty(currentPassword)) {
+			showMsgFromRes(R.string.Password_cannot_be_empty);
+			return;
+		}
+		//登录按钮开始旋转，并设置不可点击
+		sign_in.setProgress(50);
+		sign_in.setClickable(false);
+		userLogin(currentUsername, currentPassword);
+
+		/*if (sign_in.getProgress() == 0) {
+			simulateSuccessProgress(sign_in);
+		} else {
+			sign_in.setProgress(0);
+		}*/
+		/*if(sign_in.getProgress() == 0){
+			sign_in.setProgress(50);
+		}else if(sign_in.getProgress() == 100){
+			sign_in.setProgress(0);
+		}else{
+			sign_in.setProgress(100);
+		}*/
 	}
 
 	/** 注册 */
@@ -203,8 +227,8 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 	}
 
 	/** 处理用户和群组信息 */
-	private void processContactsAndGroups() throws EaseMobException {
-		// demo中简单的处理成每次登陆都去获取好友username，开发者自己根据情况而定
+	private void processContacts() throws EaseMobException {
+		// TODO 简单的处理成每次登陆都去获取好友username
 		List<String> usernames = EMContactManager.getInstance()
 				.getContactUserNames();
 		// 获得用户名后再向应用服务器查询用户的具体信息
@@ -223,11 +247,8 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 								e.printStackTrace();
 								System.err.println("解析contacts的json数据错误");
 							}
-							if (!LoginActivity.this.isFinishing() && pd != null) {
-								pd.dismiss();
-							}
-							// 进入主页面
-							goToWithFinish(MainActivity.class);
+							sign_in.setProgress(100);
+							handler.sendEmptyMessage(0);
 						} else {
 							showMsg(contactsJson.getString("error"));
 						}
@@ -263,7 +284,7 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 			userlist.put(user.getUsername(), user);
 		}
 
-		// 添加user"申请与通知"
+		// 添加user"申请与通知" TODO 暂时不用
 		User newFriends = new User();
 		newFriends.setUsername(Constant.NEW_FRIENDS_USERNAME);
 		newFriends.setHeader("");
@@ -311,32 +332,18 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 	private void huanxinLogin(String uid, String password) {
 		EMChatManager.getInstance().login(uid, password, new EMCallBack() {
 			public void onSuccess() {
-				// 登陆成功，保存用户名密码
-				// SmyApplication.getSingleton().setUserName(currentUsername);
-				// SmyApplication.getSingleton().setPassword(currentPassword);
+				// 登陆成功，保存当前用户
 				SmyApplication.getSingleton().setMe(me);
-				runOnUiThread(new Runnable() {
-					public void run() {
-						if (pd == null) {
-							pd = makeProgressDialog(LoginActivity.this,
-									getString(R.string.Is_landing),
-									LoginActivity.this);
-						}
-						pd.setMessage(getString(R.string.list_is_for));
-					}
-				});
 				try {
-					// 第一次登录或者之前logout后再登录，加载所有本地群和回话
-					EMGroupManager.getInstance().loadAllGroups();
+					// 第一次登录或者之前logout后再登录，加载所有回话
 					EMChatManager.getInstance().loadAllConversations();
-					processContactsAndGroups(); // 处理好友和群组
+					processContacts(); // 处理好友
 				} catch (Exception e) {
 					// 取好友或者群聊失败，不让进入主页面
 					runOnUiThread(new Runnable() {
 						public void run() {
-							if (pd != null) {
-								pd.dismiss();
-							}
+							sign_in.setProgress(0); //失败
+							sign_in.setClickable(true);
 							SmyApplication.getSingleton().logout(null);
 							showMsg(getString(R.string.login_failure_failed));
 						}
@@ -349,13 +356,10 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 			}
 
 			public void onError(int arg0, String arg1) {
-				if (!progressShow || pd == null) {
-					return;
-				}
 				runOnUiThread(new Runnable() {
 					public void run() {
-						pd.dismiss();
-						showMsg(getString(R.string.Login_failed));
+						sign_in.setProgress(0); //错误,重置
+						sign_in.setClickable(true);
 					}
 				});
 			}
@@ -385,6 +389,8 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 							huanxinLogin(me.getUsername(), password);
 						} else { // 登录失败
 							showMsg(easyJsonObject.getString("error"));
+							sign_in.setProgress(0);
+							sign_in.setClickable(true);
 						}
 					}
 				}, this));
@@ -426,11 +432,6 @@ public class LoginActivity extends DefaultActivity implements OnCancelListener {
 			final String username = arg2.getStringExtra("username");
 			resetLoginForm(username);
 		}
-	}
-
-	/** 对话框取消事件 */
-	public void onCancel(DialogInterface dialog) {
-		progressShow = false;
 	}
 
 	private void simulateSuccessProgress(final CircularProgressButton button) {

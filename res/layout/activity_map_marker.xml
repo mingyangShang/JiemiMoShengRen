@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eee"
+    android:background="@drawable/main_bg"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -22,18 +22,6 @@
             android:textColor="#ffffff"
             android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/btn_location_send"
-            android:layout_width="52dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/common_tab_bg"
-            android:enabled="false"
-            android:onClick="sendLocation"
-            android:text="@string/button_send"
-            android:textColor="#fff"
-            android:textSize="17sp" />
     </RelativeLayout>
 
     <com.baidu.mapapi.map.MapView

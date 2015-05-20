@@ -92,7 +92,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="@string/password"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:textColor="@color/app_text_color"
                     android:textSize="@dimen/medium_text_size" />
@@ -106,7 +106,7 @@
             <com.dd.circularprogressbutton.CircularProgressButton
                 android:id="@+id/sign_in_buttonId"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="52dp"
                 android:layout_below="@id/hline2"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
@@ -118,7 +118,7 @@
                 smy:cpb_cornerRadius="@dimen/regi_btn_height"
                 smy:cpb_iconComplete="@drawable/ic_action_accept"
                 smy:cpb_iconError="@drawable/ic_action_cancel"
-                smy:cpb_textIdle="shanghcuan" />
+                smy:cpb_textIdle="@string/login" />
         </RelativeLayout>
     </RelativeLayout>
 

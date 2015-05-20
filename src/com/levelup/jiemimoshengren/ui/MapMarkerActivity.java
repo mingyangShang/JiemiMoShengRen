@@ -1,5 +1,8 @@
 package com.levelup.jiemimoshengren.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -28,16 +30,19 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
+import com.baidu.platform.comapi.map.l;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.BaiduMapActivity;
+import com.levelup.jiemimoshengren.model.FindUser;
 
-public class MapMarkerActivity extends BaiduMapActivity {
+public class MapMarkerActivity extends BaiduMapActivity{
 
 	private final static String TAG = "map";
 	private FrameLayout mMapViewContainer = null;
@@ -46,7 +51,6 @@ public class MapMarkerActivity extends BaiduMapActivity {
 	public MyLocationListenner myListener = new MyLocationListenner();
 	public NotifyLister mNotifyer = null;
 
-	Button sendButton = null;
 
 	EditText indexText = null;
 	int index = 0;
@@ -56,6 +60,7 @@ public class MapMarkerActivity extends BaiduMapActivity {
 	private BaiduMap mBaiduMap;
 	
 	private LocationMode mCurrentMode;
+	private List<FindUser> findUsers; //找到的陌生人
 	
 	/**
 	 * 构造广播监听类，监听 SDK key 验证以及网络异常广播
@@ -96,9 +101,18 @@ public class MapMarkerActivity extends BaiduMapActivity {
 	protected void initData() {
 		super.initData();
 		Intent intent = getIntent();
+		findUsers = intent.getParcelableArrayListExtra("findusers");
+		if(findUsers==null){
+			findUsers = new ArrayList<FindUser>();
+			FindUser user = new FindUser();
+			user.setNick("nick");
+			findUsers.add(user);
+		}
+		
 		double latitude = intent.getDoubleExtra("latitude", 0);
 		mCurrentMode = LocationMode.NORMAL;
 		mBaiduMap = mMapView.getMap();
+		mBaiduMap.setOnMarkerClickListener(this);
 		MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(15.0f);
 		mBaiduMap.setMapStatus(msu);
 		initMapView();
@@ -121,11 +135,9 @@ public class MapMarkerActivity extends BaiduMapActivity {
 	protected void initView() {
 		super.initView();
 		mMapView = (MapView) findViewById(R.id.bmapView);
-		sendButton = (Button) findViewById(R.id.btn_location_send);
 	}
 
 	private void showMap(double latitude, double longtitude, String address) {
-		sendButton.setVisibility(View.GONE);
 		LatLng llA = new LatLng(latitude, longtitude);
 		
 		CoordinateConverter converter= new CoordinateConverter();
@@ -157,12 +169,8 @@ public class MapMarkerActivity extends BaiduMapActivity {
 
 		LocationClientOption option = new LocationClientOption();
 		option.setOpenGps(true);// 打开gps
-		// option.setCoorType("bd09ll"); //设置坐标类型
-		// Johnson change to use gcj02 coordination. chinese national standard
-		// so need to conver to bd09 everytime when draw on baidu map
 		option.setCoorType("gcj02");
 		option.setScanSpan(30000);
-//		option.setAddrType("all");
 		mLocClient.setLocOption(option);
 	}
 
@@ -202,11 +210,8 @@ public class MapMarkerActivity extends BaiduMapActivity {
 			if (location == null) {
 				return;
 			}
-			showMsg("long:"+location.getLongitude()+",lati:"+location.getLatitude(),10000);
-
 			Log.d("map", "On location change received:" + location);
 			Log.d("map", "addr:" + location.getAddrStr());
-			sendButton.setEnabled(true);
 			if (progressDialog != null) {
 				progressDialog.dismiss();
 			}
@@ -214,15 +219,23 @@ public class MapMarkerActivity extends BaiduMapActivity {
 			if (lastLocation != null) {
 				if (lastLocation.getLatitude() == location.getLatitude() && lastLocation.getLongitude() == location.getLongitude()) {
 					Log.d("map", "same location, skip refresh");
-					// mMapView.refresh(); //need this refresh?
 					return;
 				}
 			}
 			lastLocation = location;
 			mBaiduMap.clear();
 			LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-			addMarker(latLng);
-//			addTextMarker(latLng, "商明阳");
+
+			//添加自己的标记
+			addMeMarker(latLng);
+			//添加陌生人标记
+			for(int i=0,len=findUsers.size();i<len;++i){
+				FindUser user = findUsers.get(i);
+				Bundle extra = new Bundle();
+				extra.putInt("pos", i);
+//				addTextImgMarler(new LatLng(user.getLatitude(), user.getLongitude()), user.getNick(), extra);
+				addTextImgMarler(latLng, user.getNick(), extra);
+			}
 		}
 
 		public void onReceivePoi(BDLocation poiLocation) {
@@ -237,6 +250,7 @@ public class MapMarkerActivity extends BaiduMapActivity {
 		}
 	}
 
+	/**发送自己的位置，暂时不用*/
 	public void sendLocation(View view) {
 		Intent intent = this.getIntent();
 		intent.putExtra("latitude", lastLocation.getLatitude());
@@ -245,5 +259,15 @@ public class MapMarkerActivity extends BaiduMapActivity {
 		this.setResult(RESULT_OK, intent);
 		finish();
 		overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+	}
+
+	public boolean onMarkerClick(Marker arg0) {
+		FindUser findUser = findUsers.get(arg0.getExtraInfo().getInt("pos"));
+		if(findUser!=null){
+			Intent intent = new Intent(this,UserInfoActivity.class);
+			intent.putExtra("finduser", findUser);
+			startActivity(intent);
+		}
+		return false;
 	}
 }

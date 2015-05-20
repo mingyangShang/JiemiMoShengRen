@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,6 @@ import com.levelup.jiemimoshengren.utils.UserUtils;
 
 /**
  * 简单的好友Adapter实现
- *
  */
 public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexer{
     private static final String TAG = "ContactAdapter";
@@ -96,14 +94,17 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 		}
 		//显示申请与通知item
 		if(username.equals(Constant.NEW_FRIENDS_USERNAME)){
+			convertView.setVisibility(View.GONE); //TOODO 暂时不显示新朋友
+			/*convertView.setBackgroundResource(R.drawable.contact_shake_bg); //设置申请与通知的背景
 		    holder.nameTextview.setText(user.getNick());
 		    holder.avatar.setImageResource(R.drawable.new_friends_icon);
 			if(user.getUnreadMsgCount() > 0){
 			    holder.unreadMsgView.setVisibility(View.VISIBLE);
+			    System.err.println("contact unread:"+user.getUnreadMsgCount());
 			    holder.unreadMsgView.setText(user.getUnreadMsgCount()+"");
 			}else{
 			    holder.unreadMsgView.setVisibility(View.INVISIBLE);
-			}
+			}*/
 		}else{
 		    holder.nameTextview.setText(username);
 		    //设置用户头像
@@ -141,9 +142,7 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 		positionOfSection.put(0, 0);
 		sectionOfPosition.put(0, 0);
 		for (int i = 1; i < count; i++) {
-
 			String letter = getItem(i).getHeader();
-			System.err.println("contactadapter getsection getHeader:" + letter + " name:" + getItem(i).getUsername());
 			int section = list.size() - 1;
 			if (list.get(section) != null && !list.get(section).equals(letter)) {
 				list.add(letter);
@@ -196,7 +195,6 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 					else{
 						 final String[] words = username.split(" ");
 	                     final int wordCount = words.length;
-	
 	                     // Start at index 0, in case valueText starts with space(s)
 	                     for (int k = 0; k < wordCount; k++) {
 	                         if (words[k].startsWith(prefixString)) {

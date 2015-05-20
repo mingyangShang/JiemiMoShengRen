@@ -136,6 +136,9 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 			break;
 		case R.id.btn_address_list:
 			index = 1;
+			//设置新朋友数为0
+			SmyApplication.getSingleton().getContacts().get(Constant.NEW_FRIENDS_USERNAME).setUnreadMsgCount(0);
+			updateUnreadAddressLable();
 			break;
 		case R.id.btn_setting:
 			index = 2;
@@ -166,7 +169,6 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 	 * 后加入的事件监听会先收到事件的通知 如果收到的事件，能够被处理并且不需要其他的监听再处理，可以返回true，否则返回false
 	 */
 	public void onEvent(EMNotifierEvent event) {
-		System.err.println("msg");
 		switch (event.getEvent()) {
 		case EventNewMessage:
 			refreshUI();
@@ -253,27 +255,21 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 	/** 好友变化Listener */
 	private class MyContactListener implements EMContactListener {
 		public void onContactAdded(List<String> usernameList) {
-			/*// 保存增加的联系人aaaa
-			Map<String, User> localUsers = SmyApplication.getSingleton()
-					.getContacts();
-			Map<String, User> toAddUsers = new HashMap<String, User>();
-			for (String username : usernameList) {
-				User user = setUserHead(username);
-				// 添加好友时可能会回调added方法两次
-				if (!localUsers.containsKey(username)) {
-					userDao.saveContact(user);
+			final List<String> usernameList2 = usernameList;
+			runOnUiThread(new Runnable() {
+				public void run() {
+					SmyApplication.getSingleton().getContacts().get(Constant.NEW_FRIENDS_USERNAME).setUnreadMsgCount(usernameList2.size());
+					unreadAddressLable.setText(""+usernameList2.size());
+					unreadAddressLable.setVisibility(View.VISIBLE);
 				}
-				toAddUsers.put(username, user);
-			}
-			localUsers.putAll(toAddUsers);*/
+			});
+		
 			try {
 				processContacts(usernameList);
 			} catch (EaseMobException e) {
 				e.printStackTrace();
 			}
 			// 刷新ui
-			if (currentTabIndex == 1)
-				contactListFragment.refreshUI();
 		}
 
 		public void onContactDeleted(final List<String> usernameList) {
@@ -281,14 +277,11 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 			Map<String, User> localUsers = SmyApplication.getSingleton()
 					.getContacts();
 			for (String username : usernameList) {
-				User user = setUserHead(username);
-				// 添加好友时可能会回调added方法两次
 				if (localUsers.containsKey(username)) {
 					userDao.deleteContact(username);
 				}
 				localUsers.remove(username);
 			}
-			// SmyApplication.getSingleton().setContacts(localUsers); //重新设置
 			if (currentTabIndex == 1)
 				contactListFragment.refreshUI();
 		}
@@ -306,7 +299,7 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 			msg.setFrom(username);
 			msg.setTime(System.currentTimeMillis());
 			msg.setReason(reason);
-			Log.d(TAG, username + "请求加你为好友,reason: " + reason);
+			System.err.println(username + "请求加你为好友,reason: " + reason);
 			// 设置相应status
 			msg.setStatus(InviteMesageStatus.BEINVITEED);
 			notifyNewIviteMessage(msg);
@@ -347,17 +340,15 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 		}
 
 		public void onDisconnected(final int error) {
-			final String st1 = getResources().getString(
-					R.string.Less_than_chat_server_connection);
-			final String st2 = getResources().getString(
-					R.string.the_current_network);
 			runOnUiThread(new Runnable() {
 				public void run() {
 					chatHistoryFragment.errorItem.setVisibility(View.VISIBLE);
 					if (NetUtils.hasNetwork(MainActivity.this)) {
-						chatHistoryFragment.errorText.setText(st1);
+						chatHistoryFragment.errorText.setText(getString(
+								R.string.Less_than_chat_server_connection));
 					} else {
-						chatHistoryFragment.errorText.setText(st2);
+						chatHistoryFragment.errorText.setText(getString(
+								R.string.the_current_network));
 					}
 				}
 			});
@@ -387,31 +378,6 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 			user.setUnreadMsgCount(user.getUnreadMsgCount() + 1);
 	}
 
-	private User setUserHead(String username) {
-		User user = new User();
-		user.setUsername(username);
-		String headerName = null;
-		if (!TextUtils.isEmpty(user.getNick())) {
-			headerName = user.getNick();
-		} else {
-			headerName = user.getUsername();
-		}
-		if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
-			user.setHeader("");
-		} else if (Character.isDigit(headerName.charAt(0))) {
-			user.setHeader("#");
-		} else {
-			user.setHeader(HanziToPinyin.getInstance()
-					.get(headerName.substring(0, 1)).get(0).target.substring(0,
-					1).toUpperCase());
-			char header = user.getHeader().toLowerCase().charAt(0);
-			if (header < 'a' || header > 'z') {
-				user.setHeader("#");
-			}
-		}
-		return user;
-	}
-
 	/** 查询用户信息 */
 	protected User queryUserInfo(final String uid, final int flag,
 			final String... args) {
@@ -426,7 +392,6 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 							EasyJsonObject contact = contactsJson
 									.getStringAsJSONObject("msg");
 							processContact(contact, user);
-							processUser(user, flag, args);
 						} else {
 							showMsg(contactsJson.getString("error"));
 						}
@@ -451,24 +416,6 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 		user.setImgUrl(contactJson.getString("head"));
 		// setUserHeader(user.getUsername(),user);
 		// userlist.put(user.getUsername(), user);
-	}
-
-	/** 处理用户信息在好友申请，同意了或拒绝的请求 */
-	private void processUser(final User user, final int flag,
-			final String... args) {
-		switch (flag) {
-		case ON_CONTACT_ADDED: // 好友添加成功
-
-			break;
-		case ON_CONTACT_INVITED: // 被邀请
-			// 自己封装的javabean
-
-			break;
-		case ON_CONTACT_AGREED: // 邀请被同意
-			break;
-		case ON_CONTACT_REFUSED: // 申请被拒绝
-			break;
-		}
 	}
 
 	/**处理用户和群组信息*/
@@ -528,6 +475,10 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 		// 存入内存
 		SmyApplication.getSingleton().setContacts(localUsers);
 		
+		//刷新ui
+		if (currentTabIndex == 1)
+			contactListFragment.refreshUI();
+		
 		// 存入db
 		UserDao dao = new UserDao(MainActivity.this);
 		List<User> users = new ArrayList<User>(localUsers.values());
@@ -559,8 +510,6 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 		}
 	}
 
-
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -569,7 +518,8 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 				.registerEventListener(
 						this,
 						new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage });
-		updateUnreadLabel(); //进入界面时刷新未读消息提示数		
+		updateUnreadLabel(); //进入界面时刷新未读消息提示数	
+		updateUnreadAddressLable();
 	}
 	
 	@Override

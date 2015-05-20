@@ -38,6 +38,7 @@ import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.DefaultActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
+import com.levelup.jiemimoshengren.model.FindUser;
 import com.smy.volley.extend.EasyJsonObject;
 
 public class AddContactActivity extends DefaultActivity {

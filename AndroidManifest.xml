@@ -87,11 +87,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 聊天页面 -->
@@ -101,8 +96,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
-        </activity>
-        <activity android:name="com.levelup.jiemimoshengren.ui.Test" >
         </activity>
 
         <!-- 查看大图界面 -->
@@ -119,6 +112,19 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- 个人信息 -->
+        <activity
+            android:name="com.levelup.jiemimoshengren.ui.UserInfoActivity"
+            android:label="@string/activity_user_info"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- 新朋友 -->
         <activity

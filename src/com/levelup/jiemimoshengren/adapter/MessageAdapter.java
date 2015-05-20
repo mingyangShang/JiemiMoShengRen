@@ -548,6 +548,10 @@ public class MessageAdapter extends BaseAdapter{
 	private void handleTextMessage(EMMessage message, ViewHolder holder, final int position) {
 		TextMessageBody txtBody = (TextMessageBody) message.getBody();
 		Spannable span = SmileUtils.getSmiledText(context, txtBody.getMessage());
+		//如果是系统消息的话就将消息改为问候语
+		if(txtBody.getMessage().startsWith(Constant.SYSTEM_INFO)){
+			span = SmileUtils.getSmiledText(context, "我们已经是好友了~~~");
+		}
 		// 设置内容
 		holder.tv.setText(span, BufferType.SPANNABLE);
 		// 设置长按事件监听

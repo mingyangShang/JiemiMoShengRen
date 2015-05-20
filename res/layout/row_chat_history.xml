@@ -18,7 +18,8 @@
             android:layout_height="@dimen/msg_img_size"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
+            android:background="@drawable/head_circle"
             android:src="@drawable/default_avatar" />
 
         <TextView

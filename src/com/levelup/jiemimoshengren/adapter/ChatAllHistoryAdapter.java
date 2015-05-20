@@ -33,6 +33,7 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chat.EMMessage;
+import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.ImageMessageBody;
 import com.easemob.chat.TextMessageBody;
 import com.easemob.util.DateUtils;
@@ -83,9 +84,34 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 			convertView.setTag(holder);
 		}
 		EMConversation conversation = getItem(position);
+	
 		// 获取用户username或者群组groupid
 		final String username = SmyApplication.getSingleton().getContacts()
 				.get(conversation.getUserName()).getNick();
+		
+		//检查是否是模拟的系统发送的通知消息提示好友添加成功
+		EMMessage msg = conversation.getLastMessage();
+		if(msg.getType() == Type.TXT){
+			if (!msg.getBooleanAttribute(
+					Constant.MESSAGE_ATTR_IS_VOICE_CALL, false)) {
+				TextMessageBody txtBody = (TextMessageBody) msg.getBody();
+				if(txtBody.getMessage().startsWith(Constant.SYSTEM_INFO)){
+					holder.name.setText("系统提示");
+					holder.avatar.setImageResource(R.drawable.inform);
+					holder.time.setText(DateUtils.getTimestampString(new Date(msg.getMsgTime())));
+					if(!msg.getFrom().equals(SmyApplication.getSingleton().getMe().getUsername())){
+						holder.message.setText(SmileUtils.getSmiledText(getContext(),
+								username+"已添加您为好友，点击进入聊天"),BufferType.SPANNABLE);
+					}else{
+						holder.message.setText(SmileUtils.getSmiledText(getContext(), 
+								"您已添加"+username+"为好友，点击进入聊天"),BufferType.SPANNABLE);
+					}
+					return convertView;
+				}
+			}
+		}
+		
+		
 		UserUtils.setUserAvatar(getContext(), conversation.getUserName(), holder.avatar);
 		if (username.equals(Constant.GROUP_USERNAME)) {
 			holder.name.setText("群聊");
@@ -137,9 +163,6 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		switch (message.getType()) {
 		case LOCATION: // 位置消息
 			if (message.direct == EMMessage.Direct.RECEIVE) {
-				// 从sdk中提到了ui中，使用更简单不犯错的获取string的方法
-				// digest = EasyUtils.getAppResourceString(context,
-				// "location_recv");
 				digest = getStrng(context, R.string.location_recv);
 				digest = String.format(digest, message.getFrom());
 				return digest;
@@ -165,6 +188,7 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 					Constant.MESSAGE_ATTR_IS_VOICE_CALL, false)) {
 				TextMessageBody txtBody = (TextMessageBody) message.getBody();
 				digest = txtBody.getMessage();
+				System.err.println("消息:"+digest);
 			} else {
 				TextMessageBody txtBody = (TextMessageBody) message.getBody();
 				digest = getStrng(context, R.string.voice_call)

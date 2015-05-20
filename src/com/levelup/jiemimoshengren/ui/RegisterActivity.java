@@ -13,7 +13,6 @@
  */
 package com.levelup.jiemimoshengren.ui;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
@@ -22,18 +21,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.dd.circularprogressbutton.CircularProgressButton;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.DefaultActivity;
 import com.levelup.jiemimoshengren.config.Constant;
@@ -48,17 +46,14 @@ public class RegisterActivity extends DefaultActivity {
 	private EditText userNameEditText;
 	private EditText passwordEditText;
 	private EditText confirmPwdEditText;
+	private CircularProgressButton registerBtn;
 	private ImageView headIv; // 头像
 	private Bitmap headBmp; // 头像bitmap
 	private RadioGroup rgSex; // 性别选择
-	private ProgressDialog progressDialog; // 显示进度对话框
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, R.layout.activity_register);
-		final String imgpath = Environment.getExternalStorageDirectory()
-				+ "/beauty.jpg";
-		System.out.println("imgpath:" + imgpath);
 	}
 
 	@Override
@@ -74,6 +69,8 @@ public class RegisterActivity extends DefaultActivity {
 		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
 		headIv = (ImageView) findViewById(R.id.img_head);
 		rgSex = (RadioGroup) findViewById(R.id.rg_sex);
+		registerBtn = (CircularProgressButton) findViewById(R.id.register);
+		registerBtn.setIndeterminateProgressMode(true);
 		resizeImg();
 	}
 
@@ -105,15 +102,13 @@ public class RegisterActivity extends DefaultActivity {
 	@Override
 	public void onErrorResponse(VolleyError error) {
 		super.onErrorResponse(error);
-		if (this.progressDialog != null) {
-			this.progressDialog.dismiss();
-		}
+		registerBtn.setProgress(0);
+		registerBtn.setClickable(true);
 	}
 
 	/** 跳到选择图片的界面 */
 	public void selectImg(View view) {
-		startActivityForResult(new Intent(this, SelectImgPopupActivity.class),
-				0);
+		startActivityForResult(new Intent(this, SelectImgPopupActivity.class),0);
 	}
 
 	// 注册
@@ -139,16 +134,15 @@ public class RegisterActivity extends DefaultActivity {
 		}
 
 		if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(pwd)) {
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setMessage(getString(R.string.Is_the_registered));
-			progressDialog.show();
 			if (headBmp == null) { // 加载默认图片
 				headBmp = BitmapFactory.decodeResource(getResources(),
 						R.drawable.ic_launcher);
 			}
 			String sex = rgSex.getCheckedRadioButtonId() == R.id.rb_male ? getString(R.string.hint_sex_male)
 					: getString(R.string.hint_sex_female);
-			registerUser(username, pwd, sex, "我是" + username,
+			registerBtn.setProgress(50);
+			registerBtn.setClickable(false);
+			registerUser(username, pwd, sex, getString(R.string.sign_hint) + username,
 					FileUtil.base64EncodeImg(headBmp));
 		}
 	}
@@ -160,16 +154,15 @@ public class RegisterActivity extends DefaultActivity {
 		this.requestQueue.add(new JsonObjectRequest(Constant.URL_REGISTER,
 				regiJson, new Listener<JSONObject>() {
 					public void onResponse(JSONObject response) {
-						if (progressDialog != null) {
-							progressDialog.dismiss();
-						}
 						EasyJsonObject easyResp = new EasyJsonObject(response);
 						boolean success = easyResp.getBoolean("success");
 						if (success) { // 注册成功
-							System.out.println("注册成功");
+							registerBtn.setProgress(100);
 							showMsgFromRes(R.string.Registered_successfully);
 							onRegisterSuccess(); // 返回到登录界面
 						} else { // 注册失败
+							registerBtn.setProgress(0);
+							registerBtn.setClickable(true);
 							showMsg(easyResp.getString("error")); // 显示错误信息
 						}
 					}
@@ -178,8 +171,6 @@ public class RegisterActivity extends DefaultActivity {
 
 	/**
 	 * 生成注册用的jsonobject
-	 * 
-	 * @throws JSONException
 	 */
 	private JSONObject makeRegiJson(String nick, String psw, String sex,
 			String sign, String img) {

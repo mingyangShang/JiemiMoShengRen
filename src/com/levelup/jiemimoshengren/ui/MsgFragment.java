@@ -7,23 +7,14 @@ import java.util.Hashtable;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Pair;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,9 +24,8 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.adapter.ChatAllHistoryAdapter;
+import com.levelup.jiemimoshengren.base.BaseActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
-import com.levelup.jiemimoshengren.config.Constant;
-import com.levelup.jiemimoshengren.db.InviteMessgeDao;
 
 /**
  * Created by smy on 2015/3/4.
@@ -152,7 +142,6 @@ public class MsgFragment extends Fragment implements
 			}
 		}
 		try {
-			// Internal is TimSort algorithm, has bug
 			sortConversationByLastChatTime(sortList);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -197,7 +186,6 @@ public class MsgFragment extends Fragment implements
 		if (!hidden) {
 			refreshUI();
 		}
-		System.out.println("contacts:"+SmyApplication.getSingleton().getContacts());
 	}
 
 	@Override
@@ -217,10 +205,12 @@ public class MsgFragment extends Fragment implements
 		} else {
 			// 进入聊天页面
 			Intent intent = new Intent(getActivity(), ChatActivity.class);
-			if (!conversation.isGroup()) { //单人会话
+			if (!conversation.isGroup() && SmyApplication.getSingleton().getContacts().containsKey(username)) { //单人会话
 				intent.putExtra("userId", username);
+				startActivity(intent);
+			}else{
+				((BaseActivity) getActivity()).showMsgFromRes(R.string.contact_removed); //好友已移除不能查看记录
 			}
-			startActivity(intent);
 		}
 	}
 }

@@ -82,6 +82,8 @@ import com.levelup.jiemimoshengren.adapter.VoicePlayClickListener;
 import com.levelup.jiemimoshengren.base.BaiduMapActivity;
 import com.levelup.jiemimoshengren.base.BaseActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
+import com.levelup.jiemimoshengren.model.FindUser;
+import com.levelup.jiemimoshengren.model.User;
 import com.levelup.jiemimoshengren.utils.CommonUtils;
 import com.levelup.jiemimoshengren.utils.ImageUtils;
 import com.levelup.jiemimoshengren.utils.SmileUtils;
@@ -940,26 +942,25 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 	/**
 	 * 点击清空聊天记录
-	 * 
 	 * @param view
 	 */
-	public void emptyHistory(View view) {
-		String st5 = getResources().getString(
-				R.string.Whether_to_empty_all_chats);
-		startActivityForResult(
-				new Intent(this, AlertDialog.class)
-						.putExtra("titleIsCancel", true).putExtra("msg", st5)
-						.putExtra("cancel", true), REQUEST_CODE_EMPTY_HISTORY);
+	public void goToUserInfo(View view) {
+		Intent intent = new Intent(this,UserInfoActivity.class);
+		User user = SmyApplication.getSingleton().getContacts().get(toChatUsername);
+		FindUser findUser = new FindUser(user);
+		findUser.setLatitude(0);
+		findUser.setLongitude(0);
+		findUser.setDistanceFromMe(0);
+		intent.putExtra("finduser", findUser);
+		startActivity(intent);
 	}
 
 	/**
 	 * 显示或隐藏图标按钮页
-	 * 
 	 * @param view
 	 */
 	public void more(View view) {
 		if (more.getVisibility() == View.GONE) {
-			System.out.println("more gone");
 			hideKeyboard();
 			more.setVisibility(View.VISIBLE);
 			btnContainer.setVisibility(View.VISIBLE);

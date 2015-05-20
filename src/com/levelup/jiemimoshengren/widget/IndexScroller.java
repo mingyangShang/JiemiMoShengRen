@@ -93,7 +93,7 @@ public class IndexScroller {
 
         //Preview Paint
         previewTextPaint = new Paint();
-        previewTextPaint.setColor(Color.WHITE);
+        previewTextPaint.setColor(0xff00a0e9);
         previewTextPaint.setAntiAlias(true);
         previewTextPaint.setTextSize(50 * mScaledDensity);
 
@@ -114,8 +114,8 @@ public class IndexScroller {
 						, (mListViewHeight - previewSize) / 2
 						, (mListViewWidth - previewSize) / 2 + previewSize
 						, (mListViewHeight - previewSize) / 2 + previewSize);
-				
-				canvas.drawRoundRect(previewRect, 5 * mDensity, 5 * mDensity, previewPaint);
+//				canvas.drawRoundRect(previewRect, 5 * mDensity, 5 * mDensity, previewPaint);
+				canvas.drawCircle(mListViewWidth/2, mListViewHeight/2, previewSize, previewPaint);
 				canvas.drawText(mSections[mCurrentSection], previewRect.left + (previewSize - previewTextWidth) / 2 - 1
 						, previewRect.top + mPreviewPadding - previewTextPaint.ascent() + 1, previewTextPaint);
 			}

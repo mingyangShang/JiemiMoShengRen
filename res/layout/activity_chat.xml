@@ -29,16 +29,16 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@drawable/common_tab_bg"
-            android:onClick="emptyHistory" >
+            android:onClick="goToUserInfo" >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="9dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/mm_title_remove" />
+                android:src="@drawable/contact_info" />
         </RelativeLayout>
 
         <RelativeLayout

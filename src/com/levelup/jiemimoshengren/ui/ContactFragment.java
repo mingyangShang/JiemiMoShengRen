@@ -13,9 +13,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,10 +25,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,6 +36,7 @@ import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.adapter.ContactAdapter;
 import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
+import com.levelup.jiemimoshengren.db.InviteMessgeDao;
 import com.levelup.jiemimoshengren.db.UserDao;
 import com.levelup.jiemimoshengren.model.User;
 import com.levelup.jiemimoshengren.widget.Sidebar;
@@ -83,7 +84,7 @@ public class ContactFragment extends Fragment implements OnClickListener{
 					user.setUnreadMsgCount(0);
 					startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
 				} else {
-					// demo中直接进入聊天页面，实际一般是进入用户详情页
+					// 直接进入聊天页面，实际一般是进入用户详情页
 					startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", adapter.getItem(position).getUsername()));
 				}
 			}
@@ -108,11 +109,11 @@ public class ContactFragment extends Fragment implements OnClickListener{
 		registerForContextMenu(listView);
 	}
 
-/*	@Override
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		// 长按前两个不弹menu
-		if (((AdapterContextMenuInfo) menuInfo).position > 1) {
+		if (((AdapterContextMenuInfo) menuInfo).position >= 0) {
 			getActivity().getMenuInflater().inflate(R.menu.context_contact_list, menu);
 		}
 	}
@@ -127,14 +128,10 @@ public class ContactFragment extends Fragment implements OnClickListener{
 			InviteMessgeDao dao = new InviteMessgeDao(getActivity());
 			dao.deleteMessage(tobeDeleteUser.getUsername());
 			return true;
-		}else if(item.getItemId() == R.id.add_to_blacklist){
-			User user = adapter.getItem(((AdapterContextMenuInfo) item.getMenuInfo()).position);
-			moveToBlacklist(user.getUsername());
-			return true;
 		}
 		return super.onContextItemSelected(item);
 	}
-*/
+
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
@@ -147,7 +144,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onResume() {
 		super.onResume();
-		System.out.println("contacts:"+SmyApplication.getSingleton().getContacts());
 		if (!hidden) {
 			refreshUI();
 		}
@@ -186,7 +182,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 							Toast.makeText(getActivity(), st2 + e.getMessage(), Toast.LENGTH_SHORT).show();
 						}
 					});
-
 				}
 
 			}
@@ -228,9 +223,9 @@ public class ContactFragment extends Fragment implements OnClickListener{
 				return lhs.getNick().compareTo(rhs.getNick());
 			}
 		});
-		// 把"申请与通知"添加到首位
-		if(users.get(Constant.NEW_FRIENDS_USERNAME) != null)
-		    contactList.add(0, users.get(Constant.NEW_FRIENDS_USERNAME));
+		// 把"申请与通知"添加到首位,TODO 暂时不用
+	/*	if(users.get(Constant.NEW_FRIENDS_USERNAME) != null)
+		    contactList.add(0, users.get(Constant.NEW_FRIENDS_USERNAME));*/
 	}
 	
 	void hideSoftKeyboard() {
@@ -244,13 +239,6 @@ public class ContactFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		//TODO 暂时不考虑异地登录和用户被意外删除
-	   /* if(((MainActivity)getActivity()).isConflict){
-	    	outState.putBoolean("isConflict", true);
-	    }else if(((MainActivity)getActivity()).getCurrentAccountRemoved()){
-	    	outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
-	    }*/
-	    
 	}
 
 	public void onClick(View v) {

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="56dp"
-    android:background="@drawable/shake_bg"
+    android:background="@drawable/contact_shake_bg"
     android:orientation="vertical"
     android:paddingLeft="8.0dip" >
 
@@ -12,7 +12,7 @@
         android:layout_height="@dimen/contact_img_size"
         android:layout_centerVertical="true"
         android:layout_margin="5dp"
-        android:src="@drawable/shake" />
+        android:src="@drawable/shake1" />
 
     <TextView
         android:id="@+id/tv_name"

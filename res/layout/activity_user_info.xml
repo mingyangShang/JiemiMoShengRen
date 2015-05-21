@@ -121,6 +121,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/app_blue"
         android:onClick="addContact"
+        android:visibility="gone"
         android:text="加为好友"
         android:textColor="@android:color/white"
         android:textSize="@dimen/medium_text_size"
@@ -128,7 +129,7 @@
         smy:cpb_iconComplete="@drawable/ic_action_accept"
         smy:cpb_iconError="@drawable/ic_action_cancel"
         smy:cpb_textIdle="加为好友" />
-     <com.dd.circularprogressbutton.CircularProgressButton
+   <!--   <com.dd.circularprogressbutton.CircularProgressButton
         android:id="@+id/remove_contact"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -144,7 +145,7 @@
         smy:cpb_cornerRadius="@dimen/regi_btn_height"
         smy:cpb_iconComplete="@drawable/ic_action_accept"
         smy:cpb_iconError="@drawable/ic_action_cancel"
-        smy:cpb_textIdle="删除好友" />
+        smy:cpb_textIdle="删除好友" /> -->
       <com.dd.circularprogressbutton.CircularProgressButton
         android:id="@+id/chat"
         android:layout_width="match_parent"
@@ -155,6 +156,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/app_blue"
         android:onClick="goToChat"
+        android:visibility="gone"
         android:text="发送消息"
         android:textColor="@android:color/white"
         android:textSize="@dimen/medium_text_size"

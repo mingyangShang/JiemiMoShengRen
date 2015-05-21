@@ -19,6 +19,17 @@
             android:textColor="#ffffff"
             android:text="@string/title_game"
             android:textSize="20sp" />
+         <TextView
+            android:id="@+id/friend_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:maxWidth="80dp"
+            android:layout_centerVertical="true"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:text="@string/title_game"
+            android:textSize="20sp" />
     </RelativeLayout>
     
     <RelativeLayout
@@ -105,7 +116,7 @@
     </LinearLayout>
     
     <RelativeLayout 
-        android:id="@+id/layout0_countdown"
+        android:id="@+id/layout_countdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -127,7 +138,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/game_start_bg"
             android:gravity="center"
-            android:text="@string/start"/>
+            android:text="@string/hint_pass_game"/>
         <ImageView
             android:id="@+id/iv_cardio"
             android:layout_width="match_parent"

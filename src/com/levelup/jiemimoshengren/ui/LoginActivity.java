@@ -248,7 +248,7 @@ public class LoginActivity extends DefaultActivity {
 								System.err.println("解析contacts的json数据错误");
 							}
 							sign_in.setProgress(100);
-							handler.sendEmptyMessage(0);
+							handler.sendEmptyMessageDelayed(0, 1000);
 						} else {
 							showMsg(contactsJson.getString("error"));
 						}

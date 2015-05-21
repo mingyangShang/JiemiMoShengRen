@@ -60,11 +60,6 @@ import com.smy.volley.extend.EasyJsonObject;
 public class MainActivity extends DefaultActivity implements EMEventListener {
 
 	protected static final String TAG = "MainActivity";
-	private static final int ON_CONTACT_ADDED = 1;
-	private static final int ON_CONTACT_REMOVED = 2;
-	private static final int ON_CONTACT_INVITED = 3;
-	private static final int ON_CONTACT_REFUSED = 4;
-	private static final int ON_CONTACT_AGREED = 5;
 
 	// 未读消息textview
 	private TextView unreadLabel;

@@ -38,6 +38,7 @@ import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.db.InviteMessgeDao;
 import com.levelup.jiemimoshengren.db.UserDao;
+import com.levelup.jiemimoshengren.model.FindUser;
 import com.levelup.jiemimoshengren.model.User;
 import com.levelup.jiemimoshengren.widget.Sidebar;
 /**
@@ -85,7 +86,14 @@ public class ContactFragment extends Fragment implements OnClickListener{
 					startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
 				} else {
 					// 直接进入聊天页面，实际一般是进入用户详情页
-					startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", adapter.getItem(position).getUsername()));
+					Intent intent = new Intent(getActivity(),UserInfoActivity.class);
+					FindUser findUser = new FindUser(adapter.getItem(position));
+					findUser.setLatitude(0);
+					findUser.setLongitude(0);
+					findUser.setDistanceFromMe(0);
+					intent.putExtra("finduser", findUser);
+					intent.putExtra("chat", false);
+					startActivity(intent);
 				}
 			}
 		});

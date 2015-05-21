@@ -510,25 +510,29 @@ public class ChatActivity extends BaseActivity implements OnClickListener,EMEven
 
 		} else if (id == R.id.btn_video) {
 			// 点击摄像图标
-			Intent intent = new Intent(ChatActivity.this,
+			/*Intent intent = new Intent(ChatActivity.this,
 					ImageGridActivity.class);
-			startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
+			startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);*/
+			showMsgFromRes(R.string.func_not_open);
 		} else if (id == R.id.btn_file) { // 点击文件图标
-			selectFileFromLocal();
+//			selectFileFromLocal();
+			showMsgFromRes(R.string.func_not_open);
 		} else if (id == R.id.btn_voice_call) { // 点击语音电话图标
-			if (!EMChatManager.getInstance().isConnected())
+			showMsgFromRes(R.string.func_not_open);
+		/*	if (!EMChatManager.getInstance().isConnected())
 				Toast.makeText(this, st1, 0).show();
 			else
 				startActivity(new Intent(ChatActivity.this,
 						VoiceCallActivity.class).putExtra("username",
-						toChatUsername).putExtra("isComingCall", false));
+						toChatUsername).putExtra("isComingCall", false));*/
 		} else if (id == R.id.btn_video_call) { // 视频通话
-			if (!EMChatManager.getInstance().isConnected())
+			/*if (!EMChatManager.getInstance().isConnected())
 				Toast.makeText(this, st1, 0).show();
 			else
 				startActivity(new Intent(this, VideoCallActivity.class)
 						.putExtra("username", toChatUsername).putExtra(
-								"isComingCall", false));
+								"isComingCall", false));*/
+			showMsgFromRes(R.string.func_not_open);
 		}
 	}
 

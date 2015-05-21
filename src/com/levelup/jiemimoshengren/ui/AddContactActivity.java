@@ -33,12 +33,18 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactManager;
+import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMMessage;
+import com.easemob.chat.TextMessageBody;
+import com.easemob.exceptions.EaseMobException;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.DefaultActivity;
 import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
 import com.levelup.jiemimoshengren.model.FindUser;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smy.volley.extend.EasyJsonObject;
 
 public class AddContactActivity extends DefaultActivity {
@@ -67,6 +73,7 @@ public class AddContactActivity extends DefaultActivity {
 	@Override
 	protected void initView() {
 		super.initView();
+		avatar = (ImageView) findViewById(R.id.avatar);
 		mTextView = (TextView) findViewById(R.id.add_list_friends);
 		editText = (EditText) findViewById(R.id.edit_note);
 		String strAdd = getResources().getString(R.string.add_friend);
@@ -113,6 +120,7 @@ public class AddContactActivity extends DefaultActivity {
 							// 服务器存在此用户，显示此用户和添加按钮
 							searchedUserLayout.setVisibility(View.VISIBLE);
 							nameText.setText(nick);
+							ImageLoader.getInstance().displayImage(userJson.getString("head"), avatar);
 						} else {
 							showMsg(easyJson.getString("error"));
 						}
@@ -152,6 +160,7 @@ public class AddContactActivity extends DefaultActivity {
 					// demo写死了个reason，实际应该让用户手动填入
 					EMContactManager.getInstance().addContact(toAddUserId,
 							getString(R.string.Add_a_friend));
+					sendFirstMsg(uid); // 发送第一条消息
 					runOnUiThread(new Runnable() {
 						public void run() {
 							recyclePd();
@@ -184,6 +193,30 @@ public class AddContactActivity extends DefaultActivity {
 	 */
 	public void addContact(View view) {
 		doHuanxinAddContact(toAddUserId);
+	}
+	
+	/** 好友添加成功后发送一条消息模拟系统通知 */
+	private void sendFirstMsg(final String toChatUsername) {
+		sendFirstMsg(toChatUsername, Constant.SYSTEM_INFO + "hello");
+	}
+
+	private void sendFirstMsg(final String toChatUsername, final String content) {
+		EMConversation conversation = EMChatManager.getInstance()
+				.getConversation(toChatUsername);
+		EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+		// 如果是群聊，设置chattype,默认是单聊
+		TextMessageBody txtBody = new TextMessageBody(content);
+		// 设置消息body
+		message.addBody(txtBody);
+		// 设置要发给谁,用户username或者群聊groupid
+		message.setReceipt(toChatUsername);
+		// 把messgage加到conversation中
+		conversation.addMessage(message);
+		try {
+			EMChatManager.getInstance().sendMessage(message);
+		} catch (EaseMobException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/** 处理volley请求错误 */

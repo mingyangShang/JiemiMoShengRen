@@ -264,7 +264,7 @@ public class MapMarkerActivity extends BaiduMapActivity{
 	public boolean onMarkerClick(Marker arg0) {
 		FindUser findUser = findUsers.get(arg0.getExtraInfo().getInt("pos"));
 		if(findUser!=null){
-			Intent intent = new Intent(this,UserInfoActivity.class);
+			Intent intent = new Intent(this,GameActivity.class);
 			intent.putExtra("finduser", findUser);
 			startActivity(intent);
 		}

@@ -23,7 +23,9 @@
     
     <string name="title_game">记忆快块</string>
     <string name="hint_name">用户名</string>
+    <string name="hint_pass_game">答对5个以上完成解密，点击开始</string>
     <string name="title_shake">摇一摇</string>
+    <string name="func_not_open">该功能尚未开放</string>
     <string name="title_userinfo">个人资料</string>
     <string name="contact_removed">好友已移除</string>
     <string name="default_add_friend_reason">我想加你为好友</string>

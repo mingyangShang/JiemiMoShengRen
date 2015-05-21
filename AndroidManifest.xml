@@ -87,6 +87,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- 聊天页面 -->
@@ -119,11 +124,6 @@
             android:label="@string/activity_user_info"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- 新朋友 -->

@@ -19,7 +19,7 @@ public class FindUser extends User implements Parcelable{
 	public FindUser(Parcel parcel){
 		this.username = parcel.readString();
 		this.nick = parcel.readString();
-		this.sign = parcel.readString();
+		this.imgUrl = parcel.readString();
 		this.isFemale = parcel.readString().equals(User.SEX_FEMALE)?true:false;
 		this.sign = parcel.readString();
 		this.latitude = parcel.readDouble();

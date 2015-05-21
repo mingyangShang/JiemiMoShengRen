@@ -22,7 +22,7 @@ public class Constant {
 	public static final String SYSTEM_INFO = "JieMiMoShengRen"; //模拟系统提示消息
 	
 	//服务器交互配置
-	public static final String HOST = "http://192.168.0.107:5000"; //主机名
+	public static final String HOST = "http://192.168.0.108:5000"; //主机名
 	public static final String URL_REGISTER = HOST +"/user/register"; //注册url
 	public static final String URL_LOGIN = HOST + "/user/login"; //登录url
 	public static final String URL_UPLOAD = HOST + "/user/upload_img"; //上传图片url

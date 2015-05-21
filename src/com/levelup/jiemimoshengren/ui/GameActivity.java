@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.R.integer;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.SparseIntArray;
@@ -16,11 +15,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.BaseActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.levelup.jiemimoshengren.model.FindUser;
+import com.levelup.jiemimoshengren.model.User;
 
 public class GameActivity extends BaseActivity implements OnClickListener{
 	
@@ -28,6 +29,7 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	public static final int COUNT_DURATION = 4000; //progress倒计时的总时间
 	public static final int COUNT_INTERVAL = 10; //progress的刷新间隔
 	public static final int MAX_PROGRESS = 100; //progress的最大值
+	public static final int GAME_PASS_NUM = 5; //通过游戏最小答对的个数
 	
 	private int currCount = 1; //当前点击的数字
 	private int[] randomNumbers; //随机数字
@@ -48,10 +50,12 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	private ImageView countdownImg;
 	private View startView;
 	private ProgressBar pbCountdown; //倒计时的progressbar
+	
+	private User toAddFriend;
+	
 	private CountDownTimer countDownTimer = new CountDownTimer(3999, 500) {
 		@Override
 		public void onTick(long millisUntilFinished) {
-			System.err.println(""+millisUntilFinished);
 			if(millisUntilFinished<1000){
 				countdownImg.setVisibility(View.GONE);
 				return ;
@@ -89,6 +93,13 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 				}
 				view.setClickable(false);
 			}
+			if(currCount-1>=GAME_PASS_NUM){
+				showMsg("恭喜您答对了"+(currCount-1)+"个，成功完成解密");
+				onPassedGame();
+			}else{
+				showMsg("您答对了"+(currCount-1)+"个，很遗憾，为完成解密");
+				onNotPassGame();
+			}
 		}
 	};
 	@Override
@@ -98,6 +109,7 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	
 	@Override
 	protected void initData() {
+		toAddFriend = getIntent().getParcelableExtra("finduser");
 		randomNumbers = makeRandomButtonNumbers();
 		btnNumMap = new SparseIntArray(9);
 	}
@@ -108,6 +120,10 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 		startView.setOnClickListener(this);
 		pbCountdown = (ProgressBar) findViewById(R.id.pb);
 		pbCountdown.setProgress(MAX_PROGRESS);
+		TextView tvFriendName = (TextView) findViewById(R.id.friend_name);
+		if(toAddFriend!=null){
+			tvFriendName.setText(toAddFriend.getNick());
+		}
 		
 		ImageView button1 = (ImageView)findViewById(R.id.Button1Id);
 		ImageView button2 = (ImageView)findViewById(R.id.Button2Id);
@@ -186,14 +202,35 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 			//全部设置不可点击
 			currBtn.setClickable(false);
 		}
+		if(currCount-1>=GAME_PASS_NUM){
+			showMsg("恭喜您答对了"+(currCount-1)+"个，成功完成解密");
+			onPassedGame();
+		}else{
+			showMsg("您答对了"+(currCount-1)+"个，很遗憾，为完成解密");
+			onNotPassGame();
+		}
 	}
 	/**点击button数字正确*/
 	private void onRightClick(ImageView btn){
 		btn.setImageResource(numPressedRes[currCount-1]);
 		if(currCount == 9){ //全部猜对
 			pbCountDownTimer.cancel();
-			showMsg("恭喜你，全都记对了");
+			showMsg("你太腻害了，全都记对了，解密成功");
+			onPassedGame();
 		}
+	}
+
+	/**当游戏通过的时候*/
+	private void onPassedGame(){
+		Intent intent = new Intent(this,UserInfoActivity.class);
+		intent.putExtra("finduser", toAddFriend);
+		intent.putExtra("chat", false); //表示userinfoactivity不是来自于聊天界面
+		startActivity(intent);
+	}
+	
+	/**完成游戏的解密*/
+	private void onNotPassGame(){
+		this.finish();
 	}
 
 	/**产生1-9的随机数字数组*/

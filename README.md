@@ -9,6 +9,7 @@
  - Base-Adapter-Helper:简化Adapter的书写，减少Adapter编写的重复冗余代码
  - PinYin4j：处理中文和拼音之间的转换
  - Gson：处理json字符串解析，使用Model类对象化
+ - CircularProgressButton:比较炫酷的button，稍加封装可以实现费时操作的传统progressbar效果
  
 
 **<font size='+1'>遇到的问题</font>**

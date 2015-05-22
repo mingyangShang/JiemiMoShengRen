@@ -120,7 +120,7 @@ public abstract class BaiduMapActivity extends BaseActivity implements OnMarkerC
     /**添加文字和图片覆盖物*/
     public void addTextImgMarler(LatLng pos,final String msg,Bundle extra){
     	final LatLng convertPos = convert(pos);
-    	BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(this.defaultMarkerRes);
+    	BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(R.drawable.icon_marka_it);
     	OverlayOptions option = new MarkerOptions().position(convertPos).icon(descriptor).zIndex(4).draggable(true);
     	OverlayOptions textOption = new TextOptions().bgColor(0x00FFFFFF).fontSize(24).zIndex(5).fontColor(0xFF00FF00).text(msg).rotate(-30).position(convertPos);
         this.mMapView.getMap().addOverlay(option).setExtraInfo(extra);

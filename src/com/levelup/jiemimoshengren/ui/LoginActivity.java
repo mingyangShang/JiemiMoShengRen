@@ -46,6 +46,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.dd.circularprogressbutton.CircularProgressButton;
 import com.easemob.EMCallBack;
@@ -447,5 +448,13 @@ public class LoginActivity extends DefaultActivity {
 				});
 		widthAnimation.start();
 	}
+
+	@Override
+	public void onErrorResponse(VolleyError error) {
+		super.onErrorResponse(error);
+		sign_in.setProgress(0);
+	}
+	
+	
 
 }

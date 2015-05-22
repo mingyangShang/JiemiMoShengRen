@@ -28,7 +28,7 @@ public class DefaultActivity extends BaseActivity implements ErrorListener {
 
 	/** 处理volley请求错误 */
 	public void onErrorResponse(VolleyError error) {
-		showMsg(error.getMessage());
+		showMsg("error:"+error.getMessage());
 	}
 	
 	/**判断当前user是否可以使用*/

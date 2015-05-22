@@ -191,6 +191,10 @@ public class UserInfoActivity extends DefaultActivity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							showMsgFromRes(R.string.add_successful);
+							//跳转到chatActivity中去
+							Intent intent = new Intent(UserInfoActivity.this,ChatActivity.class);
+							intent.putExtra("userId", uid);
+							startActivity(intent);
 						}
 					});
 					// 发送请求后默认对方已同意，将对方加入自己的好友

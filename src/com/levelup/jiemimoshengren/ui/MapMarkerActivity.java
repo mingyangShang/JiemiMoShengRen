@@ -3,6 +3,7 @@ package com.levelup.jiemimoshengren.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -45,7 +46,6 @@ import com.levelup.jiemimoshengren.model.FindUser;
 public class MapMarkerActivity extends BaiduMapActivity{
 
 	private final static String TAG = "map";
-	private FrameLayout mMapViewContainer = null;
 	// 定位相关
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
@@ -102,6 +102,7 @@ public class MapMarkerActivity extends BaiduMapActivity{
 		super.initData();
 		Intent intent = getIntent();
 		findUsers = intent.getParcelableArrayListExtra("findusers");
+		//仅供调试使用
 		if(findUsers==null){
 			findUsers = new ArrayList<FindUser>();
 			FindUser user = new FindUser();
@@ -233,8 +234,8 @@ public class MapMarkerActivity extends BaiduMapActivity{
 				FindUser user = findUsers.get(i);
 				Bundle extra = new Bundle();
 				extra.putInt("pos", i);
-//				addTextImgMarler(new LatLng(user.getLatitude(), user.getLongitude()), user.getNick(), extra);
-				addTextImgMarler(latLng, user.getNick(), extra);
+				addTextImgMarler(new LatLng(user.getLatitude(), user.getLongitude()), user.getNick(), extra);
+//				addTextImgMarler(latLng, user.getNick(), extra);
 			}
 		}
 
@@ -262,7 +263,14 @@ public class MapMarkerActivity extends BaiduMapActivity{
 	}
 
 	public boolean onMarkerClick(Marker arg0) {
-		FindUser findUser = findUsers.get(arg0.getExtraInfo().getInt("pos"));
+		Bundle extra = arg0.getExtraInfo();
+		int pos = 0;
+		if(extra==null){
+			pos = 0;
+		}else{
+			pos = extra.getInt("pos");
+		}
+		FindUser findUser = findUsers.get(pos);
 		if(findUser!=null){
 			Intent intent = new Intent(this,GameActivity.class);
 			intent.putExtra("finduser", findUser);

@@ -8,7 +8,7 @@
     <string name="activity_index">主界面</string>
     <string name="activity_register">注册</string>
     <string name="activity_cropimg">裁剪图像</string>
-    <string name="activity_login">登录</string>
+    <string name="activity_login">解密陌生人</string>
     <string name="activity_chat">聊天</string>
     <string name="activity_big_image">查看大图</string>
     <string name="activity_add_contact">添加朋友</string>

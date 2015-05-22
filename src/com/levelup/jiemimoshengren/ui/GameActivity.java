@@ -138,7 +138,6 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 				button4, button5, button6,
 				button7, button8, button9};
 		//设置监听器和数字值,构建map
-		List<Animator> animators = new ArrayList<Animator>(9);
 		for(int i=0;i<numberButtons.length;++i){
 			ImageView currButton = numberButtons[i];
 			btnNumMap.put(currButton.getId(), randomNumbers[i]); //构建button和显示数字的映射
@@ -187,7 +186,6 @@ public class GameActivity extends BaseActivity implements OnClickListener{
 	
 	/**点击button数字错误*/
 	private void onErrorClick(ImageView btn){
-		Toast.makeText(this, "错误", 1000).show();	
 		pbCountDownTimer.cancel(); //停止倒计时
 		for(int i=0;i<numberButtons.length;++i){
 			final ImageView currBtn = numberButtons[i];

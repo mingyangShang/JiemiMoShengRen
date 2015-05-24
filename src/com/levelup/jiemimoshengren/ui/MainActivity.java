@@ -250,6 +250,7 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 	/** 好友变化Listener */
 	private class MyContactListener implements EMContactListener {
 		public void onContactAdded(List<String> usernameList) {
+			System.err.println("add friend---------------------------------");
 			final List<String> usernameList2 = usernameList;
 			runOnUiThread(new Runnable() {
 				public void run() {
@@ -261,6 +262,7 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 		
 			try {
 				processContacts(usernameList);
+				System.err.println("process success------------------------");
 			} catch (EaseMobException e) {
 				e.printStackTrace();
 			}
@@ -478,6 +480,8 @@ public class MainActivity extends DefaultActivity implements EMEventListener {
 		UserDao dao = new UserDao(MainActivity.this);
 		List<User> users = new ArrayList<User>(localUsers.values());
 		dao.saveContactList(users);
+		
+		System.err.println("add friend userinfo");
 	}
 	
 	/**

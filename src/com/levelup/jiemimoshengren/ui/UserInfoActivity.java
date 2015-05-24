@@ -1,5 +1,9 @@
 package com.levelup.jiemimoshengren.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -23,7 +27,9 @@ import com.easemob.chat.TextMessageBody;
 import com.easemob.exceptions.EaseMobException;
 import com.levelup.jiemimoshengren.R;
 import com.levelup.jiemimoshengren.base.DefaultActivity;
+import com.levelup.jiemimoshengren.base.SmyApplication;
 import com.levelup.jiemimoshengren.config.Constant;
+import com.levelup.jiemimoshengren.db.UserDao;
 import com.levelup.jiemimoshengren.model.FindUser;
 import com.levelup.jiemimoshengren.model.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -183,18 +189,36 @@ public class UserInfoActivity extends DefaultActivity {
 
 	/** 添加好友 */
 	private void addContact(final String uid, final String reason) {
+		if (SmyApplication.getSingleton().getContacts()
+				.containsKey(uid)) {
+			// 提示已在好友列表中，无需添加
+			showMsgFromRes(R.string.This_user_is_already_your_friend);
+			return;
+		}
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					EMContactManager.getInstance().addContact(uid, reason);
 					sendFirstMsg(uid); // 发送第一条消息
+					//加入现在的好友列表
+					Map<String,User> localUsers = SmyApplication.getSingleton().getContacts();
+					localUsers.put(uid, user);
+					
+					// 存入内存
+					SmyApplication.getSingleton().setContacts(localUsers);
+					
+					// 存入db
+					UserDao dao = new UserDao(UserInfoActivity.this);
+					List<User> users = new ArrayList<User>(localUsers.values());
+					dao.saveContactList(users);
 					runOnUiThread(new Runnable() {
 						public void run() {
 							showMsgFromRes(R.string.add_successful);
 							//跳转到chatActivity中去
-							Intent intent = new Intent(UserInfoActivity.this,ChatActivity.class);
-							intent.putExtra("userId", uid);
+							Intent intent = new Intent(UserInfoActivity.this,MainActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
+							finish();
 						}
 					});
 					// 发送请求后默认对方已同意，将对方加入自己的好友

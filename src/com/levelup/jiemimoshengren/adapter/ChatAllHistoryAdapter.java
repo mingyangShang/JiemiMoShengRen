@@ -85,9 +85,16 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		}
 		EMConversation conversation = getItem(position);
 	
+		System.err.println("username:"+conversation.getUserName());
+		if(SmyApplication.getSingleton().getContacts()==null){
+			System.err.println("contacts is null");
+		}else if(SmyApplication.getSingleton().getContacts().get(conversation.getUserName())==null){
+			System.err.println("user is null");
+		}
 		// 获取用户username或者群组groupid
 		final String username = SmyApplication.getSingleton().getContacts()
 				.get(conversation.getUserName()).getNick();
+		
 		
 		//检查是否是模拟的系统发送的通知消息提示好友添加成功
 		EMMessage msg = conversation.getLastMessage();
@@ -105,6 +112,14 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 					}else{
 						holder.message.setText(SmileUtils.getSmiledText(getContext(), 
 								"您已添加"+username+"为好友，点击进入聊天"),BufferType.SPANNABLE);
+					}
+					if (conversation.getUnreadMsgCount() > 0) {
+						// 显示与此用户的消息未读数
+						holder.unreadLabel.setText(String.valueOf(conversation
+								.getUnreadMsgCount()));
+						holder.unreadLabel.setVisibility(View.VISIBLE);
+					} else {
+						holder.unreadLabel.setVisibility(View.INVISIBLE);
 					}
 					return convertView;
 				}
